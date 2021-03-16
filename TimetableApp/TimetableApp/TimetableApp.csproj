@@ -50,7 +50,12 @@
     <Compile Include="DBConnection\DBConnectionTest.cs" />
     <Compile Include="DBConnection\DBMySQLUtils.cs" />
     <Compile Include="DBConnection\DBUtils.cs" />
+    <Compile Include="ExcelFileContentCheck\BlankLinesCheck.cs" />
+    <Compile Include="ExcelFileContentCheck\DuplicateCheck.cs" />
+    <Compile Include="ExcelFileContentCheck\ExcelFileCheck.cs" />
+    <Compile Include="ExcelFileContentCheck\WrongValuesCheck.cs" />
     <Compile Include="FileExistence.cs" />
+    <Compile Include="ExcelFileContentCheck\IErrorChecking.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

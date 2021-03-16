@@ -15,22 +15,29 @@ namespace TimetableApp
     {
         static void Main(string[] args)
         {
-
-            // DBConnectionTest.Test();
-
             FileExistence file = new FileExistence("Auditory_types.xlsx");
 
-            if (file.Exists())
+            if (file.exists())
             {
+                // ExcelFileCheck check = new ExcelFileCheck(file); 
+                /*внутри ExcelFileCheck проверка file методами классов ...Check, которые используют интерфейс IError...      */
+
+
                 //проверка содержимого файла (дубликаты, пустые строки, некорректные значения и т.д.)
 
                 // что делать если бд пуста/заполнена/связные таблицы ...
 
                 // загрузка
-
             }
 
-            //Console.WriteLine(String.Concat("1", "2343", "asda"));
+            // DBConnectionTest.Test();
+
+
+
+
+
+
+
 
             Console.ReadKey();
         }
