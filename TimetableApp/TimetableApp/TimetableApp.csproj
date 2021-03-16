@@ -54,7 +54,7 @@
     <Compile Include="ExcelFileContentCheck\DuplicateCheck.cs" />
     <Compile Include="ExcelFileContentCheck\ExcelFileCheck.cs" />
     <Compile Include="ExcelFileContentCheck\WrongValuesCheck.cs" />
-    <Compile Include="FileExistence.cs" />
+    <Compile Include="ExcelFile.cs" />
     <Compile Include="ExcelFileContentCheck\IErrorChecking.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
