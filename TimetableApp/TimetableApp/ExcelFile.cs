@@ -63,9 +63,10 @@ namespace TimetableApp
                 {
                     wrongFileName = value;
                     Console.WriteLine("Некоректне ім'я або розширення файлу \"" + wrongFileName +
-                        "\". Ім'я файлу не повинно містити наступних символів: " + forbiddenSymbols + "\nРозширення файлу повинно бути \".xls\" або \".xlsx\"\n");
-                   
-                   // Environment.Exit(0);
+                        "\". Ім'я файлу не повинно містити наступних символів: " + forbiddenSymbols +
+                        "\nРозширення файлу повинно бути \".xls\" або \".xlsx\"\n");
+
+                    // Environment.Exit(0);
                 }
             }
         }
@@ -76,7 +77,7 @@ namespace TimetableApp
             get
             {
                 return String.Concat(dirName, @"\", fileName);
-            }           
+            }
         }
 
         public ExcelFile(string fileName)
@@ -85,24 +86,26 @@ namespace TimetableApp
 
             try
             {
-                open(fileName);
+                open(/*fileName*/);
 
                 range = worksheet.UsedRange;
                 rowsCount = range.Rows.Count;
                 close();
-                Console.WriteLine(rowsCount);
+                //Console.WriteLine(rowsCount);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Не вдалось отримати дані файлу \"" + wrongFileName + "\". Перевірте правильність імені файлу та повторіть спробу.");
+                Console.WriteLine("Не вдалось отримати дані файлу \"" + wrongFileName +
+                    "\". Перевірте правильність імені файлу та повторіть спробу.");
             }
         }
 
-        public void open(string fileName)
+        public void open(/*string fileName*/)
         {
             if (fileName == null)
             {
-                Console.WriteLine("Помилка відкриття файлу \"" + wrongFileName + "\". Перевірте правильність імені файлу та повторіть спробу.");
+                Console.WriteLine("Помилка відкриття файлу \"" + wrongFileName +
+                    "\". Перевірте правильність імені файлу та повторіть спробу.");
             }
             else
             {
@@ -118,7 +121,8 @@ namespace TimetableApp
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Помилка відкриття файлу \"" + wrongFileName + "\". Перевірте правильність імені файлу та повторіть спробу.");
+                    Console.WriteLine("Помилка відкриття файлу \"" + wrongFileName +
+                        "\". Перевірте правильність імені файлу та повторіть спробу.");
                 }
             }
         }
@@ -133,16 +137,16 @@ namespace TimetableApp
             }
             else
             {*/
-                if (File.Exists(FullPathToFile))
-                {
-                    //Console.WriteLine("OK");
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine("Файл не знайдено: " + "\"" + wrongFileName + "\"");
-                    return false;
-                }
+            if (File.Exists(FullPathToFile))
+            {
+                //Console.WriteLine("OK");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Файл не знайдено: " + "\"" + wrongFileName + "\"");
+                return false;
+            }
             //}
         }
 
@@ -155,18 +159,18 @@ namespace TimetableApp
                 app.Quit();
             }
             catch (Exception ex)
-            { 
+            {
                 Console.WriteLine("Помилка при закритті файлу: \"" + wrongFileName + "\".");
             }
         }
-        
+
        /* public bool PresenceOfDuplicates()
         {
             open();
 
-
+            close();
             return false;
-        }  */      
+        }*/
     }
 }
 

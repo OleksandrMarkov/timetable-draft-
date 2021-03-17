@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace TimetableApp
 {
-    class DuplicateCheck
+    abstract class DuplicateCheck
     {
+        public DuplicateCheck(string fileName)
+        {
 
+        }
     }
 }
