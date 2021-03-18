@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +26,14 @@ namespace TimetableApp
         private Excel.Worksheet worksheet; // лист 
         private Excel.Range range; // діапазон
 
-        private int rowsCount; // к-ть рядків файлу з даними
+        protected int rowsCount; // к-ть рядків файлу з даними
+        protected string cellContent; // дані в чарунці
+
+
+        protected char columnForReading; // стовпець, що розглядається
 
         // private int columnForLoading; // стовпець для завантаження (А - 1, В - 2, С - 3 і т.д.)
+
 
 
         public string FileName
@@ -86,10 +93,11 @@ namespace TimetableApp
 
             try
             {
-                open(/*fileName*/);
+                open();
 
-                range = worksheet.UsedRange;
-                rowsCount = range.Rows.Count;
+              /* перенесено в open()
+               *range = worksheet.UsedRange;
+                rowsCount = range.Rows.Count;*/
                 close();
                 //Console.WriteLine(rowsCount);
             }
@@ -100,7 +108,8 @@ namespace TimetableApp
             }
         }
 
-        public void open(/*string fileName*/)
+        //відкриття файлу
+        public void open()
         {
             if (fileName == null)
             {
@@ -118,6 +127,11 @@ namespace TimetableApp
                 {
                     workbook = app.Workbooks.Open(FullPathToFile, readingMode, true); // відкриття книги 
                     worksheet = (Excel.Worksheet)workbook.Worksheets[sheetNumber]; // відкриття листа даних
+                    //worksheet = app.Worksheets["Лист 1"] as Excel.Worksheet;
+
+                    range = worksheet.UsedRange;
+                    rowsCount = range.Rows.Count;
+
                 }
                 catch (Exception ex)
                 {
@@ -130,13 +144,6 @@ namespace TimetableApp
         // Перевірка існування файлу в директорії
         public bool exists()
         {
-            /*if (fileName == null)
-            {
-                Console.WriteLine("Некоректне ім'я або розширення файлу.");
-                return false;
-            }
-            else
-            {*/
             if (File.Exists(FullPathToFile))
             {
                 //Console.WriteLine("OK");
@@ -147,7 +154,6 @@ namespace TimetableApp
                 Console.WriteLine("Файл не знайдено: " + "\"" + wrongFileName + "\"");
                 return false;
             }
-            //}
         }
 
         //закриття файлу
@@ -164,13 +170,127 @@ namespace TimetableApp
             }
         }
 
-       /* public bool PresenceOfDuplicates()
+        protected int getColumnNumber(char column)
         {
-            open();
+            if ((int)column >= 'A' && (int)column <= 'Z')
+            {
+                return (int)column - 64;
+            }
+            else
+            {
+                throw new Exception("Некоректне ім'я стовпця, неможливо зчитати дані з файлу " + FileName);
+            }
 
-            close();
-            return false;
-        }*/
+        }
+
+        // перевірка наявності дублікатів
+        public bool containsDuplicates()
+        {
+            if (FileName == "TypesOfAudiences.xlsx")
+            {
+                ArrayList recordsList = new ArrayList();
+                Dictionary<int, string> duplicates = new Dictionary<int, string>();
+                columnForReading = 'A';
+                // Console.WriteLine(rowsCount);
+
+                try
+                {
+                    open();
+                    for (int row = 1, column = getColumnNumber(columnForReading); row <= rowsCount; row++)
+                    {
+                        //Console.WriteLine(row);
+                        cellContent = ((range.Cells[row, column] as Excel.Range).Value2).ToString();
+                        //Console.WriteLine("cellContent: " + cellContent);
+                        if (recordsList.Contains(cellContent) == true)
+                        {
+                            duplicates.Add(row, cellContent);
+                        }
+                        else
+                        {
+                            recordsList.Add(cellContent);
+                        }
+                    }
+                    close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
+                }
+
+                if (duplicates.Count == 0)
+                {
+                    //Console.WriteLine("duplicates.Count = " + duplicates.Count);
+                    Console.WriteLine("Нет дубликатов");
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Есть дубликаты:");
+                    foreach (KeyValuePair<int, string> duplicate in duplicates)
+                    {
+                        Console.WriteLine("В строке номер " + duplicate.Key + ": " + duplicate.Value);
+                    }
+                    return true;
+                }
+            }
+            else
+            {
+                Console.WriteLine("другой файл...");
+                return false;
+            }
+        }
+
+        // перевірка наявності прогалин
+        public bool containsMissingValues()
+        {
+            if (FileName == "TypesOfAudiences.xlsx")
+            {
+                ArrayList rowsWithMissingValues = new ArrayList();
+                columnForReading = 'A';
+
+                try
+                {
+                    open();
+                    for (int row = 1, column = getColumnNumber(columnForReading); row <= rowsCount; row++)
+                    {
+                        //Console.WriteLine(row);
+
+                        var cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                        //Console.WriteLine("cellContent: " + cellContent);
+                        if (string.IsNullOrEmpty(cellContent))
+                        {
+                            rowsWithMissingValues.Add(row);
+                        }
+                    }
+                    close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
+                }
+
+                if (rowsWithMissingValues.Count == 0)
+                {
+                    Console.WriteLine("Немає пропусків в файлі " + FileName);
+                    return false;
+                }
+                else
+                {
+                    Console.Write("В файлі " + FileName + " є пропуски в рядках: ");
+                    foreach (int row in rowsWithMissingValues)
+                    {
+                        Console.Write(row + "\t");
+                    }
+                    Console.WriteLine();
+                    return true;     
+                }
+            }
+            else
+            {
+                Console.WriteLine("другой файл...");
+                return false;
+            }
+        }
     }
 }
 
