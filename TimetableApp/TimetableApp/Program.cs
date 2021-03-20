@@ -57,27 +57,10 @@ namespace TimetableApp
                 
             }*/
 
-            ExcelFile file = new ExcelFile("TypesOfAudiences.xlsx");
+            ExcelFile file = new ExcelFile("TypesOfAuditories.xlsx");
             if (file.exists())
             {
-                /*if (file.containsDuplicates())
-                {
-                    Console.WriteLine("Sad");
-                }
-                else
-                {
-                    Console.WriteLine("Awesome");
-                }*/
-
-                /*if (file.containsMissingValues())
-                {
-                    Console.WriteLine("Sad");
-                }
-                else
-                {
-                    Console.WriteLine("Awesome");
-                }*/
-                
+                file.load();   
             }
 
             /* 3. 

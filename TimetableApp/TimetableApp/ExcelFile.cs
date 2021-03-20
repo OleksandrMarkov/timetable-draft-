@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
 
+using MySql.Data.MySqlClient;
+
 
 namespace TimetableApp
 {
@@ -183,113 +185,181 @@ namespace TimetableApp
 
         }
 
-        // перевірка наявності дублікатів
-        public bool containsDuplicates()
+        // завантаження до бази даних
+        public void load()
         {
-            if (FileName == "TypesOfAudiences.xlsx")
+            switch (FileName)
             {
-                ArrayList recordsList = new ArrayList();
-                Dictionary<int, string> duplicates = new Dictionary<int, string>();
-                columnForReading = 'A';
-                // Console.WriteLine(rowsCount);
+                case "TypesOfAuditories.xlsx":
+                    ArrayList recordsInExcelFile = new ArrayList();
 
-                try
-                {
-                    open();
-                    for (int row = 1, column = getColumnNumber(columnForReading); row <= rowsCount; row++)
+                    ArrayList rowsWithMissingValues = new ArrayList();
+                    Dictionary<int, string> duplicates = new Dictionary<int, string>();
+                    columnForReading = 'A';
+
+                    try
                     {
-                        //Console.WriteLine(row);
-                        cellContent = ((range.Cells[row, column] as Excel.Range).Value2).ToString();
-                        //Console.WriteLine("cellContent: " + cellContent);
-                        if (recordsList.Contains(cellContent) == true)
+                        open();
+                        for (int row = 1, column = getColumnNumber(columnForReading); row <= rowsCount; row++)
                         {
-                            duplicates.Add(row, cellContent);
+                            //Console.WriteLine(row);
+                            //cellContent = ((range.Cells[row, column] as Excel.Range).Value2).ToString();
+                            var cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+
+                            // перевірка наявності дублікатів
+                            if (recordsInExcelFile.Contains(cellContent) == true)
+                            {
+                                duplicates.Add(row, cellContent);
+                            }
+                            else
+                            {
+                                recordsInExcelFile.Add(cellContent);
+                            }
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                                rowsWithMissingValues.Add(row);
+                            }
                         }
-                        else
+                        close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
+                    }
+
+                    if (rowsWithMissingValues.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " є пропуски в рядках: ");
+                        foreach (int row in rowsWithMissingValues)
                         {
-                            recordsList.Add(cellContent);
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    if (duplicates.Count != 0)
+                    {
+                        Console.WriteLine("Есть дубликаты:");
+                        foreach (KeyValuePair<int, string> duplicate in duplicates)
+                        {
+                            Console.WriteLine("В строке номер " + duplicate.Key + ": " + duplicate.Value);
                         }
                     }
-                    close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
-                }
 
-                if (duplicates.Count == 0)
-                {
-                    //Console.WriteLine("duplicates.Count = " + duplicates.Count);
-                    Console.WriteLine("Нет дубликатов");
-                    return false;
-                }
-                else
-                {
-                    Console.WriteLine("Есть дубликаты:");
-                    foreach (KeyValuePair<int, string> duplicate in duplicates)
+                    if (rowsWithMissingValues.Count == 0 && duplicates.Count == 0)
                     {
-                        Console.WriteLine("В строке номер " + duplicate.Key + ": " + duplicate.Value);
+                        try
+                        {
+                            ArrayList recordsInDB = new ArrayList();
+                            MySqlConnection connection = DBUtils.GetDBConnection();
+                            MySqlCommand mySqlCommand;
+                            MySqlDataReader dataReader;
+
+                            connection.Open();
+
+                            // Отримання даних з БД та порівняння з даними з Excel-файлу
+                            // Якщо вони співпадають - немає сенсу для перезапису, інакше дані в БД перезаписуються
+                            const string selectAuditoryTypes = "SELECT auditory_type_name FROM auditory_type";
+
+                            mySqlCommand = new MySqlCommand (selectAuditoryTypes, connection);
+                            dataReader = mySqlCommand.ExecuteReader();
+
+                            while (dataReader.Read())
+                            {
+                                recordsInDB.Add(dataReader[0].ToString());
+                            }
+
+                            connection.Close();
+
+                            bool noSenseToReload = false;
+                            foreach (string record in recordsInExcelFile)
+                            {
+                                if (!recordsInDB.Contains(record))
+                                {
+                                    noSenseToReload = true;       
+                                    break;
+                                }
+                            }
+                            
+                            if (noSenseToReload == false)
+                            {
+                                Console.WriteLine("Типи аудиторій ті самі, нічого оновлювати!");
+                            }
+                            else
+                            {
+                                //Console.WriteLine("Є що змінювати");
+
+                                connection.Open();
+                                const string truncateAuditoryTypes = "TRUNCATE TABLE auditory_type";
+                                mySqlCommand = new MySqlCommand (truncateAuditoryTypes, connection);
+                                mySqlCommand.ExecuteNonQuery();
+                                //Console.WriteLine("Очищено");
+                                connection.Close();
+                            }
+
+                            //foreach ()
+                            //mySqlCommand.ExecuteNonQuery();
+
+                            /*int counter = 0;
+                            foreach (string str in recordsInDB)
+                            {
+                                Console.WriteLine(str);
+                                ++counter;
+                            }
+                            Console.WriteLine(counter);
+                            */
+
+
+                            /*MySqlConnection connection = DBUtils.GetDBConnection();
+                            MySqlCommand mySqlCommand;
+                            connection.Open();
+
+                            const string insertAuditoryTypes = "INSERT INTO auditory_type (auditory_type_name) VALUES (@TYPE)";
+
+                            foreach (string record in recordsInExcelFile)
+                            {
+                                mySqlCommand = new MySqlCommand(insertAuditoryTypes, connection);
+                                mySqlCommand.Parameters.AddWithValue("@TYPE", record);
+                                mySqlCommand.ExecuteNonQuery();
+                                Console.WriteLine(record);
+                            }
+                            connection.Close();*/
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Помилка при завантаженні даних з файлу " + FileName + "\n" + ex.Message);
+                        }
                     }
-                    return true;
-                }
+                    break;
+                case "Disciplines.xlsx":
+                    break;
+                case "Faculties.xlsx":
+                    break;
+                case "Departments.xlsx":
+                    break;
+                case "Teachers.xlsx":
+                    break;
+                case "Auditories.xls":
+                    break;
+                case "StudyGroups.xlsx":
+                    break;
+                default:
+                    throw new Exception("Невідомий файл");
+            }
+
+
+
+            /*if (FileName == "TypesOfAudiences.xlsx")
+            {
+
+
             }
             else
             {
                 Console.WriteLine("другой файл...");
-                return false;
-            }
-        }
-
-        // перевірка наявності прогалин
-        public bool containsMissingValues()
-        {
-            if (FileName == "TypesOfAudiences.xlsx")
-            {
-                ArrayList rowsWithMissingValues = new ArrayList();
-                columnForReading = 'A';
-
-                try
-                {
-                    open();
-                    for (int row = 1, column = getColumnNumber(columnForReading); row <= rowsCount; row++)
-                    {
-                        //Console.WriteLine(row);
-
-                        var cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
-                        //Console.WriteLine("cellContent: " + cellContent);
-                        if (string.IsNullOrEmpty(cellContent))
-                        {
-                            rowsWithMissingValues.Add(row);
-                        }
-                    }
-                    close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
-                }
-
-                if (rowsWithMissingValues.Count == 0)
-                {
-                    Console.WriteLine("Немає пропусків в файлі " + FileName);
-                    return false;
-                }
-                else
-                {
-                    Console.Write("В файлі " + FileName + " є пропуски в рядках: ");
-                    foreach (int row in rowsWithMissingValues)
-                    {
-                        Console.Write(row + "\t");
-                    }
-                    Console.WriteLine();
-                    return true;     
-                }
-            }
-            else
-            {
-                Console.WriteLine("другой файл...");
-                return false;
-            }
+            }*/
         }
     }
 }
