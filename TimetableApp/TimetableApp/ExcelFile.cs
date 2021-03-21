@@ -257,12 +257,13 @@ namespace TimetableApp
                             MySqlCommand mySqlCommand;
                             MySqlDataReader dataReader;
 
-                            connection.Open();
+
 
                             // Отримання даних з БД та порівняння з даними з Excel-файлу
                             // Якщо вони співпадають - немає сенсу для перезапису, інакше дані в БД перезаписуються
-                            const string selectAuditoryTypes = "SELECT auditory_type_name FROM auditory_type";
 
+                            const string selectAuditoryTypes = "SELECT auditory_type_name FROM auditory_type";
+                            connection.Open();
                             mySqlCommand = new MySqlCommand (selectAuditoryTypes, connection);
                             dataReader = mySqlCommand.ExecuteReader();
 
@@ -273,59 +274,62 @@ namespace TimetableApp
 
                             connection.Close();
 
-                            bool noSenseToReload = false;
+                            bool noSenseToReload = true;
                             foreach (string record in recordsInExcelFile)
                             {
                                 if (!recordsInDB.Contains(record))
                                 {
-                                    noSenseToReload = true;       
+                                    noSenseToReload = false;       
                                     break;
                                 }
                             }
-                            
-                            if (noSenseToReload == false)
-                            {
-                                Console.WriteLine("Типи аудиторій ті самі, нічого оновлювати!");
-                            }
-                            else
-                            {
-                                //Console.WriteLine("Є що змінювати");
 
-                                connection.Open();
-                                const string truncateAuditoryTypes = "TRUNCATE TABLE auditory_type";
-                                mySqlCommand = new MySqlCommand (truncateAuditoryTypes, connection);
-                                mySqlCommand.ExecuteNonQuery();
-                                //Console.WriteLine("Очищено");
-                                connection.Close();
-                            }
-
-                            //foreach ()
-                            //mySqlCommand.ExecuteNonQuery();
-
-                            /*int counter = 0;
-                            foreach (string str in recordsInDB)
-                            {
-                                Console.WriteLine(str);
-                                ++counter;
-                            }
-                            Console.WriteLine(counter);
-                            */
-
-
-                            /*MySqlConnection connection = DBUtils.GetDBConnection();
-                            MySqlCommand mySqlCommand;
-                            connection.Open();
-
-                            const string insertAuditoryTypes = "INSERT INTO auditory_type (auditory_type_name) VALUES (@TYPE)";
-
+/*
+                            Console.WriteLine("Excel:");
                             foreach (string record in recordsInExcelFile)
                             {
-                                mySqlCommand = new MySqlCommand(insertAuditoryTypes, connection);
-                                mySqlCommand.Parameters.AddWithValue("@TYPE", record);
-                                mySqlCommand.ExecuteNonQuery();
                                 Console.WriteLine(record);
                             }
-                            connection.Close();*/
+                            Console.WriteLine();
+                            Console.WriteLine("DB:");
+                            foreach (string record in recordsInDB)
+                            {
+                                Console.WriteLine(record);
+                            }
+*/
+
+
+                            if (noSenseToReload == false)
+                            {
+                                Console.WriteLine("Є що змінювати");
+                                try
+                                {
+                                    // очищення таблиці в БД
+                                    connection.Open();
+                                    const string truncateAuditoryTypes = "TRUNCATE TABLE auditory_type";
+                                    mySqlCommand = new MySqlCommand(truncateAuditoryTypes, connection);
+                                    mySqlCommand.ExecuteNonQuery();
+                                    Console.WriteLine("Очищено");
+
+
+                                    // перезапис таблиці в БД
+                                    const string insertAuditoryTypes = "INSERT INTO auditory_type (auditory_type_name) VALUES (@TYPE)";
+
+                                    foreach (string record in recordsInExcelFile)
+                                    {
+                                        mySqlCommand = new MySqlCommand(insertAuditoryTypes, connection);
+                                        mySqlCommand.Parameters.AddWithValue("@TYPE", record);
+                                        mySqlCommand.ExecuteNonQuery();
+                                        Console.WriteLine(record);
+                                    }
+
+                                    connection.Close();
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Не вдалося виконати перезапис в базі даних, оскільки є залежність між даними!");
+                                }
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -348,18 +352,6 @@ namespace TimetableApp
                 default:
                     throw new Exception("Невідомий файл");
             }
-
-
-
-            /*if (FileName == "TypesOfAudiences.xlsx")
-            {
-
-
-            }
-            else
-            {
-                Console.WriteLine("другой файл...");
-            }*/
         }
     }
 }
