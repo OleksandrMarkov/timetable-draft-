@@ -185,6 +185,18 @@ namespace TimetableApp
 
         }
 
+        /*
+        public ArrayList f()
+        {
+            ArrayList recordsInExcelFile = new ArrayList();
+            recordsInExcelFile.Add(1);
+            recordsInExcelFile.Add(1);
+            recordsInExcelFile.Add(1);
+            recordsInExcelFile.Add(1);
+            recordsInExcelFile.Add(1);
+            return recordsInExcelFile;
+        }*/
+
         // завантаження до бази даних
         public void load()
         {
@@ -304,17 +316,19 @@ namespace TimetableApp
                                 Console.WriteLine("Є що змінювати");
                                 try
                                 {
-                                    // очищення таблиці в БД
-                                    connection.Open();
-                                    const string truncateAuditoryTypes = "TRUNCATE TABLE auditory_type";
-                                    mySqlCommand = new MySqlCommand(truncateAuditoryTypes, connection);
-                                    mySqlCommand.ExecuteNonQuery();
-                                    Console.WriteLine("Очищено");
-
+                                    /* // очищення таблиці в БД
+                                     connection.Open();
+                                     const string truncateAuditoryTypes = "TRUNCATE TABLE auditory_type";
+                                     mySqlCommand = new MySqlCommand(truncateAuditoryTypes, connection);
+                                     mySqlCommand.ExecuteNonQuery();
+                                     //Console.WriteLine("Очищено");
+                                     connection.Close();
+                                     */
 
                                     // перезапис таблиці в БД
                                     const string insertAuditoryTypes = "INSERT INTO auditory_type (auditory_type_name) VALUES (@TYPE)";
 
+                                    connection.Open();
                                     foreach (string record in recordsInExcelFile)
                                     {
                                         mySqlCommand = new MySqlCommand(insertAuditoryTypes, connection);
