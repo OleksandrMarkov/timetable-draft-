@@ -9,9 +9,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace TimetableApp
 {
-    class CheckingForDuplicates : ExcelFile
+    class CheckingForDuplicates
     {
-        public CheckingForDuplicates(string file) : base(file)
+        /*public CheckingForDuplicates(string file) : base(file)
         {
             
         }
@@ -33,7 +33,7 @@ namespace TimetableApp
 
         }
 
-                  /*      try
+                        try
                 {
                     open();
                     for (int row = 1, column = getColumnNumber(columnForReading); row <= rowsCount; row++)
@@ -57,7 +57,8 @@ namespace TimetableApp
                     Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
                 }*/
 
-
+    }
+}
 
 
 
@@ -84,5 +85,3 @@ namespace TimetableApp
         {
             return true;
         }*/
-    }
-}

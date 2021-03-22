@@ -32,7 +32,7 @@ namespace TimetableApp
         protected string cellContent; // дані в чарунці
 
 
-        protected char columnForReading; // стовпець, що розглядається
+        protected char columnForLoading; // стовпець, що розглядається
 
         // private int columnForLoading; // стовпець для завантаження (А - 1, В - 2, С - 3 і т.д.)
 
@@ -188,13 +188,13 @@ namespace TimetableApp
         /*
         public ArrayList f()
         {
-            ArrayList recordsInExcelFile = new ArrayList();
-            recordsInExcelFile.Add(1);
-            recordsInExcelFile.Add(1);
-            recordsInExcelFile.Add(1);
-            recordsInExcelFile.Add(1);
-            recordsInExcelFile.Add(1);
-            return recordsInExcelFile;
+            ArrayList recordsInExcelFileAudTypes = new ArrayList();
+            recordsInExcelFileAudTypes.Add(1);
+            recordsInExcelFileAudTypes.Add(1);
+            recordsInExcelFileAudTypes.Add(1);
+            recordsInExcelFileAudTypes.Add(1);
+            recordsInExcelFileAudTypes.Add(1);
+            return recordsInExcelFileAudTypes;
         }*/
 
         // завантаження до бази даних
@@ -203,16 +203,15 @@ namespace TimetableApp
             switch (FileName)
             {
                 case "TypesOfAuditories.xlsx":
-                    ArrayList recordsInExcelFile = new ArrayList();
-
-                    ArrayList rowsWithMissingValues = new ArrayList();
-                    Dictionary<int, string> duplicates = new Dictionary<int, string>();
-                    columnForReading = 'A';
+                    ArrayList recordsInExcelFileAudTypes = new ArrayList();
+                    ArrayList missingValuesInExcelFileAudTypes = new ArrayList();
+                    Dictionary<int, string> duplicatesInExcelFileAudTypes = new Dictionary<int, string>();
+                    columnForLoading = 'A';
 
                     try
                     {
                         open();
-                        for (int row = 1, column = getColumnNumber(columnForReading); row <= rowsCount; row++)
+                        for (int row = 1, column = getColumnNumber(columnForLoading); row <= rowsCount; row++)
                         {
                             //Console.WriteLine(row);
                             //cellContent = ((range.Cells[row, column] as Excel.Range).Value2).ToString();
@@ -220,18 +219,18 @@ namespace TimetableApp
                             //Console.WriteLine("cellContent: " + cellContent);
 
                             // перевірка наявності дублікатів
-                            if (recordsInExcelFile.Contains(cellContent) == true)
+                            if (recordsInExcelFileAudTypes.Contains(cellContent) == true)
                             {
-                                duplicates.Add(row, cellContent);
+                                duplicatesInExcelFileAudTypes.Add(row, cellContent);
                             }
                             else
                             {
-                                recordsInExcelFile.Add(cellContent);
+                                recordsInExcelFileAudTypes.Add(cellContent);
                             }
                             // перевірка наявності порожніх чарунок
                             if (string.IsNullOrEmpty(cellContent))
                             {
-                                rowsWithMissingValues.Add(row);
+                                missingValuesInExcelFileAudTypes.Add(row);
                             }
                         }
                         close();
@@ -241,30 +240,30 @@ namespace TimetableApp
                         Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
                     }
 
-                    if (rowsWithMissingValues.Count != 0)
+                    if (missingValuesInExcelFileAudTypes.Count != 0)
                     {
                         Console.Write("В файлі " + FileName + " є пропуски в рядках: ");
-                        foreach (int row in rowsWithMissingValues)
+                        foreach (int row in missingValuesInExcelFileAudTypes)
                         {
                             Console.Write(row + "\t");
                         }
                         Console.WriteLine();
                     }
 
-                    if (duplicates.Count != 0)
+                    if (duplicatesInExcelFileAudTypes.Count != 0)
                     {
-                        Console.WriteLine("Есть дубликаты:");
-                        foreach (KeyValuePair<int, string> duplicate in duplicates)
+                        Console.WriteLine("Є дублікати:");
+                        foreach (KeyValuePair<int, string> duplicate in duplicatesInExcelFileAudTypes)
                         {
-                            Console.WriteLine("В строке номер " + duplicate.Key + ": " + duplicate.Value);
+                            Console.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value);
                         }
                     }
 
-                    if (rowsWithMissingValues.Count == 0 && duplicates.Count == 0)
+                    if (missingValuesInExcelFileAudTypes.Count == 0 && duplicatesInExcelFileAudTypes.Count == 0)
                     {
                         try
                         {
-                            ArrayList recordsInDB = new ArrayList();
+                            ArrayList AudTypesInDB = new ArrayList();
                             MySqlConnection connection = DBUtils.GetDBConnection();
                             MySqlCommand mySqlCommand;
                             MySqlDataReader dataReader;
@@ -281,15 +280,15 @@ namespace TimetableApp
 
                             while (dataReader.Read())
                             {
-                                recordsInDB.Add(dataReader[0].ToString());
+                                AudTypesInDB.Add(dataReader[0].ToString());
                             }
 
                             connection.Close();
 
                             bool noSenseToReload = true;
-                            foreach (string record in recordsInExcelFile)
+                            foreach (string record in recordsInExcelFileAudTypes)
                             {
-                                if (!recordsInDB.Contains(record))
+                                if (!AudTypesInDB.Contains(record))
                                 {
                                     noSenseToReload = false;       
                                     break;
@@ -298,13 +297,13 @@ namespace TimetableApp
 
 /*
                             Console.WriteLine("Excel:");
-                            foreach (string record in recordsInExcelFile)
+                            foreach (string record in recordsInExcelFileAudTypes)
                             {
                                 Console.WriteLine(record);
                             }
                             Console.WriteLine();
                             Console.WriteLine("DB:");
-                            foreach (string record in recordsInDB)
+                            foreach (string record in AudTypesInDB)
                             {
                                 Console.WriteLine(record);
                             }
@@ -313,7 +312,7 @@ namespace TimetableApp
 
                             if (noSenseToReload == false)
                             {
-                                Console.WriteLine("Є що змінювати");
+                                //Console.WriteLine("Є що змінювати");
                                 try
                                 {
                                     /* // очищення таблиці в БД
@@ -329,12 +328,12 @@ namespace TimetableApp
                                     const string insertAuditoryTypes = "INSERT INTO auditory_type (auditory_type_name) VALUES (@TYPE)";
 
                                     connection.Open();
-                                    foreach (string record in recordsInExcelFile)
+                                    foreach (string record in recordsInExcelFileAudTypes)
                                     {
                                         mySqlCommand = new MySqlCommand(insertAuditoryTypes, connection);
                                         mySqlCommand.Parameters.AddWithValue("@TYPE", record);
                                         mySqlCommand.ExecuteNonQuery();
-                                        Console.WriteLine(record);
+                                        //Console.WriteLine(record);
                                     }
 
                                     connection.Close();
@@ -351,8 +350,139 @@ namespace TimetableApp
                         }
                     }
                     break;
+
                 case "Disciplines.xlsx":
+
+                    ArrayList recordsInExcelFileDisciplines = new ArrayList();
+                    ArrayList missingValuesInExcelFileDisciplines = new ArrayList();
+                    Dictionary<int, string> duplicatesInExcelFileDisciplines = new Dictionary<int, string>();
+                    columnForLoading = 'G';
+                    try
+                    {
+                        open();
+                        for (int row = 2, column = getColumnNumber(columnForLoading); row <= rowsCount; row++)
+                        {
+                            //Console.WriteLine(row);
+                            //cellContent = ((range.Cells[row, column] as Excel.Range).Value2).ToString();
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+
+                            // перевірка наявності дублікатів
+                            if (recordsInExcelFileDisciplines.Contains(cellContent) == true)
+                            {
+                                duplicatesInExcelFileDisciplines.Add(row, cellContent);
+                            }
+                            else
+                            {
+                                recordsInExcelFileDisciplines.Add(cellContent);
+                            }
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                                missingValuesInExcelFileDisciplines.Add(row);
+                            }
+                        }
+                        close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
+                    }
+
+                    if (missingValuesInExcelFileDisciplines.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " є пропуски в рядках: ");
+                        foreach (int row in missingValuesInExcelFileDisciplines)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    if (duplicatesInExcelFileDisciplines.Count != 0)
+                    {
+                        Console.WriteLine("Є дублікати:");
+                        foreach (KeyValuePair<int, string> duplicate in duplicatesInExcelFileDisciplines)
+                        {
+                            Console.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value);
+                        }
+                    }
+
+                    //if (duplicatesInExcelFileDisciplines.Count == 0 && missingValuesInExcelFileDisciplines.Count == 0)
+                    //{
+                    try
+                    {
+                        ArrayList DisciplinesInDB = new ArrayList();
+                        MySqlConnection connection = DBUtils.GetDBConnection();
+                        MySqlCommand mySqlCommand;
+                        MySqlDataReader dataReader;
+
+                        // Отримання даних з БД та порівняння з даними з Excel-файлу
+                        // Якщо вони співпадають - немає сенсу для перезапису, інакше дані в БД перезаписуються
+
+                        const string selectDisciplines = "SELECT full_name FROM discipline";
+                        connection.Open();
+                        mySqlCommand = new MySqlCommand(selectDisciplines, connection);
+                        dataReader = mySqlCommand.ExecuteReader();
+
+                        while (dataReader.Read())
+                        {
+                            DisciplinesInDB.Add(dataReader[0].ToString());
+                        }
+                        connection.Close();
+
+                        bool noSenseToReload = true;
+                        foreach (string record in recordsInExcelFileDisciplines)
+                        {
+                            if (!DisciplinesInDB.Contains(record))
+                            {
+                                noSenseToReload = false;
+                                break;
+                            }
+                        }
+
+                        if (noSenseToReload == false)
+                        {
+                            //Console.WriteLine("Є що змінювати");
+                            try
+                            {
+                                /* // очищення таблиці в БД
+                                 connection.Open();
+                                 const string truncateDisciplines = "TRUNCATE TABLE discipline";
+                                 mySqlCommand = new MySqlCommand(truncateDisciplines, connection);
+                                 mySqlCommand.ExecuteNonQuery();
+                                 //Console.WriteLine("Очищено");
+                                 connection.Close();
+                                 */
+
+                                // перезапис таблиці в БД
+                                const string insertDisciplines = "INSERT INTO discipline (full_name) VALUES (@FULL_NAME)";
+
+                                connection.Open();
+                                foreach (string record in recordsInExcelFileDisciplines)
+                                {
+                                    mySqlCommand = new MySqlCommand(insertDisciplines, connection);
+                                    mySqlCommand.Parameters.AddWithValue("@FULL_NAME", record);
+                                    mySqlCommand.ExecuteNonQuery();
+                                    //Console.WriteLine(record);
+                                }
+
+                                connection.Close();
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Не вдалося виконати перезапис в базі даних, оскільки є залежність між даними!");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Помилка при завантаженні даних з файлу " + FileName + "\n" + ex.Message);
+                    }
+                    //}
+
                     break;
+
                 case "Faculties.xlsx":
                     break;
                 case "Departments.xlsx":

@@ -41,7 +41,7 @@ namespace TimetableApp
             excelFiles.Add("соціальної роботи та психології Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx");
             excelFiles.Add("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx");
             excelFiles.Add("Туризм_Форма 44 денна заочна 2020.xlsx");
-            
+
             // создания и проверка содержимого на ошибки
             /*foreach (string excelFile in excelFiles)
              {
@@ -57,11 +57,18 @@ namespace TimetableApp
                 
             }*/
 
-            ExcelFile file = new ExcelFile("TypesOfAuditories.xlsx");
+            /*ExcelFile file = new ExcelFile("TypesOfAuditories.xlsx");
             if (file.exists())
             {
                 file.load();   
-            }
+            }*/
+
+            /*ExcelFile file = new ExcelFile("Disciplines.xlsx");
+            if (file.exists())
+            {
+                file.load();
+            }*/
+
 
             /* 3. 
              * Порядок загрузки:
