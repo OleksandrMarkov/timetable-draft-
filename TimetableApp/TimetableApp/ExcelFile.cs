@@ -484,6 +484,211 @@ namespace TimetableApp
                     break;
 
                 case "Faculties.xlsx":
+                    ArrayList namesInExcelFileFaculties = new ArrayList();
+                    ArrayList codesInExcelFileFaculties = new ArrayList();
+
+                    ArrayList missingValuesOfNamesInExcelFileFaculties = new ArrayList();
+                    ArrayList missingValuesOfCodesInExcelFileFaculties = new ArrayList();
+
+                    Dictionary<int, string> duplicatesOfNamesInExcelFileFaculties = new Dictionary<int, string>();
+                    Dictionary<int, string> duplicatesOfCodesInExcelFileFaculties = new Dictionary<int, string>();
+
+                    char columnForLoadingCode = 'D';
+                    char columnForLoadingName = 'B';
+
+                    try
+                    {
+                        open();
+                        for (int row = 2, column = getColumnNumber(columnForLoadingName); row <= rowsCount; row++)
+                        {
+                            //Console.WriteLine(row);
+                            //cellContent = ((range.Cells[row, column] as Excel.Range).Value2).ToString();
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+
+                            // перевірка наявності дублікатів
+                            if (namesInExcelFileFaculties.Contains(cellContent) == true)
+                            {
+                                duplicatesOfNamesInExcelFileFaculties.Add(row, cellContent);
+                            }
+                            else
+                            {
+                                namesInExcelFileFaculties.Add(cellContent);
+                            }
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                                missingValuesOfNamesInExcelFileFaculties.Add(row);
+                            }
+                        }
+
+                        for (int row = 2, column = getColumnNumber(columnForLoadingCode); row <= rowsCount; row++)
+                        {
+                            //Console.WriteLine(row);
+                            //cellContent = ((range.Cells[row, column] as Excel.Range).Value2).ToString();
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+
+                            // перевірка наявності дублікатів
+                            if (codesInExcelFileFaculties.Contains(cellContent) == true)
+                            {
+                                duplicatesOfCodesInExcelFileFaculties.Add(row, cellContent);
+                            }
+                            else
+                            {
+                                codesInExcelFileFaculties.Add(cellContent);
+                            }
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                                missingValuesOfCodesInExcelFileFaculties.Add(row);
+                            }
+                        }
+                        close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
+                    }
+
+
+                    if (missingValuesOfNamesInExcelFileFaculties.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущені назви факультетів в рядках: ");
+                        foreach (int row in missingValuesOfNamesInExcelFileFaculties)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    if (missingValuesOfCodesInExcelFileFaculties.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущені коди факультетів в рядках: ");
+                        foreach (int row in missingValuesOfCodesInExcelFileFaculties)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    if (duplicatesOfNamesInExcelFileFaculties.Count != 0)
+                    {
+                        Console.WriteLine("Є дублікати назв факультетів:");
+                        foreach (KeyValuePair<int, string> duplicate in duplicatesOfNamesInExcelFileFaculties)
+                        {
+                            Console.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value);
+                        }
+                    }
+
+                    if (duplicatesOfCodesInExcelFileFaculties.Count != 0)
+                    {
+                        Console.WriteLine("Є дублікати кодів факультетів:");
+                        foreach (KeyValuePair<int, string> duplicate in duplicatesOfCodesInExcelFileFaculties)
+                        {
+                            Console.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value);
+                        }
+                    }
+
+                    //if (duplicatesOfNamesInExcelFileFaculties.Count == 0 && duplicatesOfCodesInExcelFileFaculties.Count == 0
+                    //&& missingValuesOfCodesInExcelFileFaculties.Count == 0 && missingValuesOfNamesInExcelFileFaculties.Count == 0)
+                    //{
+                    try
+                    {
+                        ArrayList facultyNamesInDB = new ArrayList();
+                        ArrayList facultyCodesInDB = new ArrayList();
+
+                        MySqlConnection connection = DBUtils.GetDBConnection();
+                        MySqlCommand mySqlCommand;
+                        MySqlDataReader dataReader;
+
+                        // Отримання даних з БД та порівняння з даними з Excel-файлу
+                        // Якщо вони співпадають - немає сенсу для перезапису, інакше дані в БД перезаписуються
+
+                        const string selectFaculties = "SELECT full_name, faculty_code FROM faculty";
+                        connection.Open();
+                        mySqlCommand = new MySqlCommand(selectFaculties, connection);
+                        dataReader = mySqlCommand.ExecuteReader();
+
+                        while (dataReader.Read())
+                        {
+                            //dataReader[0].ToString() - full_name
+                            //dataReader[1].ToString() - faculty_code
+
+                            facultyNamesInDB.Add(dataReader[0].ToString());
+                            facultyCodesInDB.Add(dataReader[1].ToString());
+                        }
+                        connection.Close();
+
+
+                        bool noSenseToReload = true;
+
+                        foreach (string name in namesInExcelFileFaculties)
+                        {
+                            if (!facultyNamesInDB.Contains(name))
+                            {
+                                noSenseToReload = false;
+                                break;
+                            }
+                        }
+
+                        if (noSenseToReload)
+                        {
+                            foreach (string code in codesInExcelFileFaculties)
+                            {
+                                if (!facultyCodesInDB.Contains(code))
+                                {
+                                    noSenseToReload = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (noSenseToReload == false)
+                          {
+                              Console.WriteLine("Є що змінювати");
+                              try
+                              {
+                                  /* // очищення таблиці в БД
+                                   connection.Open();
+                                   const string truncateFaculties = "TRUNCATE TABLE faculty";
+                                   mySqlCommand = new MySqlCommand(truncateFaculties, connection);
+                                   mySqlCommand.ExecuteNonQuery();
+                                   //Console.WriteLine("Очищено");
+                                   connection.Close();
+                                   */
+
+                                  // перезапис таблиці в БД
+                                  const string insertFaculties = "INSERT INTO faculty (full_name, faculty_code) VALUES (@FULL_NAME, @CODE)";
+
+                                  connection.Open();
+                                  for(int i = 0; i < namesInExcelFileFaculties.Count; i++)
+                                  {
+                                      mySqlCommand = new MySqlCommand(insertFaculties, connection);
+
+                                      mySqlCommand.Parameters.AddWithValue("@FULL_NAME", namesInExcelFileFaculties[i]);
+                                      mySqlCommand.Parameters.AddWithValue("@CODE", codesInExcelFileFaculties[i]);
+                                      
+
+                                      mySqlCommand.ExecuteNonQuery();
+                                      Console.WriteLine("code: " + codesInExcelFileFaculties[i] + "; name: " + namesInExcelFileFaculties[i]);
+                                  }
+
+                                  connection.Close();
+                              }
+                              catch
+                              {
+                                  Console.WriteLine("Не вдалося виконати перезапис в базі даних, оскільки є залежність між даними!");
+                              }
+                          }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Помилка при завантаженні даних з файлу " + FileName + "\n" + ex.Message);
+                    }
+                    //}
+
+
                     break;
                 case "Departments.xlsx":
                     break;
