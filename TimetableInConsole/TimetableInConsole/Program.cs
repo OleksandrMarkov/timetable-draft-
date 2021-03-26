@@ -63,7 +63,13 @@ namespace TimetableInConsole
             }*/
 
 
-            ExcelFile file = new ExcelFile("Faculties.xlsx");
+            /*ExcelFile file = new ExcelFile("Faculties.xlsx");
+            if (file.exists())
+            {
+                file.load();
+            }*/
+            
+            ExcelFile file = new ExcelFile("Departments.xlsx");
             if (file.exists())
             {
                 file.load();
@@ -75,6 +81,7 @@ namespace TimetableInConsole
                  * типы ауд
                  * дисциплины
                  * факультеты
+                 
                  * кафедры
                  * учителя
                  * аудитории
