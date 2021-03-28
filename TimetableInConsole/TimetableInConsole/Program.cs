@@ -69,11 +69,18 @@ namespace TimetableInConsole
                 file.load();
             }*/
             
-            ExcelFile file = new ExcelFile("Departments.xlsx");
+            /*ExcelFile file = new ExcelFile("Departments.xlsx");
             if (file.exists())
             {
                 file.load();
-            }
+            }*/
+            
+            ExcelFile file = new ExcelFile("Teachers.xlsx");
+            if (file.exists())
+            {
+                file.load();
+            }            
+            
 
 
                 /* 3. 

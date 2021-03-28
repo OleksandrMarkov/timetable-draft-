@@ -726,7 +726,7 @@ namespace TimetableInConsole
                             }
                         }
 
-                        Console.WriteLine();
+                        //Console.WriteLine();
                         
                         for (int row = 1, column = getColumnNumber(columnForLoadingShortName); row <= rowsCount; row++)
                         {
@@ -752,18 +752,20 @@ namespace TimetableInConsole
                         }
 
                                
-                        Console.WriteLine();
+                        //Console.WriteLine();
                         
                         for (int row = 1, column = getColumnNumber(columnForLoadingFacultyCode); row <= rowsCount; row++)
                         {
                             cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();                         
 							//Console.WriteLine("cellContent: " + cellContent);
-                                facultyCodesInExcelFileDepartments.Add(cellContent);
-                            
                             // перевірка наявності порожніх чарунок
                             if (string.IsNullOrEmpty(cellContent))
                             {
                                missingValuesOfFacultyCodesInExcelFileDepartments.Add(row);
+                            }
+                            else
+                            {
+                            	facultyCodesInExcelFileDepartments.Add(cellContent);
                             }
                         }                        
 
@@ -884,8 +886,8 @@ namespace TimetableInConsole
 	                        	mySqlCommand.Parameters.AddWithValue("@FULL_NAME", fullNamesInExcelFileDepartments[i]);
 	                        	mySqlCommand.Parameters.AddWithValue("@SHORT_NAME", shortNamesInExcelFileDepartments[i]);
 	                        	mySqlCommand.ExecuteNonQuery();
-	                        	Console.WriteLine(facultyID + " " + fullNamesInExcelFileDepartments[i]
-	                        	                  + " " + shortNamesInExcelFileDepartments[i]);
+	                        	/*Console.WriteLine(facultyID + " " + fullNamesInExcelFileDepartments[i]
+	                        	                  + " " + shortNamesInExcelFileDepartments[i]);*/
 	                        }
 	                        connection.Close();
                         }
@@ -899,9 +901,203 @@ namespace TimetableInConsole
                         Console.WriteLine("Помилка при завантаженні даних з файлу " + FileName + "\n" + ex.Message);
                     }
                     //}
-                    
                     break;
+                    
                 case "Teachers.xlsx":
+                    ArrayList fioInExcelFileTeachers = new ArrayList();
+                    ArrayList sexInExcelFileTeachers = new ArrayList();
+                    ArrayList postsInExcelFileTeachers = new ArrayList();
+                    ArrayList statusesInExcelFileTeachers = new ArrayList();
+
+                    ArrayList departmentsInExcelFileTeachers = new ArrayList();
+                    
+                    const char columnForLoadingDepartments = 'A';
+                    const char columnForLoadingFIO = 'J';
+                    const char columnForLoadingSex = 'K';
+                    const char columnForLoadingPosts = 'L';
+                    const char columnForLoadingStatuses = 'M';
+                    
+                    const int firstRowInExcelFileTeachers = 8;
+                    
+                    
+                    
+                    ArrayList missingValuesOfDepartmentsInExcelFileTeachers = new ArrayList();
+                    ArrayList missingValuesOfFIOInExcelFileTeachers = new ArrayList();
+                    //ArrayList missingValuesOfSexInExcelFileTeachers = new ArrayList();
+                    ArrayList missingValuesOfPostsInExcelFileTeachers = new ArrayList();
+                    
+                    //ArrayList missingValuesOfStatusesInExcelFileTeachers = new ArrayList();
+                    
+                    Dictionary<int, string> duplicatesOfFIOInExcelFileTeachers = new Dictionary<int, string>();
+					Dictionary<int, string> wrongValuesOfSexInExcelFileTeachers = new Dictionary<int, string>();
+                    
+                    try
+                    {
+                        open();
+                        // назви кафедр
+                        for (int row = firstRowInExcelFileTeachers, column = getColumnNumber(columnForLoadingDepartments); row <= rowsCount + firstRowInExcelFileTeachers - 1; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+             
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                               missingValuesOfDepartmentsInExcelFileTeachers.Add(row);
+                            }
+                            else
+                            {
+                            	departmentsInExcelFileTeachers.Add(cellContent);	
+                            }
+                        }
+                        
+                        // імена викладачів
+                        for (int row = firstRowInExcelFileTeachers, column = getColumnNumber(columnForLoadingFIO); row <= rowsCount + firstRowInExcelFileTeachers - 1; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+             
+                            if (fioInExcelFileTeachers.Contains(cellContent) == true)
+                            {
+                            	duplicatesOfFIOInExcelFileTeachers.Add(row, cellContent);
+                            }
+                            else
+                            {
+                            	fioInExcelFileTeachers.Add(cellContent);
+                            }
+                            
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                              missingValuesOfFIOInExcelFileTeachers.Add(row);
+                            }
+                        }
+                        
+                        // стать
+                        for (int row = firstRowInExcelFileTeachers, column = getColumnNumber(columnForLoadingSex); row <= rowsCount + firstRowInExcelFileTeachers - 1; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+                            
+                            if (cellContent == "м" || cellContent == "ж")
+                            {
+                            	sexInExcelFileTeachers.Add(cellContent);
+                            }
+                            else
+                            {
+  	                            wrongValuesOfSexInExcelFileTeachers.Add(row, cellContent);
+                            }
+                        }
+                        
+                        // посада
+                        for (int row = firstRowInExcelFileTeachers, column = getColumnNumber(columnForLoadingPosts); row <= rowsCount + firstRowInExcelFileTeachers - 1; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+                                         
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                              missingValuesOfPostsInExcelFileTeachers.Add(row);
+                            }
+                            else
+                            {
+                            	postsInExcelFileTeachers.Add(cellContent);
+                            }
+                        }
+                        
+                        // статус
+                        for (int row = firstRowInExcelFileTeachers, column = getColumnNumber(columnForLoadingStatuses); row <= rowsCount + firstRowInExcelFileTeachers - 1; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+                                         
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent) == false)
+                            {
+                              statusesInExcelFileTeachers.Add(cellContent);
+                            }
+                            /*else
+                            {
+								//missingValuesOfStatusesInExcelFileTeachers.Add(row);
+                            }*/
+                        }						
+                    	close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
+                    }
+                    
+                    if (missingValuesOfDepartmentsInExcelFileTeachers.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущені назви кафедр в рядках: ");
+                        foreach (int row in missingValuesOfDepartmentsInExcelFileTeachers)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    if (duplicatesOfFIOInExcelFileTeachers.Count != 0)
+                    {
+                        Console.WriteLine("В файлі " + FileName +  " є дублікати імен викладачів:");
+                        foreach (KeyValuePair<int, string> duplicate in duplicatesOfFIOInExcelFileTeachers)
+                        {
+                            Console.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value);
+                        }
+                        Console.WriteLine();
+                    }
+                    
+                    if (missingValuesOfFIOInExcelFileTeachers.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущені імена викладачів в рядках: ");
+                        foreach (int row in missingValuesOfDepartmentsInExcelFileTeachers)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    if (wrongValuesOfSexInExcelFileTeachers.Count != 0)
+                    {
+                        Console.WriteLine("В файлі " + FileName +  " є некоректні значення статі викладачів:");
+                        foreach (KeyValuePair<int, string> wrongValue in wrongValuesOfSexInExcelFileTeachers)
+                        {
+                            Console.WriteLine("В рядку номер " + wrongValue.Key + ": " + wrongValue.Value);
+                        }
+                        Console.WriteLine();
+                    }
+
+                    if (missingValuesOfPostsInExcelFileTeachers.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущені посади викладачів в рядках: ");
+                        foreach (int row in missingValuesOfPostsInExcelFileTeachers)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    // частина без статусів
+                    /*if (missingValuesOfStatusesInExcelFileTeachers.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущені статуси викладачів в рядках: ");
+                        foreach (int row in missingValuesOfStatusesInExcelFileTeachers)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }*/         
+
+                    
+                       //if (missingValuesOfDepartmentsInExcelFileTeachers.Count == 0 && duplicatesOfFIOInExcelFileTeachers.Count == 0
+                    //&& missingValuesOfFIOInExcelFileTeachers.Count == 0 && wrongValuesOfSexInExcelFileTeachers.Count == 0 
+                    //&& missingValuesOfPostsInExcelFileTeachers.Count == 0 && missingValuesOfStatusesInExcelFileTeachers.Count == 0)
+                    //{
+					      // loading              
+                    //}
+                    
                     break;
                 case "Auditories.xls":
                     break;
