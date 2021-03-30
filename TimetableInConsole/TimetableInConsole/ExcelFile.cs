@@ -919,8 +919,6 @@ namespace TimetableInConsole
                     
                     const int firstRowInExcelFileTeachers = 8;
                     
-                    
-                    
                     ArrayList missingValuesOfDepartmentsInExcelFileTeachers = new ArrayList();
                     ArrayList missingValuesOfFIOInExcelFileTeachers = new ArrayList();
                     //ArrayList missingValuesOfSexInExcelFileTeachers = new ArrayList();
@@ -1348,10 +1346,168 @@ namespace TimetableInConsole
 	                    {
 	                        Console.WriteLine("Помилка при завантаженні даних з файлу " + FileName + "\n" + ex.Message);
 	                    }
-            //}
-                                       
+            //}                                       
                     break;
                 case "StudyGroups.xlsx":
+                    ArrayList departmentsInExcelFileStudyGroups = new ArrayList();
+                    ArrayList groupNamesInExcelFileStudyGroups = new ArrayList();
+                    ArrayList countOfStudentsInExcelFileStudyGroups = new ArrayList();
+                    
+                    ArrayList groupCodes = new ArrayList();
+                    
+                    ArrayList missingValuesOfDepartmentsInExcelFileStudyGroups = new ArrayList();
+                    ArrayList missingValuesOfGroupNamesInExcelFileStudyGroups = new ArrayList();                   
+                    
+                    Dictionary<int, string> duplicatesOfGroupNamesInExcelFileStudyGroups = new Dictionary<int, string>();
+					
+					const char columnForLoadingDepartmentsShortNames = 'A';
+                    const char columnForLoadingGroupNames = 'B';
+                    const char columnForLoadingCountOfStudents = 'C';
+                    
+                    const int firstRowInExcelFileStudyGroups = 1;	                    
+                    
+                    try
+                    {
+                        open();
+                        
+                        // назви кафедр (скорочені)
+                        for (int row = firstRowInExcelFileStudyGroups, column = getColumnNumber(columnForLoadingDepartmentsShortNames); row <= rowsCount; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+             
+                            if (string.IsNullOrEmpty(cellContent))
+                            { 
+                            	missingValuesOfDepartmentsInExcelFileStudyGroups.Add(row);
+                            }
+                            else
+                            {
+                            	departmentsInExcelFileStudyGroups.Add(cellContent);	
+                            }                            	                            
+                        }
+                        
+                        // назви груп
+                        for (int row = firstRowInExcelFileStudyGroups, column = getColumnNumber(columnForLoadingGroupNames); row <= rowsCount; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+             
+                            if (string.IsNullOrEmpty(cellContent))
+                            { 
+                            	missingValuesOfGroupNamesInExcelFileStudyGroups.Add(row);
+                            }
+                            
+                            if(groupNamesInExcelFileStudyGroups.Contains(cellContent))
+                            {
+                            	duplicatesOfGroupNamesInExcelFileStudyGroups.Add(row, cellContent);
+                            }
+                            else
+                            {
+                            	groupNamesInExcelFileStudyGroups.Add(cellContent);
+                            	
+                            	// коди груп
+                            	int hyphen = cellContent.IndexOf('-');
+                            	groupCodes.Add( cellContent.Substring(0, hyphen + 2));								                            	
+                            }                            	                            
+                        }
+                        
+                        // скільки студентів в групі
+                        for (int row = firstRowInExcelFileStudyGroups, column = getColumnNumber(columnForLoadingCountOfStudents); row <= rowsCount; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+             
+                            if (string.IsNullOrEmpty(cellContent))
+                            { 
+                            	countOfStudentsInExcelFileStudyGroups.Add(0);
+                            }
+                            else
+                            {
+                            	countOfStudentsInExcelFileStudyGroups.Add(Convert.ToInt32(cellContent));
+                            }                            	                            
+                        }
+                        close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
+                    }
+                    
+                    /*Console.WriteLine(departmentsInExcelFileStudyGroups.Count);
+                    Console.WriteLine(groupNamesInExcelFileStudyGroups.Count);
+                    Console.WriteLine(groupCodes.Count);
+                    Console.WriteLine(countOfStudentsInExcelFileStudyGroups.Count);*/
+                    
+                    
+                    if (duplicatesOfGroupNamesInExcelFileStudyGroups.Count != 0)
+                    {
+                        Console.WriteLine("В файлі " + FileName +  " є дублікати назв груп:");
+                        foreach (KeyValuePair<int, string> duplicate in duplicatesOfGroupNamesInExcelFileStudyGroups)
+                        {
+                            Console.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value);
+                        }
+                        Console.WriteLine();
+                    }
+                   
+                    if (missingValuesOfDepartmentsInExcelFileStudyGroups.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущено назви кафедр в рядках: ");
+                        foreach (int row in missingValuesOfDepartmentsInExcelFileStudyGroups)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+                    
+                    if (missingValuesOfGroupNamesInExcelFileStudyGroups.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущено назви груп в рядках: ");
+                        foreach (int row in missingValuesOfGroupNamesInExcelFileStudyGroups)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+                    
+                    if (duplicatesOfGroupNamesInExcelFileStudyGroups.Count == 0 && missingValuesOfDepartmentsInExcelFileStudyGroups.Count == 0 &&
+                       missingValuesOfGroupNamesInExcelFileStudyGroups.Count == 0)
+                    {
+                    	try
+                    	{
+                    		MySqlConnection connection = DBConnection.DBUtils.GetDBConnection();
+                    		
+	                    	const string selectDepartmentID = "SELECT department_id FROM department WHERE short_name = @DEPARTMENT";
+	                    	const string insertStudyGroups = "INSERT INTO study_group (department_id, study_group_code, full_name, count_of_students) VALUES(@ID, @CODE, @NAME, @COUNT)";
+                        	MySqlCommand mySqlCommand;
+	                    	
+	                        connection.Open();
+	                       
+	                    	for (int i = 0; i < rowsCount; i++)
+	                    	{
+	                    		mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
+	                    		mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departmentsInExcelFileStudyGroups[i]);
+	                    		mySqlCommand.ExecuteNonQuery();
+	                    		
+	                    		int departmentID =  Convert.ToInt32( mySqlCommand.ExecuteScalar().ToString() );
+	                    		
+	                    		mySqlCommand = new MySqlCommand(insertStudyGroups, connection);
+	                    		mySqlCommand.Parameters.AddWithValue("@ID", departmentID);
+	                    		mySqlCommand.Parameters.AddWithValue("@CODE", groupCodes[i]);
+	                    		mySqlCommand.Parameters.AddWithValue("@NAME", groupNamesInExcelFileStudyGroups[i]);
+	                    		mySqlCommand.Parameters.AddWithValue("@COUNT", countOfStudentsInExcelFileStudyGroups[i]);	                    		
+	                    		mySqlCommand.ExecuteNonQuery();
+	                    		Console.WriteLine(departmentID + " " + groupCodes[i] + " " + groupNamesInExcelFileStudyGroups[i] +
+	                    		  " " + countOfStudentsInExcelFileStudyGroups[i]);
+	                    	}
+
+	                    	connection.Close();
+                    	}
+                    	catch (Exception ex)
+	                    {
+	                        Console.WriteLine("Помилка при завантаженні даних з файлу " + FileName + "\n" + ex.Message);
+	                    }
+                    }                    
+                    
                     break;
                 default:
                     throw new Exception("Невідомий файл");

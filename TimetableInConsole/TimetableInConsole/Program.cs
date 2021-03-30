@@ -86,7 +86,12 @@ namespace TimetableInConsole
                 file.load();
             } */           
             
-
+            ExcelFile file = new ExcelFile("StudyGroups.xlsx");
+            if (file.exists())
+            {
+                file.load();
+            }
+           
 
                 /* 3. 
                  * Порядок загрузки:
