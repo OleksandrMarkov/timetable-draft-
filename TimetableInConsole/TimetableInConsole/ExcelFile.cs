@@ -950,9 +950,7 @@ namespace TimetableInConsole
                             else
                             {
                             	departmentsInExcelFileTeachers.Add(cellContent);	
-                            }
-                            	
-                            
+                            }                            	                            
                         }
                         
                         // імена викладачів
@@ -1139,6 +1137,219 @@ namespace TimetableInConsole
                     
                     break;
                 case "Auditories.xls":
+                    
+                    ArrayList namesInExcelFileAuditories = new ArrayList();
+                    ArrayList typesInExcelFileAuditories = new ArrayList();
+                    ArrayList departmentsInExcelFileAuditories = new ArrayList();
+                    
+                    ArrayList notUsedInExcelFileAuditories = new ArrayList();
+                    ArrayList placesInExcelFileAuditories = new ArrayList();
+                    
+                    const char columnForLoadingNames = 'E';
+                    const char columnForLoadingTypes = 'H';
+                    const char columnForLoadingDepartmentNames = 'I';
+                    const char columnForLoadingNotUsed = 'J';
+                    const char columnForLoadingPlaces = 'G';
+                     
+                    const int firstRowInExcelFileAuditories = 2;
+                    
+                    
+                    
+                    ArrayList missingValuesOfNamesInExcelFileAuditories = new ArrayList();
+                    ArrayList missingValuesOfTypesInExcelFileAuditories = new ArrayList();
+                    ArrayList missingValuesOfDepartmentsInExcelFileAuditories = new ArrayList();
+                    
+                    
+                    Dictionary<int, string> duplicatesOfNamesInExcelFileAuditories = new Dictionary<int, string>();
+
+                    try
+                    {
+                        open();
+                        
+                        
+						// назви аудиторій
+                        for (int row = firstRowInExcelFileAuditories, column = getColumnNumber(columnForLoadingNames); row <= rowsCount; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+             				
+                            if(namesInExcelFileAuditories.Contains(cellContent))
+                            {
+                            	duplicatesOfNamesInExcelFileAuditories.Add(row, cellContent);
+                            }
+                            
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                            	//throw new Exception("В файлі " + FileName + " пропущено назву кафедри в рядку: " + row); 
+                            	missingValuesOfNamesInExcelFileAuditories.Add(row);
+                            }                            
+                            else
+                            {
+                            	namesInExcelFileAuditories.Add(cellContent);	
+                            }
+                            
+                        }
+                        
+                        // типи аудиторій
+                        for (int row = firstRowInExcelFileAuditories, column = getColumnNumber(columnForLoadingTypes); row <= rowsCount; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+             
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                            	missingValuesOfTypesInExcelFileAuditories.Add(row);
+                            }
+                            else
+                            {
+                            	typesInExcelFileAuditories.Add(cellContent);	
+                            }                            	                            
+                        }
+                        
+                        // кафедри, до яких належать аудиторії
+                        for (int row = firstRowInExcelFileAuditories, column = getColumnNumber(columnForLoadingDepartmentNames); row <= rowsCount; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+             
+                            // перевірка наявності порожніх чарунок
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                            	missingValuesOfTypesInExcelFileAuditories.Add(row);
+                            }
+                            else
+                            {
+                            	departmentsInExcelFileAuditories.Add(cellContent);	
+                            }                            	                            
+                        }
+                        
+                        
+                        // використання аудиторій
+                        for (int row = firstRowInExcelFileAuditories, column = getColumnNumber(columnForLoadingNotUsed); row <= rowsCount; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+ 
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                            	notUsedInExcelFileAuditories.Add(false);
+                            }
+                            else
+                            {
+                            		notUsedInExcelFileAuditories.Add(true);
+                            }                            	                            
+                        }
+                        
+                        // скільки місць в аудиторії
+                        for (int row = firstRowInExcelFileAuditories, column = getColumnNumber(columnForLoadingPlaces); row <= rowsCount; row++)
+                        {
+                            cellContent = ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+                            //Console.WriteLine("cellContent: " + cellContent);
+             
+                            if (string.IsNullOrEmpty(cellContent))
+                            {
+                            	placesInExcelFileAuditories.Add(0);
+                            }
+                            else
+                            {
+                            	placesInExcelFileAuditories.Add(Convert.ToInt32(cellContent));
+                            }                            	                            
+                        }
+                        
+                        close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Помилка при зчитуванні даних з файлу " + FileName + " " + ex.Message);
+                    }
+					
+                    /*Console.WriteLine(namesInExcelFileAuditories.Count);
+                    Console.WriteLine(typesInExcelFileAuditories.Count);
+                    Console.WriteLine(departmentsInExcelFileAuditories.Count);
+                    Console.WriteLine(notUsedInExcelFileAuditories.Count);
+                    Console.WriteLine(placesInExcelFileAuditories.Count);*/
+                    
+                   
+                    if (duplicatesOfNamesInExcelFileAuditories.Count != 0)
+                    {
+                        Console.WriteLine("В файлі " + FileName +  " є дублікати назв кафедр:");
+                        foreach (KeyValuePair<int, string> duplicate in duplicatesOfNamesInExcelFileAuditories)
+                        {
+                            Console.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value);
+                        }
+                        Console.WriteLine();
+                    }
+                   
+                    if (missingValuesOfNamesInExcelFileAuditories.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущено назви аудиторій в рядках: ");
+                        foreach (int row in missingValuesOfNamesInExcelFileAuditories)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+                    
+                    if (missingValuesOfTypesInExcelFileAuditories.Count != 0)
+                    {
+                        Console.Write("В файлі " + FileName + " пропущено типи аудиторій в рядках: ");
+                        foreach (int row in missingValuesOfTypesInExcelFileAuditories)
+                        {
+                            Console.Write(row + "\t");
+                        }
+                        Console.WriteLine();
+                    }
+                    /*if(duplicatesOfNamesInExcelFileAuditories.Count == 0 && missingValuesOfNamesInExcelFileAuditories.Count == 0 && missingValuesOfTypesInExcelFileAuditories.Count == 0)
+                    {*/
+						try
+                    	{
+                    		MySqlConnection connection = DBConnection.DBUtils.GetDBConnection();
+                    		
+	                    	const string selectAuditoryTypeID = "SELECT auditory_type_id FROM auditory_type WHERE auditory_type_name = @TYPE";
+	                    	const string selectDepartmentID = "SELECT department_id FROM department WHERE full_name = @DEPARTMENT_NAME";
+	                    
+	                    	const string insertAuditories = "INSERT INTO auditory (department_id, auditory_name, not_used, type_auditory, count_of_places) VALUES(@ID, @AUDITORY_NAME, @NOT_USED, @TYPE_ID, @COUNT)";
+                        	MySqlCommand mySqlCommand;
+	                    	
+	                        connection.Open();
+	                       
+	                    	for (int i = 0; i < rowsCount - firstRowInExcelFileAuditories + 1; i++)
+	                    	{
+	                    		mySqlCommand = new MySqlCommand(selectAuditoryTypeID, connection);
+	                    		mySqlCommand.Parameters.AddWithValue("@TYPE", typesInExcelFileAuditories[i]);
+	                    		mySqlCommand.ExecuteNonQuery();
+	                    		
+	                    		int auditoryTypeID =  Convert.ToInt32( mySqlCommand.ExecuteScalar().ToString() );
+	                    		
+	                    		mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
+	                    		mySqlCommand.Parameters.AddWithValue("@DEPARTMENT_NAME", departmentsInExcelFileAuditories[i]);
+	                    		mySqlCommand.ExecuteNonQuery();
+	                    		
+	                    		int departmentID = Convert.ToInt32( mySqlCommand.ExecuteScalar().ToString() );
+	                    		
+	                    		mySqlCommand = new MySqlCommand(insertAuditories, connection);
+	                    		
+	                    		mySqlCommand.Parameters.AddWithValue("@ID", departmentID);
+	                    		mySqlCommand.Parameters.AddWithValue("@AUDITORY_NAME", namesInExcelFileAuditories[i]);
+	                    		mySqlCommand.Parameters.AddWithValue("@NOT_USED", notUsedInExcelFileAuditories[i]);
+	                    		mySqlCommand.Parameters.AddWithValue("@TYPE_ID", auditoryTypeID);
+	                    		mySqlCommand.Parameters.AddWithValue("@COUNT", placesInExcelFileAuditories[i]);
+	                    		mySqlCommand.ExecuteNonQuery();
+	                    		
+	                    		Console.WriteLine(departmentID + " " + namesInExcelFileAuditories[i] + " " + notUsedInExcelFileAuditories[i] +
+	                    		  " " + auditoryTypeID + " " + placesInExcelFileAuditories[i] );
+	                    	}
+	                    		                    	
+	                    	connection.Close();
+                    	}
+                    	catch (Exception ex)
+	                    {
+	                        Console.WriteLine("Помилка при завантаженні даних з файлу " + FileName + "\n" + ex.Message);
+	                    }
+            //}
+                                       
                     break;
                 case "StudyGroups.xlsx":
                     break;

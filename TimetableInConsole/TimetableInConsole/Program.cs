@@ -11,7 +11,7 @@ namespace TimetableInConsole
 		public static void Main(string[] args)
 		{
             ArrayList excelFiles = new ArrayList();
-            excelFiles.Add("Audiences.xls");
+            excelFiles.Add("Auditories.xls");
             excelFiles.Add("Departments.xlsx");
             excelFiles.Add("Disciplines.xlsx");
             excelFiles.Add("Faculties.xlsx");
@@ -59,9 +59,8 @@ namespace TimetableInConsole
             /*ExcelFile file = new ExcelFile("Disciplines.xlsx");
             if (file.exists())
             {
-                file.load();
+                file.load();                
             }*/
-
 
             /*ExcelFile file = new ExcelFile("Faculties.xlsx");
             if (file.exists())
@@ -75,11 +74,17 @@ namespace TimetableInConsole
                 file.load();
             }*/
             
-            ExcelFile file = new ExcelFile("Teachers.xlsx");
+            /*ExcelFile file = new ExcelFile("Teachers.xlsx");
             if (file.exists())
             {
                 file.load();
-            }            
+            }  */
+
+           /* ExcelFile file = new ExcelFile("Auditories.xls");
+            if (file.exists())
+            {
+                file.load();
+            } */           
             
 
 
