@@ -90,22 +90,6 @@ namespace TimetableInConsole
         public ExcelFile(string fileName)
         {
             FileName = fileName;
-
-            try
-            {
-                open();
-
-              /* перенесено в open()
-               *range = worksheet.UsedRange;
-                rowsCount = range.Rows.Count;*/
-                close();
-                //Console.WriteLine(rowsCount);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Не вдалось отримати дані файлу \"" + wrongFileName +
-                    "\". Перевірте правильність імені файлу та повторіть спробу.");
-            }
         }
 
         //відкриття файлу
@@ -1150,7 +1134,6 @@ namespace TimetableInConsole
                     const char columnForLoadingPlaces = 'G';
                      
                     const int firstRowInExcelFileAuditories = 2;
-                    
                     
                     
                     ArrayList missingValuesOfNamesInExcelFileAuditories = new ArrayList();

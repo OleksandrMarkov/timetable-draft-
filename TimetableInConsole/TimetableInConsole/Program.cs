@@ -10,7 +10,7 @@ namespace TimetableInConsole
 	{
 		public static void Main(string[] args)
 		{
-            ArrayList excelFiles = new ArrayList();
+         /*   ArrayList excelFiles = new ArrayList();
             excelFiles.Add("Auditories.xls");
             excelFiles.Add("Departments.xlsx");
             excelFiles.Add("Disciplines.xlsx");
@@ -34,20 +34,17 @@ namespace TimetableInConsole
             excelFiles.Add("соціальної роботи та психології Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx");
             excelFiles.Add("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx");
             excelFiles.Add("Туризм_Форма 44 денна заочна 2020.xlsx");
-
-            // создания и проверка содержимого на ошибки
+*/
+           
             /*foreach (string excelFile in excelFiles)
              {
                  ExcelFile file = new ExcelFile(excelFile); // создать 
 
                 //if (file.exists())
 
-                    // if filename == "Audiences": ...
-                    // if filename == "Teachers": ...
-
-                    // некорректные значения и т.д.
-                    // проверить загружены ли уже связные таблицы НА ПОТОМ!
-                
+                    // некорректные значения
+                    // проверить загружены ли уже связные таблицы
+                	...
             }*/
 
             /*ExcelFile file = new ExcelFile("TypesOfAuditories.xlsx");
@@ -86,11 +83,11 @@ namespace TimetableInConsole
                 file.load();
             } */           
             
-            ExcelFile file = new ExcelFile("StudyGroups.xlsx");
+            /*ExcelFile file = new ExcelFile("StudyGroups.xlsx");
             if (file.exists())
             {
                 file.load();
-            }
+            }*/
            
 
                 /* 3. 
