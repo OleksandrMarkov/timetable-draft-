@@ -9,9 +9,7 @@ using MySql.Data.MySqlClient;
 namespace AppConsole
 {
 	public class AuditoryTypes : ExcelFile
-	{		
-		
-		
+	{			
 		ArrayList records = new ArrayList();
 		ArrayList missingValues = new ArrayList();
 		Dictionary <int, string> duplicates = new Dictionary<int, string>();
@@ -19,8 +17,7 @@ namespace AppConsole
 		const char column = 'A'; // стовпець, з якого беруться дані
 		
 		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
-		
-		
+				
 		public AuditoryTypes(string fileName): base(fileName)
 		{
 			this.fileName = fileName;

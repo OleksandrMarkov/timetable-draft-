@@ -8,14 +8,11 @@ namespace AppConsole
 		{
 			//Console.WriteLine("Hello World!");
 			
-			//ExcelFile excelFile = new ExcelFile("TypesOfAuditories.xlsx");
-			//Console.WriteLine(excelFile.FullPathToFile);
+		/*	AuditoryTypes file1 = new AuditoryTypes("TypesOfAuditories.xlsx");
+			Disciplines file2 = new Disciplines("Disciplines.xlsx");
 			
-			AuditoryTypes file = new AuditoryTypes("TypesOfAuditories.xlsx");
-			//Console.WriteLine(file.FileName + "\n" + file.FullPathToFile);
-			
-			file.SendDataToDB();
-			
+			file1.SendDataToDB();
+			file2.SendDataToDB();*/
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
