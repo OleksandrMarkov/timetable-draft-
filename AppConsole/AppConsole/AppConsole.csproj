@@ -36,6 +36,7 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel" />
+    <Reference Include="MySql.Data" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -52,6 +53,8 @@
   <ItemGroup>
     <Compile Include="Auditories.cs" />
     <Compile Include="AuditoryTypes.cs" />
+    <Compile Include="DBMySQLUtils.cs" />
+    <Compile Include="DBUtils.cs" />
     <Compile Include="Departments.cs" />
     <Compile Include="Disciplines.cs" />
     <Compile Include="ExcelFile.cs" />

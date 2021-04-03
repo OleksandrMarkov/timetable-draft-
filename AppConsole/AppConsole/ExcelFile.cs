@@ -71,10 +71,7 @@ namespace AppConsole
             }
         }
 		
-        public ExcelFile()
-        {
-        	
-        }
+        public ExcelFile(){}
         
         public ExcelFile(string fileName)
         {
@@ -147,10 +144,14 @@ namespace AppConsole
             }
             else
             {
-                throw new Exception("Некоректне ім'я стовпця, неможливо зчитати дані з файлу " + FileName);
+                throw new Exception("Некоректне ім'я стовпця: " + column + ". Неможливо зчитати дані з файлу " + FileName);
             }
         }
         
+        protected string getCellContent(int row, int column)
+        {
+        	return ((Excel.Range)worksheet.Cells[row, column]).Text.ToString();
+        }        
         
         // Паттерн "ШАБЛОННИЙ МЕТОД"
         public void SendDataToDB()
