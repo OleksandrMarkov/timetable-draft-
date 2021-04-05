@@ -28,14 +28,14 @@ namespace AppConsole
 			{
 				open();
 				
-				for(int col = getColumnNumber(column); row <= rowsCount; row++)
+				for(int col = getColumnNumber(column), i = row; i <= rowsCount; i++)
 				{
-					cellContent = getCellContent(row, col);
+					cellContent = getCellContent(i, col);
 					//Console.WriteLine(cellContent);
 					
 					if(records.Contains(cellContent))
 					{
-						duplicates.Add(row, cellContent);
+						duplicates.Add(i, cellContent);
 					}
 					else
 					{
@@ -44,7 +44,7 @@ namespace AppConsole
 					
 					if(string.IsNullOrEmpty(cellContent))
 					{
-						missingValues.Add(row);
+						missingValues.Add(i);
 					}
 				}				
 				close();

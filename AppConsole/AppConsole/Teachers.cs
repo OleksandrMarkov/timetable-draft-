@@ -221,7 +221,6 @@ namespace AppConsole
 	                mySqlCommand.ExecuteNonQuery();
 					connection.Close();
 					
-					Console.WriteLine("мусор удален");
 				}
 				catch (Exception ex)
 	            {

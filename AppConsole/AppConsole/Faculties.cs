@@ -36,13 +36,13 @@ namespace AppConsole
 			try
 			{
 				open();
-				for(int col = getColumnNumber(namesColumn); row <= rowsCount; row++)
+				for(int col = getColumnNumber(namesColumn), i = row; i <= rowsCount; i++)
 				{
-					cellContent = getCellContent(row, col);
+					cellContent = getCellContent(i, col);
 					
 					if(names.Contains(cellContent))
 					{
-						duplicatesOfNames.Add(row, cellContent);
+						duplicatesOfNames.Add(i, cellContent);
 					}
 					
 					else
@@ -52,17 +52,17 @@ namespace AppConsole
 					
 					if(string.IsNullOrEmpty(cellContent))
 					{
-						missingValuesOfNames.Add(row);
+						missingValuesOfNames.Add(i);
 					}
 				}
 				
-				for(int col = getColumnNumber(codesColumn), row = 2; row <= rowsCount; row++)
+				for(int col = getColumnNumber(codesColumn), i = row; i <= rowsCount; i++)
 				{
-					cellContent = getCellContent(row, col);
+					cellContent = getCellContent(i, col);
 					
 					if(codes.Contains(cellContent))
 					{
-						duplicatesOfCodes.Add(row, cellContent);
+						duplicatesOfCodes.Add(i, cellContent);
 					}
 					else
 					{
@@ -71,7 +71,7 @@ namespace AppConsole
 					
 					if(string.IsNullOrEmpty(cellContent))
 					{
-						missingValuesOfCodes.Add(row);
+						missingValuesOfCodes.Add(i);
 					}				
 				}
 				

@@ -40,13 +40,13 @@ namespace AppConsole
 			try
 			{
 				open();
-				for(int col = getColumnNumber(fullNamesColumn); row <= rowsCount; row++)
+				for(int col = getColumnNumber(fullNamesColumn), i = row; i <= rowsCount; i++)
 				{
-					cellContent = getCellContent(row, col);
+					cellContent = getCellContent(i, col);
 					
 					if(full_names.Contains(cellContent))
 					{
-						duplicatesOfFullNames.Add(row, cellContent);
+						duplicatesOfFullNames.Add(i, cellContent);
 					}
 					else
 					{
@@ -55,17 +55,17 @@ namespace AppConsole
 					
 					if(string.IsNullOrEmpty(cellContent))
 					{
-						missingValuesOfFullNames.Add(row);
+						missingValuesOfFullNames.Add(i);
 					}
 				}
 				
-				for(int col = getColumnNumber(shortNamesColumn), row = 1; row <= rowsCount; row++)
+				for(int col = getColumnNumber(shortNamesColumn), i = row; i <= rowsCount; i++)
 				{
-					cellContent = getCellContent(row, col);
+					cellContent = getCellContent(i, col);
 					
 					if(short_names.Contains(cellContent))
 					{
-						duplicatesOfShortNames.Add(row, cellContent);
+						duplicatesOfShortNames.Add(i, cellContent);
 					}
 					else
 					{
@@ -74,17 +74,17 @@ namespace AppConsole
 					
 					if(string.IsNullOrEmpty(cellContent))
 					{
-						missingValuesOfShortNames.Add(row);
+						missingValuesOfShortNames.Add(i);
 					}				
 				}
 				
-				for(int col = getColumnNumber(facultyCodesColumn), row = 1; row <= rowsCount; row++)
+				for(int col = getColumnNumber(facultyCodesColumn), i = row; i <= rowsCount; i++)
 				{
-					cellContent = getCellContent(row, col);
+					cellContent = getCellContent(i, col);
 										
 					if(string.IsNullOrEmpty(cellContent))
 					{
-						missingValuesOfFacultyCodes.Add(row);
+						missingValuesOfFacultyCodes.Add(i);
 					}
 					else
 					{
