@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -91,7 +90,7 @@ namespace AppConsole
 			{
 				try
 				{
-					MySqlConnection connection  = DBUtils.GetDBConnection();
+					MySqlConnection connection = DBUtils.GetDBConnection();
 					MySqlCommand mySqlCommand;			
 					const string insertDisciplines = "INSERT INTO discipline (full_name) VALUES (@FULL_NAME)";
 					

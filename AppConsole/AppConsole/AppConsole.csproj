@@ -53,8 +53,8 @@
   <ItemGroup>
     <Compile Include="Auditories.cs" />
     <Compile Include="AuditoryTypes.cs" />
-    <Compile Include="DBMySQLUtils.cs" />
-    <Compile Include="DBUtils.cs" />
+    <Compile Include="DBConnection\DBMySQLUtils.cs" />
+    <Compile Include="DBConnection\DBUtils.cs" />
     <Compile Include="Departments.cs" />
     <Compile Include="Disciplines.cs" />
     <Compile Include="ExcelFile.cs" />
@@ -66,6 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DBConnection" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

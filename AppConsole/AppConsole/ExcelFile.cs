@@ -164,7 +164,5 @@ namespace AppConsole
         public virtual void ReadFromExcelFile(){}
         public virtual void EvaluateData(){}
         public virtual void Load(){}
-		
-
 	}
 }
