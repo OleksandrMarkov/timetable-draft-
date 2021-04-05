@@ -20,7 +20,8 @@ namespace AppConsole
 			file4.SendDataToDB();
 		 */
 
-		
+			Teachers file5 = new Teachers("Teachers.xlsx");
+			file5.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
