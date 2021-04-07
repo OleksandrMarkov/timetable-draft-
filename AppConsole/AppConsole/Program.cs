@@ -18,10 +18,13 @@ namespace AppConsole
 			
 			Departments file4 = new Departments("Departments.xlsx");
 			file4.SendDataToDB();
-			
+		
 			Teachers file5 = new Teachers("Teachers.xlsx");
 			file5.SendDataToDB();
-		 */
+		 
+		 	Auditories file6 = new Auditories("Auditories.xls");
+			file6.SendDataToDB();
+			*/
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);

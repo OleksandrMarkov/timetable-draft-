@@ -26,9 +26,9 @@ namespace AppConsole
 		
 		int row = 8; // рядок, з якого починаються записи даних у файлі
 		
-		ArrayList missingValuesOfDepartments = new ArrayList();
 		ArrayList missingValuesOfNames = new ArrayList();
 		ArrayList missingValuesOfPosts = new ArrayList();
+		ArrayList missingValuesOfDepartments = new ArrayList();
 		
 		Dictionary <int, string> duplicatesOfNames = new Dictionary<int, string>();
 		Dictionary <int, string> wrongValuesOfSex = new Dictionary<int, string>();
@@ -221,6 +221,7 @@ namespace AppConsole
 	                mySqlCommand.ExecuteNonQuery();
 					connection.Close();
 					
+					//Console.WriteLine("IT IS LOADED!");
 				}
 				catch (Exception ex)
 	            {
