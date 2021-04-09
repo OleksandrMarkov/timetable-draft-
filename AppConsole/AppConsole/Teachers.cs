@@ -40,7 +40,7 @@ namespace AppConsole
 			this.fileName = fileName;
 		}
 		
-		/* на відміну від інших файлів, в БД вставлються УСІ записи,
+		/* на відміну від завантаження інших файлів, в БД вставлються УСІ записи,
 		а вже потім звідти видаляється зайве*/
 		public override void ReadFromExcelFile()
 		{
@@ -48,6 +48,7 @@ namespace AppConsole
 			{
 				open();
 				
+				// назви кафедр
 				for(int col = getColumnNumber(departmentsColumn), i = row; i <= rowsCount; i++)
 				{
 					cellContent = getCellContent(i, col);
@@ -62,6 +63,7 @@ namespace AppConsole
 					}
 				}
 				
+				// ПІБ викладачів
 				for(int col = getColumnNumber(namesColumn), i = row; i <= rowsCount; i++)
 				{
 					cellContent = getCellContent(i, col);
@@ -79,6 +81,7 @@ namespace AppConsole
 					names.Add(cellContent);
 				}
 				
+				// стать викладачів
 				for(int col = getColumnNumber(sexColumn), i = row; i <= rowsCount; i++)
 				{
 					cellContent = getCellContent(i, col);
@@ -91,6 +94,7 @@ namespace AppConsole
 					}
 				}
 				
+				//посади викладачів
 				for(int col = getColumnNumber(postsColumn), i = row; i <= rowsCount; i++)
 				{
 					cellContent = getCellContent(i, col);
@@ -103,12 +107,14 @@ namespace AppConsole
 					}
 				}
 				
-				for(int col = getColumnNumber(postsColumn), i = row; i <= rowsCount; i++)
+				// звання (статуси) викладачів
+				for(int col = getColumnNumber(statusesColumn), i = row; i <= rowsCount; i++)
 				{
 					cellContent = getCellContent(i, col);
 					
 					statuses.Add(cellContent);
 				}
+				
 				close();
 			}
 			catch (Exception ex)
@@ -120,11 +126,11 @@ namespace AppConsole
 		
 		public override void EvaluateData()
 		{
-			if(reading)
+			/*if(reading)
 			{
 				if (missingValuesOfDepartments.Count != 0)
 				{
-						Console.Write("В файлі " + FileName + " є пропуски в рядках: ");
+						Console.Write("В файлі " + FileName + " пропущені назви кафедр в рядках: ");
 		                foreach (int value in missingValuesOfDepartments)
 		                {
 		                	Console.Write(value + "\t");
@@ -134,7 +140,7 @@ namespace AppConsole
 				
 				if (missingValuesOfNames.Count != 0)
 				{
-						Console.Write("В файлі " + FileName + " є пропуски в рядках: ");
+						Console.Write("В файлі " + FileName + " пропущені імена викладачів в рядках: ");
 		                foreach (int value in missingValuesOfNames)
 		                {
 		                	Console.Write(value + "\t");
@@ -144,7 +150,7 @@ namespace AppConsole
 				
 				if (missingValuesOfPosts.Count != 0)
 				{
-						Console.Write("В файлі " + FileName + " є пропуски в рядках: ");
+						Console.Write("В файлі " + FileName + " пропущені посади викладачів в рядках: ");
 		                foreach (int value in missingValuesOfPosts)
 		                {
 		                	Console.Write(value + "\t");
@@ -173,25 +179,29 @@ namespace AppConsole
 	                }	
 					Console.WriteLine();
 				}		
-			}
+			}*/
 		}
 		
 		public override void Load()
 		{
 			if(reading)
 			{
+				/*Console.WriteLine(departments.Count);
+				Console.WriteLine(names.Count);
+				Console.WriteLine(sex.Count);
+				Console.WriteLine(posts.Count);
+				Console.WriteLine(statuses.Count);*/
+								
 				try
 				{
 					MySqlConnection connection = DBUtils.GetDBConnection();
 					MySqlCommand mySqlCommand;
-					
+
 					const string selectDepartmentID = "SELECT department_id FROM department WHERE full_name = @DEPARTMENT";
-					const string insertTeachers = "INSERT INTO teacher (department_id, full_name, sex, post, status) " +
-						"VALUES(@ID, @NAME, @SEX, @POST, @STATUS)";
+	                const string insertTeachers = "INSERT INTO teacher (department_id, full_name, sex, post, status) VALUES(@ID, @NAME, @SEX, @POST, @STATUS)";
+					
 					
 					connection.Open();
-					
-					//Console.WriteLine(row);
 					
 					for(int i = 0; i < rowsCount - row + 1; i++)
 					{
@@ -200,26 +210,26 @@ namespace AppConsole
 						mySqlCommand.ExecuteNonQuery();
 						
 						int departmentID =  Convert.ToInt32( mySqlCommand.ExecuteScalar().ToString());
+						//Console.WriteLine(departmentID + " " + names[i] + " " + sex[i] + " " + posts[i] + " " + statuses[i] + " !");
 						
 						mySqlCommand = new MySqlCommand(insertTeachers, connection);
-						
 						mySqlCommand.Parameters.AddWithValue("@ID", departmentID);
 						mySqlCommand.Parameters.AddWithValue("@NAME", names[i]);
 						mySqlCommand.Parameters.AddWithValue("@SEX", sex[i]);
 						mySqlCommand.Parameters.AddWithValue("@POST", posts[i]);
 						mySqlCommand.Parameters.AddWithValue("@STATUS", statuses[i]);
 						mySqlCommand.ExecuteNonQuery();
-						
-					}
-					
-					const string createTemporaryTable = "CREATE TEMPORARY TABLE teacher2 AS (SELECT * FROM teacher GROUP BY department_id, full_name)";
-					mySqlCommand = new MySqlCommand(createTemporaryTable, connection);
-	                mySqlCommand.ExecuteNonQuery();
-					
-	                const string deleteTrash = "DELETE FROM teacher WHERE teacher.teacher_id NOT IN (SELECT teacher2.teacher_id FROM teacher2)";
-	                mySqlCommand = new MySqlCommand(deleteTrash, connection);
-	                mySqlCommand.ExecuteNonQuery();
-					connection.Close();
+	                 }
+	                    	
+	                 const string createTemporaryTable = "CREATE TEMPORARY TABLE teacher2 AS (SELECT * FROM teacher GROUP BY department_id, full_name)";
+	                 mySqlCommand = new MySqlCommand(createTemporaryTable, connection);
+	                 mySqlCommand.ExecuteNonQuery();
+	                    	
+	                 const string deleteTrash = "DELETE FROM teacher WHERE teacher.teacher_id NOT IN (SELECT teacher2.teacher_id FROM teacher2)";
+	                 mySqlCommand = new MySqlCommand(deleteTrash, connection);
+	                 mySqlCommand.ExecuteNonQuery();
+	                
+	                 connection.Close();
 					
 					Console.WriteLine("Teachers are loaded");
 				}
