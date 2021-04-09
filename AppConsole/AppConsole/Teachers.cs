@@ -221,7 +221,7 @@ namespace AppConsole
 	                mySqlCommand.ExecuteNonQuery();
 					connection.Close();
 					
-					//Console.WriteLine("IT IS LOADED!");
+					Console.WriteLine("Teachers are loaded");
 				}
 				catch (Exception ex)
 	            {

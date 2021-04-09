@@ -190,8 +190,9 @@ namespace AppConsole
 	                    mySqlCommand.Parameters.AddWithValue("@SHORT_NAME", short_names[i]);
 	                    mySqlCommand.ExecuteNonQuery();
 					}
-					
 					connection.Close();
+					
+					Console.WriteLine("Departments are loaded");
 				}
 				catch(Exception ex)
 				{

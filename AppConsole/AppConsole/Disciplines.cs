@@ -101,14 +101,15 @@ namespace AppConsole
 						mySqlCommand.Parameters.AddWithValue("@FULL_NAME", record);
 		                mySqlCommand.ExecuteNonQuery();
 					}
-					connection.Close();	
+					connection.Close();
+
+					Console.WriteLine("Disciplines are loaded");					
 				}
 				catch(Exception ex)
 				{
 					Console.WriteLine("Виникла помилка під час запису з файлу " + FileName + " до бази даних!");
 				}	
 			}			
-			//Console.WriteLine("Load");
 		}
 	}
 }

@@ -227,7 +227,7 @@ namespace AppConsole
 					
 					connection.Close();
 					
-					Console.WriteLine("!!!!");
+					Console.WriteLine("Auditories are loaded");
 				}
 				
                 catch (Exception ex)

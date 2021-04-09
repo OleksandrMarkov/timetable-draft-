@@ -1,5 +1,7 @@
 ﻿using System;
 
+using System.Collections;
+
 namespace AppConsole
 {
 	class Program
@@ -7,24 +9,43 @@ namespace AppConsole
 		public static void Main(string[] args)
 		{
 			
-		/*	AuditoryTypes file1 = new AuditoryTypes("TypesOfAuditories.xlsx");
-		    file1.SendDataToDB();
+			AuditoryTypes auditoryTypes = new AuditoryTypes("TypesOfAuditories.xlsx");
+		    //file.SendDataToDB();
 		
-			Disciplines file2 = new Disciplines("Disciplines.xlsx");
-		 	file2.SendDataToDB();
+			Disciplines disciplines = new Disciplines("Disciplines.xlsx");
+		 	//file2.SendDataToDB();
 		 
-		 	Faculties file3 = new Faculties("Faculties.xlsx");
-			file3.SendDataToDB();
+		 	Faculties faculties = new Faculties("Faculties.xlsx");
+			//file3.SendDataToDB();
 			
-			Departments file4 = new Departments("Departments.xlsx");
-			file4.SendDataToDB();
+			Departments departments = new Departments("Departments.xlsx");
+			//file4.SendDataToDB();
 		
-			Teachers file5 = new Teachers("Teachers.xlsx");
-			file5.SendDataToDB();
+			Teachers teachers = new Teachers("Teachers.xlsx");
+			//file5.SendDataToDB();
 		 
-		 	Auditories file6 = new Auditories("Auditories.xls");
-			file6.SendDataToDB();
-			*/
+		 	Auditories auditories = new Auditories("Auditories.xls");
+			//file6.SendDataToDB();	
+			
+			StudyGroups studyGroups = new StudyGroups("StudyGroups.xlsx");
+			//file7.SendDataToDB();
+					
+			/*ArrayList excelFiles = new ArrayList();
+			excelFiles.Add(auditoryTypes);
+			excelFiles.Add(disciplines);
+			excelFiles.Add(faculties);
+			excelFiles.Add(departments);
+			excelFiles.Add(teachers);
+			excelFiles.Add(auditories);
+			excelFiles.Add(studyGroups);
+			
+			foreach(ExcelFile excelFile in excelFiles)
+			{
+				excelFile.SendDataToDB();
+			}*/
+			
+			teachers.SendDataToDB();
+			
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);

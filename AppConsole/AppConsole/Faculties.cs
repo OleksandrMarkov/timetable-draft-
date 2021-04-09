@@ -160,7 +160,7 @@ namespace AppConsole
 					}
 					
 					connection.Close();
-					
+					Console.WriteLine("Faculties are loaded");
 				}
 				catch(Exception ex)
 				{
