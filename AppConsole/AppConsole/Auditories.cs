@@ -50,20 +50,27 @@ namespace AppConsole
 				for(int col = getColumnNumber(namesColumn), i = row; i <= rowsCount; i++)
 				{
 					cellContent = getCellContent(i, col);
-						
-					if (names.Contains(cellContent))
+					string trimmedCellContent = cellContent.TrimStart('0'); // в Auditories деякі назви аудиторій починаються з нуля, а в відомостях - ні
+					
+					// костиль для аудиторії "000"
+					if (!string.IsNullOrEmpty(cellContent) && string.IsNullOrEmpty(trimmedCellContent))
 					{
-						duplicatesOfNames.Add(i, cellContent);
+						trimmedCellContent = "0";
+					}
+									
+					if (names.Contains(trimmedCellContent))
+					{
+						duplicatesOfNames.Add(i, trimmedCellContent);
 					}
 						
-					if(string.IsNullOrEmpty(cellContent))
+					if(string.IsNullOrEmpty(trimmedCellContent))
 					{
 						missingValuesOfNames.Add(i);
 					}
 						
 					else
-					{
-						names.Add(cellContent);
+					{	
+						names.Add(trimmedCellContent);
 					}
 				}
 

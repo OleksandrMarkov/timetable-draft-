@@ -192,7 +192,12 @@ namespace AppConsole
 						mySqlCommand.Parameters.AddWithValue("@CONTROL", lessonsControl[i]);
 						mySqlCommand.Parameters.AddWithValue("@DEPARTMENT_ID", departmentID);
 						mySqlCommand.ExecuteNonQuery();
-						
+					}
+					
+					Console.WriteLine("LESSON IS LOADED!");
+					
+					for(int i = 0; i < disciplines.Count; i++)
+					{
 						mySqlCommand = new MySqlCommand(selectLessonID, connection);
 						mySqlCommand.ExecuteNonQuery();
 						
@@ -215,52 +220,13 @@ namespace AppConsole
 								mySqlCommand.ExecuteNonQuery();
 						
 								int auditoryID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-							
+								Console.Write(auditoryID + "\t" + separatedAuditories[j]);
 								mySqlCommand = new MySqlCommand(insertLesson_auditory, connection);
 								mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
 								mySqlCommand.Parameters.AddWithValue("@AUDITORY_ID", auditoryID);
 								mySqlCommand.ExecuteNonQuery();
-							}
+							}	
 						}
-						
-							//Console.Write(separatedAuditories[j] + " ");
-						/*Console.Write(separatedAuditories.Length);
-						Console.WriteLine();*/
-						
-						/*Console.WriteLine(suggestedAuditories);
-						
-						foreach (string a in auditories[i])
-						{
-							Console.WriteLine(a);
-						}
-						//Console.WriteLine(auditories[i]);
-						*/
-						
-						// вставка в Lesson_teacher	
-						/*foreach (string [] teacher in teachers[i])
-						{
-							
-							mySqlCommand = new MySqlCommand(selectTeacherID, connection);
-							mySqlCommand.Parameters.AddWithValue("@TEACHER", teacher);
-							mySqlCommand.ExecuteNonQuery();
-						
-							int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-							
-							mySqlCommand = new MySqlCommand(insertLesson_teacher, connection);
-							mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
-							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
-							mySqlCommand.ExecuteNonQuery();					
-						}*/
-						
-						 //вставка в Lesson_auditory					
-						/*foreach (string auditory in auditories[i])
-						{
-							if (auditory != "")
-							{
-													
-							}
-						}*/
-						 
 					}
 					connection.Close();
 					Console.WriteLine("MachineParts Department is loaded!");
@@ -270,7 +236,6 @@ namespace AppConsole
 					Console.WriteLine("Виникла помилка під час запису з файлу " + FileName + " до бази даних!" + "\n" + ex.Message);
 				}
 			}
-		}
-		
+		}	
 	}
 }
