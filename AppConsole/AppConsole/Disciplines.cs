@@ -107,7 +107,8 @@ namespace AppConsole
 				}
 				catch(Exception ex)
 				{
-					Console.WriteLine("Виникла помилка під час запису з файлу " + FileName + " до бази даних!");
+					Console.WriteLine("Виникла помилка під час запису з файлу " + FileName + " до бази даних!"
+					                  + "\n" + ex.Message);
 				}	
 			}			
 		}

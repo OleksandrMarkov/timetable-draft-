@@ -33,12 +33,13 @@ namespace AppConsole
 			}*/
 			
 			//auditoryTypes.SendDataToDB();
-			//disciplines.SendDataToDB();
+			 //disciplines.SendDataToDB();
 			//faculties.SendDataToDB();
 			//departments.SendDataToDB();
 			//teachers.SendDataToDB();
 			//auditories.SendDataToDB();
 			//studyGroups.SendDataToDB();
+			
 			machineParts.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
