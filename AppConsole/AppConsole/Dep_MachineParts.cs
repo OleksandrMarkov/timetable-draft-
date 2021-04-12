@@ -106,14 +106,7 @@ namespace AppConsole
 				for(int col = getColumnNumber(teachersColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
-					
-					cellContent = cellContent.TrimEnd(';');
-					
-					cellContent = cellContent.Replace(" ", "");
-					
-					ArrayList teachersInCell = new ArrayList(); //cellContent.Split(new char[] {',', ';'});
-					
-					teachers.Add(teachersInCell);
+					teachers.Add(cellContent);
 				}
 				
 				//  запропоновані аудиторії
@@ -182,7 +175,8 @@ namespace AppConsole
 						mySqlCommand.ExecuteNonQuery();
 						
 						int disciplineID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-						Console.WriteLine(i + " " + disciplines[i] + "\t" + disciplineID);
+						
+						//Console.WriteLine(i + " " + disciplines[i] + "\t" + disciplineID);
 						
 						// вставка в Lesson
 						mySqlCommand = new MySqlCommand(insertLessons, connection);
@@ -192,17 +186,11 @@ namespace AppConsole
 						mySqlCommand.Parameters.AddWithValue("@CONTROL", lessonsControl[i]);
 						mySqlCommand.Parameters.AddWithValue("@DEPARTMENT_ID", departmentID);
 						mySqlCommand.ExecuteNonQuery();
-					}
-					
-					Console.WriteLine("LESSON IS LOADED!");
-					
-					for(int i = 0; i < disciplines.Count; i++)
-					{
+						
 						mySqlCommand = new MySqlCommand(selectLessonID, connection);
 						mySqlCommand.ExecuteNonQuery();
 						
-						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-						//Console.WriteLine(lessonID);
+						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());						
 						
 						string suggestedAuditories = auditories[i].ToString();
 						
@@ -220,13 +208,37 @@ namespace AppConsole
 								mySqlCommand.ExecuteNonQuery();
 						
 								int auditoryID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-								Console.Write(auditoryID + "\t" + separatedAuditories[j]);
+								
+								//Console.WriteLine(auditoryID + "\t" + separatedAuditories[j]);
+								
 								mySqlCommand = new MySqlCommand(insertLesson_auditory, connection);
 								mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
 								mySqlCommand.Parameters.AddWithValue("@AUDITORY_ID", auditoryID);
 								mySqlCommand.ExecuteNonQuery();
 							}	
 						}
+
+						string teachersRecord = teachers[i].ToString();
+						teachersRecord = teachersRecord.TrimEnd(new char [] {',', ';'});
+						//teachersRecord = teachersRecord.Replace(" ", ""); Пробіли є в ПІБ викладачів, вони не видаляються
+						Console.WriteLine(teachersRecord);
+						string [] separatedTeachers = teachersRecord.Split(new char[] {',', ';'});
+						
+						// вставка в Lesson_teacher
+						for(int j = 0; j < separatedTeachers.Length; j++)
+						{
+							mySqlCommand = new MySqlCommand(selectTeacherID, connection);
+							mySqlCommand.Parameters.AddWithValue("@TEACHER", separatedTeachers[j]);
+							mySqlCommand.ExecuteNonQuery();
+							
+							int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
+							/*Console.WriteLine(j + "\t" + teacherID + "\t" + separatedTeachers[j]);
+							Console.WriteLine();*/
+							mySqlCommand = new MySqlCommand(insertLesson_teacher, connection);
+							mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
+							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
+							mySqlCommand.ExecuteNonQuery();
+						}			
 					}
 					connection.Close();
 					Console.WriteLine("MachineParts Department is loaded!");

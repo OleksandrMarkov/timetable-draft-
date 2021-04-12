@@ -126,7 +126,7 @@ namespace AppConsole
 		
 		public override void EvaluateData()
 		{
-			/*if(reading)
+			if(reading)
 			{
 				if (missingValuesOfDepartments.Count != 0)
 				{
@@ -179,7 +179,7 @@ namespace AppConsole
 	                }	
 					Console.WriteLine();
 				}		
-			}*/
+			}
 		}
 		
 		public override void Load()

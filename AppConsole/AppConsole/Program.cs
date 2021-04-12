@@ -17,20 +17,8 @@ namespace AppConsole
 		 	Auditories auditories = new Auditories("Auditories.xls");			
 			StudyGroups studyGroups = new StudyGroups("StudyGroups.xlsx");
 
-			Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
 			
-			/*ArrayList excelFiles = new ArrayList();
-			excelFiles.Add(auditoryTypes);
-			excelFiles.Add(disciplines);
-			excelFiles.Add(faculties);
-			excelFiles.Add(departments);
-			excelFiles.Add(teachers);
-			excelFiles.Add(auditories);
-			excelFiles.Add(studyGroups);
-			foreach(ExcelFile excelFile in excelFiles)
-			{
-				excelFile.SendDataToDB();
-			}*/
+			Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
 			
 			//auditoryTypes.SendDataToDB();
 			 //disciplines.SendDataToDB();
@@ -40,7 +28,8 @@ namespace AppConsole
 			//auditories.SendDataToDB();
 			//studyGroups.SendDataToDB();
 			
-			machineParts.SendDataToDB();
+			//відомості
+			//machineParts.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
