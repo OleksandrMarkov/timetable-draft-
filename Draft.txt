@@ -158,3 +158,176 @@ public enum GeneralInformation
         }
 
 
+
+
+
+
+*********************************************************************
+                        const string selectDisciplines = "SELECT full_name FROM discipline";
+                        connection.Open();
+                        mySqlCommand = new MySqlCommand(selectDisciplines, connection);
+                        dataReader = mySqlCommand.ExecuteReader();
+
+                        while (dataReader.Read())
+                        {
+                            DisciplinesInDB.Add(dataReader[0].ToString());
+                        }
+                        connection.Close();
+
+
+
+*********************************************************************
+
+                        const string selectFaculties = "SELECT full_name, faculty_code FROM faculty";
+                        connection.Open();
+                        mySqlCommand = new MySqlCommand(selectFaculties, connection);
+                        dataReader = mySqlCommand.ExecuteReader();
+
+                        while (dataReader.Read())
+                        {
+                            //dataReader[0].ToString() - full_name
+                            //dataReader[1].ToString() - faculty_code
+
+                            facultyNamesInDB.Add(dataReader[0].ToString());
+                            facultyCodesInDB.Add(dataReader[1].ToString());
+                        }
+                        connection.Close();
+
+
+                        bool noSenseToReload = true;
+
+                        foreach (string name in namesInExcelFileFaculties)
+                        {
+                            if (!facultyNamesInDB.Contains(name))
+                            {
+                                noSenseToReload = false;
+                                break;
+                            }
+                        }
+
+                        if (noSenseToReload)
+                        {
+                            foreach (string code in codesInExcelFileFaculties)
+                            {
+                                if (!facultyCodesInDB.Contains(code))
+                                {
+                                    noSenseToReload = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (noSenseToReload == false)
+                          {
+                              Console.WriteLine("Є що змінювати");
+                              try
+                              {
+*********************************************************************
+            string s1 = "М-329сп";
+            string s2 = "ІФ-229сп(Т)";
+            
+            int hyphen_pos = s1.IndexOf('-');
+            
+            Console.WriteLine(s1.Substring(0, hyphen_pos+2));
+*********************************************************************
+
+
+
+
+//Console.Write(separatedAuditories[j] + " ");
+						/*Console.Write(separatedAuditories.Length);
+						Console.WriteLine();*/
+						
+						/*Console.WriteLine(suggestedAuditories);
+						
+						foreach (string a in auditories[i])
+						{
+							Console.WriteLine(a);
+						}
+						//Console.WriteLine(auditories[i]);
+						*/
+						
+						// вставка в Lesson_teacher	
+						/*foreach (string [] teacher in teachers[i])
+						{
+							
+							mySqlCommand = new MySqlCommand(selectTeacherID, connection);
+							mySqlCommand.Parameters.AddWithValue("@TEACHER", teacher);
+							mySqlCommand.ExecuteNonQuery();
+						
+							int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
+							
+							mySqlCommand = new MySqlCommand(insertLesson_teacher, connection);
+							mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
+							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
+							mySqlCommand.ExecuteNonQuery();					
+						}*/
+						
+						 //вставка в Lesson_auditory					
+						/*foreach (string auditory in auditories[i])
+						{
+							if (auditory != "")
+							{
+													
+							}
+						}*/
+
+
+
+
+
+
+			/*ArrayList excelFiles = new ArrayList();
+			excelFiles.Add(auditoryTypes);
+			excelFiles.Add(disciplines);
+			excelFiles.Add(faculties);
+			excelFiles.Add(departments);
+			excelFiles.Add(teachers);
+			excelFiles.Add(auditories);
+			excelFiles.Add(studyGroups);
+			foreach(ExcelFile excelFile in excelFiles)
+			{
+				excelFile.SendDataToDB();
+			}*/
+
+
+
+
+						/* викладачі в чарунці можуть розділятись:
+						1) ";"
+						2) ","
+						3) "; "
+						4) ", "
+					    
+						У випадках 3),4) необхідно видалити пробіл після знаку, а вже потім
+						заносити в string []
+						
+						const char semicolon = ';';
+						const char comma = ',';
+						const char space = ' ';
+						
+						int semicolon_position = teachersRecord.IndexOf(semicolon);
+						int comma_position = teachersRecord.IndexOf(comma);
+						
+						if (semicolon_position != -1)
+						{
+							if (teachersRecord[semicolon_position + 1] == space)
+							{
+								...
+							}
+						}
+						
+						if (comma_position != -1)
+						{
+							if (teachersRecord[comma_position + 1] == space)
+							{
+								...
+							}
+						}*/
+
+
+DELETE FROM `lesson` WHERE `department_id` = 317;
+DELETE FROM `lesson_auditory` WHERE `lesson_id`>36;
+DELETE FROM `lesson_teacher` WHERE `lesson_id`>36;
+
+

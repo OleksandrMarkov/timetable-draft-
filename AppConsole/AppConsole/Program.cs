@@ -22,6 +22,7 @@ namespace AppConsole
 			
 			Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);
 			
+			Dep_EconomyAndCustoms economyAndCustoms = new Dep_EconomyAndCustoms("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 84);
 			
 			
 			//auditoryTypes.SendDataToDB();
@@ -36,6 +37,7 @@ namespace AppConsole
 			
 			//machineParts.SendDataToDB();
 			//mbt.SendDataToDB();
+			//economyAndCustoms.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);

@@ -240,8 +240,6 @@ namespace TimetableInConsole
                             MySqlCommand mySqlCommand;
                             MySqlDataReader dataReader;
 
-
-
                             // Отримання даних з БД та порівняння з даними з Excel-файлу
                             // Якщо вони співпадають - немає сенсу для перезапису, інакше дані в БД перезаписуються
 

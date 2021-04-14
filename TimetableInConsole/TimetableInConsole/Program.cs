@@ -71,11 +71,11 @@ namespace TimetableInConsole
                 file.load();
             }*/
             
-            /*ExcelFile file = new ExcelFile("Teachers.xlsx");
+            ExcelFile file = new ExcelFile("Teachers.xlsx");
             if (file.exists())
             {
                 file.load();
-            }  */
+            }
 
            /* ExcelFile file = new ExcelFile("Auditories.xls");
             if (file.exists())
@@ -106,3 +106,25 @@ namespace TimetableInConsole
 		}
 	}
 }
+
+
+
+
+
+
+
+						// вставка в Lesson_teacher
+						for(int j = 0; j < separatedTeachers.Length; j++)
+						{
+							mySqlCommand = new MySqlCommand(selectTeacherID, connection);
+							mySqlCommand.Parameters.AddWithValue("@TEACHER", separatedTeachers[j]);
+							mySqlCommand.ExecuteNonQuery();
+							
+							int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
+							/*Console.WriteLine(j + "\t" + teacherID + "\t" + separatedTeachers[j]);
+							Console.WriteLine();*/
+							mySqlCommand = new MySqlCommand(insertLesson_teacher, connection);
+							mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
+							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
+							mySqlCommand.ExecuteNonQuery();
+						}

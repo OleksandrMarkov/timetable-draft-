@@ -671,7 +671,7 @@ namespace TimetableApp
                                       
 
                                       mySqlCommand.ExecuteNonQuery();
-                                      Console.WriteLine("code: " + codesInExcelFileFaculties[i] + "; name: " + namesInExcelFileFaculties[i]);
+                                      //Console.WriteLine("code: " + codesInExcelFileFaculties[i] + "; name: " + namesInExcelFileFaculties[i]);
                                   }
 
                                   connection.Close();
@@ -687,7 +687,6 @@ namespace TimetableApp
                         Console.WriteLine("Помилка при завантаженні даних з файлу " + FileName + "\n" + ex.Message);
                     }
                     //}
-
 
                     break;
                 case "Departments.xlsx":

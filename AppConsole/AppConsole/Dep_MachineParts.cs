@@ -240,7 +240,7 @@ namespace AppConsole
 			
 					}
 					connection.Close();
-					Console.WriteLine("MachineBuildingTechnology Department is loaded!");
+					Console.WriteLine("MachineParts Department is loaded!");
 				}
 				catch(Exception ex)
 				{
