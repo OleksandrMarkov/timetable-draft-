@@ -35,7 +35,7 @@ namespace AppConsole
 			//відомості
 			
 			//machineParts.SendDataToDB();
-			mbt.SendDataToDB();
+			//mbt.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
