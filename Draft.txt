@@ -331,3 +331,26 @@ DELETE FROM `lesson_auditory` WHERE `lesson_id`>36;
 DELETE FROM `lesson_teacher` WHERE `lesson_id`>36;
 
 
+				//  назви груп
+				for(int col = getColumnNumber(groupsColumn), i = firstRow; i <= lastRow; i++)
+				{
+					cellContent = getCellContent(i, col);
+					
+					// в конце перечня груп может стоять случайно забытая запятая, которая все ломает
+					cellContent = cellContent.TrimEnd(',');
+					
+					// прибираються пробіли
+					cellContent = cellContent.Replace(" ", "");
+					
+					// групи розділені ';' або ','
+					string [] groupsInCell = cellContent.Split(new char[] {',', ';'});
+					
+					/*foreach (string g in groupsInCell)
+					{
+						Console.Write(g + "! ");
+					}
+					Console.Write(groupsInCell.Length);
+					Console.WriteLine();*/
+					
+					groups.Add(groupsInCell);
+				}
