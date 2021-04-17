@@ -58,6 +58,7 @@
     <Compile Include="Departments.cs" />
     <Compile Include="Dep_EconomicalTheory.cs" />
     <Compile Include="Dep_EconomyAndCustoms.cs" />
+    <Compile Include="Dep_ElectricalMachines.cs" />
     <Compile Include="Dep_MachineBuildingTechnology.cs" />
     <Compile Include="Dep_MachineParts.cs" />
     <Compile Include="Disciplines.cs" />

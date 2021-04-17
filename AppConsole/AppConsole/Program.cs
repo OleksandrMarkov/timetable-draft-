@@ -26,6 +26,8 @@ namespace AppConsole
 			
 			Dep_EconomicalTheory economicalTheory = new Dep_EconomicalTheory("ЕКОНОМІЧНОЇ ТЕОРІЇ ТА ПІДПРИЄМНИЦТВА_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 79);
 			
+			Dep_ElectricalMachines electricalMachines = new Dep_ElectricalMachines("Електричних_машин-Форма 44 ВІД ДОРУЧЕНЬ- 2020_кафЕМ_ден2 сем.xlsx", 15, 45);
+			
 			//auditoryTypes.SendDataToDB();
 			//disciplines.SendDataToDB();
 			//faculties.SendDataToDB();
@@ -36,10 +38,11 @@ namespace AppConsole
 			
 			//відомості
 			
-			//machineParts.SendDataToDB();
-			//mbt.SendDataToDB();
-			//economyAndCustoms.SendDataToDB();
+			machineParts.SendDataToDB();
+			mbt.SendDataToDB();
+			economyAndCustoms.SendDataToDB();
 			economicalTheory.SendDataToDB();
+			electricalMachines.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);

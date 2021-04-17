@@ -8,7 +8,7 @@ using MySql.Data.MySqlClient;
 
 namespace AppConsole
 {
-	public class Dep_MachineParts:ExcelFile
+	public class Dep_ElectricalMachines : ExcelFile
 	{
 		int firstRow; // рядок, з якого починаються записи даних у файлі
 		int lastRow; // рядок, на якому закінчуються записи даних у файлі
@@ -31,7 +31,7 @@ namespace AppConsole
 		
 		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
 				
-		public Dep_MachineParts(string fileName, int firstRow, int lastRow): base(fileName)
+		public Dep_ElectricalMachines(string fileName, int firstRow, int lastRow): base(fileName)
 		{
 			this.fileName = fileName;
 			
@@ -44,7 +44,6 @@ namespace AppConsole
 			try
 			{
 				open();
-				
 				// назви дисциплін
 				for(int col = getColumnNumber(disciplinesColumn), i = firstRow; i <= lastRow; i++)
 				{
@@ -90,6 +89,7 @@ namespace AppConsole
 				}	
 				close();
 			}
+			
 			catch (Exception ex)
             {
 				reading = false;
@@ -104,6 +104,7 @@ namespace AppConsole
 				
 			}
 		}
+		
 		
 		public override void Load()
 		{
@@ -121,8 +122,7 @@ namespace AppConsole
 					+ "VALUES (@DISCIPLINE_ID, @TYPE, @HOURS, @CONTROL, @DEPARTMENT_ID)";
 					
 					const string selectLessonID = "SELECT lesson_id FROM lesson ORDER BY lesson_id DESC LIMIT 1"; // останнє значення id в Lesson 
-					
-					
+								
 					const string selectTeacherID = "SELECT teacher_id FROM teacher WHERE full_name = @TEACHER";
 					
 					const string selectAuditoryID = "SELECT auditory_id FROM auditory WHERE auditory_name = @AUDITORY";
@@ -136,7 +136,7 @@ namespace AppConsole
 					connection.Open();
 					
 					mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
-					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "ДМіПТМ");
+					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "ЕМ");
 					mySqlCommand.ExecuteNonQuery();
 						
 					int departmentID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
@@ -207,7 +207,7 @@ namespace AppConsole
 							
 							int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());							
 							//Console.WriteLine(j + "\t" + teacherID + "\t" + separatedTeachers[j]);
-							//Console.WriteLine();
+							
 							mySqlCommand = new MySqlCommand(insertLesson_teacher, connection);
 							mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
 							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
@@ -216,13 +216,13 @@ namespace AppConsole
 			
 					}
 					connection.Close();
-					Console.WriteLine("MachineParts Department is loaded!");
+					Console.WriteLine("ElectricalMachines Department is loaded!");
 				}
 				catch(Exception ex)
 				{
 					Console.WriteLine("Виникла помилка під час запису з файлу " + FileName + " до бази даних!" + "\n" + ex.Message);
 				}
 			}
-		}	
+		}
 	}
 }
