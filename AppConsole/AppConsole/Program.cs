@@ -24,6 +24,7 @@ namespace AppConsole
 			
 			Dep_EconomyAndCustoms economyAndCustoms = new Dep_EconomyAndCustoms("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 84);
 			
+			Dep_EconomicalTheory economicalTheory = new Dep_EconomicalTheory("ЕКОНОМІЧНОЇ ТЕОРІЇ ТА ПІДПРИЄМНИЦТВА_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 79);
 			
 			//auditoryTypes.SendDataToDB();
 			//disciplines.SendDataToDB();
@@ -38,6 +39,7 @@ namespace AppConsole
 			//machineParts.SendDataToDB();
 			//mbt.SendDataToDB();
 			//economyAndCustoms.SendDataToDB();
+			economicalTheory.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
