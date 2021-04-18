@@ -8,7 +8,8 @@ using MySql.Data.MySqlClient;
 
 namespace AppConsole
 {
-	public class Dep_ElectricalMachines : ExcelFile
+
+	public class Dep_IndustrialEnergySupply : ExcelFile
 	{
 		int firstRow; // рядок, з якого починаються записи даних у файлі
 		int lastRow; // рядок, на якому закінчуються записи даних у файлі
@@ -30,8 +31,8 @@ namespace AppConsole
 		const char auditoriesColumn = 'I'; // стовпець, з якого беруться запропоновані аудиторії
 		
 		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
-				
-		public Dep_ElectricalMachines(string fileName, int firstRow, int lastRow): base(fileName)
+		
+		public Dep_IndustrialEnergySupply(string fileName, int firstRow, int lastRow): base(fileName)
 		{
 			this.fileName = fileName;
 			
@@ -39,7 +40,7 @@ namespace AppConsole
 			this.lastRow = lastRow;
 		}
 		
-		public override void ReadFromExcelFile()
+				public override void ReadFromExcelFile()
 		{
 			try
 			{
@@ -88,22 +89,22 @@ namespace AppConsole
 					auditories.Add(cellContent);
 				}	
 				close();
-			}			
+			}
 			catch (Exception ex)
             {
 				reading = false;
             	Console.WriteLine("Помилка при отриманні даних з файлу " + FileName + " " + ex.Message);
             }
 		}
-		
+				
 		public override void EvaluateData()
 		{
 			if(reading)
 			{
-				
+				//Console.WriteLine("!!!");
 			}
 		}
-				
+		
 		public override void Load()
 		{
 			if(reading)
@@ -134,7 +135,7 @@ namespace AppConsole
 					connection.Open();
 					
 					mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
-					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "ЕМ");
+					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "ЕПП");
 					mySqlCommand.ExecuteNonQuery();
 						
 					int departmentID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
@@ -161,7 +162,7 @@ namespace AppConsole
 						mySqlCommand = new MySqlCommand(selectLessonID, connection);
 						mySqlCommand.ExecuteNonQuery();
 						
-						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());						
+						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
 						
 						string suggestedAuditories = auditories[i].ToString();
 						
@@ -188,7 +189,7 @@ namespace AppConsole
 								mySqlCommand.ExecuteNonQuery();
 							}	
 						}
-
+						
 						string teachersRecord = teachers[i].ToString();
 						teachersRecord = teachersRecord.TrimEnd(new char [] {',', ';'});
 						//teachersRecord = teachersRecord.Replace(" ", ""); Пробіли є в ПІБ викладачів, вони не видаляються
@@ -211,16 +212,19 @@ namespace AppConsole
 							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
 							mySqlCommand.ExecuteNonQuery();
 						}
-			
 					}
 					connection.Close();
-					Console.WriteLine("ElectricalMachines Department is loaded!");
+					Console.WriteLine("IndustrialEnergySupply Department is loaded!");
+					
 				}
 				catch(Exception ex)
 				{
 					Console.WriteLine("Виникла помилка під час запису з файлу " + FileName + " до бази даних!" + "\n" + ex.Message);
-				}
+				}			
 			}
-		}
+		}				
+				
+				
+				
 	}
 }
