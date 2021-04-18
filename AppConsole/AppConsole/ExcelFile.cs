@@ -79,7 +79,7 @@ namespace AppConsole
         }
         
         //відкриття файлу
-        public void open()
+        public void open(int sheetNumber)
         {
             if (fileName == null)
             {
@@ -91,8 +91,7 @@ namespace AppConsole
                 app = new Excel.Application();
 
                 const int readingMode = 0; // режим читання файлу
-                const int sheetNumber = 1; // інформація в файлах знаходиться на першому листі
-
+				//const int sheetNumber = 1; // інформація в файлах знаходиться на першому листі
                 try
                 {
                     workbook = app.Workbooks.Open(FullPathToFile, readingMode, true); // відкриття книги 

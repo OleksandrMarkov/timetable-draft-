@@ -26,7 +26,7 @@ namespace AppConsole
 		{
 			try
 			{
-				open();
+				open(1);
 				
 				for(int col = getColumnNumber(column), i = row; i <= rowsCount; i++)
 				{

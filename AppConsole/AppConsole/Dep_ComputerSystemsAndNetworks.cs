@@ -9,8 +9,8 @@ using MySql.Data.MySqlClient;
 namespace AppConsole
 {
 
-	public class Dep_EconomicalTheory: ExcelFile
-	{
+	public class Dep_ComputerSystemsAndNetworks : ExcelFile
+	{		
 		int firstRow; // рядок, з якого починаються записи даних у файлі
 		int lastRow; // рядок, на якому закінчуються записи даних у файлі
 		
@@ -32,21 +32,23 @@ namespace AppConsole
 		
 		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
 		
-		public Dep_EconomicalTheory(string fileName, int firstRow, int lastRow): base(fileName)
+		int sheetNumber; // В даному файлі є 2 листи : для денного (№1) та заочного відділень (№2)
+		
+		public Dep_ComputerSystemsAndNetworks(string fileName, int firstRow, int lastRow, int sheetNumber): base(fileName)
 		{
 			this.fileName = fileName;
 			
 			this.firstRow = firstRow;
 			this.lastRow = lastRow;
+			
+			this.sheetNumber = sheetNumber;
 		}
-		
 		
 		public override void ReadFromExcelFile()
 		{
 			try
 			{
-				open(1);
-				
+				open(sheetNumber);
 				// назви дисциплін
 				for(int col = getColumnNumber(disciplinesColumn), i = firstRow; i <= lastRow; i++)
 				{
@@ -54,24 +56,7 @@ namespace AppConsole
 					//Console.WriteLine(cellContent + " " + i);
 					disciplines.Add(cellContent);
 				}
-				
-				//  назви груп
-				/*for(int col = getColumnNumber(groupsColumn), i = firstRow; i <= lastRow; i++)
-				{
-					cellContent = getCellContent(i, col);
-					
-					// в конце перечня груп может стоять случайно забытая запятая, которая все ломает
-					cellContent = cellContent.TrimEnd(',');
-					
-					// прибираються пробіли
-					cellContent = cellContent.Replace(" ", "");
-					
-					// групи розділені ';' або ','
-					string [] groupsInCell = cellContent.Split(new char[] {',', ';'});
-					
-					groups.Add(groupsInCell);
-				}*/
-				
+			
 				//типи занять
 				for(int col = getColumnNumber(typesColumn), i = firstRow; i <= lastRow; i++)
 				{
@@ -108,7 +93,7 @@ namespace AppConsole
 					auditories.Add(cellContent);
 				}	
 				close();
-			}
+			}			
 			catch (Exception ex)
             {
 				reading = false;
@@ -123,7 +108,7 @@ namespace AppConsole
 				//Console.WriteLine("!!!");
 			}
 		}
-
+		
 		public override void Load()
 		{
 			if(reading)
@@ -140,8 +125,7 @@ namespace AppConsole
 					+ "VALUES (@DISCIPLINE_ID, @TYPE, @HOURS, @CONTROL, @DEPARTMENT_ID)";
 					
 					const string selectLessonID = "SELECT lesson_id FROM lesson ORDER BY lesson_id DESC LIMIT 1"; // останнє значення id в Lesson 
-					
-					
+								
 					const string selectTeacherID = "SELECT teacher_id FROM teacher WHERE full_name = @TEACHER";
 					
 					const string selectAuditoryID = "SELECT auditory_id FROM auditory WHERE auditory_name = @AUDITORY";
@@ -155,31 +139,34 @@ namespace AppConsole
 					connection.Open();
 					
 					mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
-					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "ЕТтаП");
+					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "КСтаМ");
 					mySqlCommand.ExecuteNonQuery();
 						
 					int departmentID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
 					
 					for(int i = 0; i < disciplines.Count; i++)
 					{
-						mySqlCommand = new MySqlCommand(selectDisciplineID, connection);
+						/*mySqlCommand = new MySqlCommand(selectDisciplineID, connection);
 						mySqlCommand.Parameters.AddWithValue("@DISCIPLINE", disciplines[i]);
 						mySqlCommand.ExecuteNonQuery();
 						
 						int disciplineID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
 						
-						//Console.WriteLine(i + " " + disciplines[i] + "\t" + disciplineID);
+						Console.WriteLine(i + " " + disciplines[i] + "\t" + disciplineID);*/
+						
+						Console.WriteLine(disciplines[i]);
+						
 						
 						// вставка в Lesson
-						mySqlCommand = new MySqlCommand(insertLessons, connection);
+						/*mySqlCommand = new MySqlCommand(insertLessons, connection);
 						mySqlCommand.Parameters.AddWithValue("@DISCIPLINE_ID", disciplineID);
 						mySqlCommand.Parameters.AddWithValue("@TYPE", lessonsType[i]);
 						mySqlCommand.Parameters.AddWithValue("@HOURS", hours[i]);
 						mySqlCommand.Parameters.AddWithValue("@CONTROL", lessonsControl[i]);
 						mySqlCommand.Parameters.AddWithValue("@DEPARTMENT_ID", departmentID);
-						mySqlCommand.ExecuteNonQuery();
+						mySqlCommand.ExecuteNonQuery();*/
 						
-						mySqlCommand = new MySqlCommand(selectLessonID, connection);
+						/*mySqlCommand = new MySqlCommand(selectLessonID, connection);
 						mySqlCommand.ExecuteNonQuery();
 						
 						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());						
@@ -191,11 +178,8 @@ namespace AppConsole
 						{
 							suggestedAuditories = suggestedAuditories.TrimEnd(new char [] {',', ';'});
 							suggestedAuditories = suggestedAuditories.Replace(" ", "");
-							
-							//Console.WriteLine(suggestedAuditories);
-							
+						
 							string [] separatedAuditories = suggestedAuditories.Split(new char[] {',', ';'});
-							
 							for (int j = 0; j < separatedAuditories.Length; j++)
 							{
 								mySqlCommand = new MySqlCommand(selectAuditoryID, connection);
@@ -211,9 +195,9 @@ namespace AppConsole
 								mySqlCommand.Parameters.AddWithValue("@AUDITORY_ID", auditoryID);
 								mySqlCommand.ExecuteNonQuery();
 							}	
-						}
-						
-						string teachersRecord = teachers[i].ToString();
+						}*/
+
+						/*string teachersRecord = teachers[i].ToString();
 						teachersRecord = teachersRecord.TrimEnd(new char [] {',', ';'});
 						//teachersRecord = teachersRecord.Replace(" ", ""); Пробіли є в ПІБ викладачів, вони не видаляються
 						//Console.WriteLine(teachersRecord);
@@ -225,27 +209,26 @@ namespace AppConsole
 							separatedTeachers[j] = separatedTeachers[j].Trim(); // прибираються можливі зайві пробіли
 							mySqlCommand = new MySqlCommand(selectTeacherID, connection);
 							mySqlCommand.Parameters.AddWithValue("@TEACHER", separatedTeachers[j]);
-							mySqlCommand.ExecuteNonQuery();						
-							int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());					
+							mySqlCommand.ExecuteNonQuery();
+							
+							int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());							
 							//Console.WriteLine(j + "\t" + teacherID + "\t" + separatedTeachers[j]);
-							//Console.WriteLine();
+							
 							mySqlCommand = new MySqlCommand(insertLesson_teacher, connection);
 							mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
 							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
 							mySqlCommand.ExecuteNonQuery();
-						}					
+						}*/
+			
 					}
 					connection.Close();
-					Console.WriteLine("EconomicalTheory Department is loaded!");
+					Console.WriteLine("ComputerSystemsAndNetworks Department is loaded!");
 				}
 				catch(Exception ex)
 				{
 					Console.WriteLine("Виникла помилка під час запису з файлу " + FileName + " до бази даних!" + "\n" + ex.Message);
 				}
-				
 			}
 		}
-		
-		
 	}
 }

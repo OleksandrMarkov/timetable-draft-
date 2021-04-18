@@ -45,7 +45,7 @@ namespace AppConsole
 		{
 			try
 			{
-				open();
+				open(1);
 				// назви аудиторій
 				for(int col = getColumnNumber(namesColumn), i = row; i <= rowsCount; i++)
 				{

@@ -44,7 +44,7 @@ namespace AppConsole
 		{
 			try
 			{
-				open();
+				open(1);
 				// назви дисциплін
 				for(int col = getColumnNumber(disciplinesColumn), i = firstRow; i <= lastRow; i++)
 				{

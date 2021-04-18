@@ -38,7 +38,7 @@ namespace AppConsole
 		{
 			try
 			{
-				open();
+				open(1);
 				// назви кафедр (скорочені)
 				for(int col = getColumnNumber(departmentsColumn), i = row; i <= rowsCount; i++)
 				{

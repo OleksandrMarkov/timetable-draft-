@@ -40,7 +40,7 @@ namespace AppConsole
 		{
 			try
 			{
-				open();
+				open(1);
 				
 
 				// назви дисциплін

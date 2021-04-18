@@ -35,7 +35,7 @@ namespace AppConsole
 		{
 			try
 			{
-				open();
+				open(1);
 				for(int col = getColumnNumber(namesColumn), i = row; i <= rowsCount; i++)
 				{
 					cellContent = getCellContent(i, col);
