@@ -30,19 +30,22 @@ namespace AppConsole
 		
 		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
 		
-		public Dep_EconomyAndCustoms(string fileName, int firstRow, int lastRow): base(fileName)
+		int sheetNumber; // В даному файлі є 2 листи : для денного (№1) та заочного відділень (№2)
+		
+		public Dep_EconomyAndCustoms(string fileName, int firstRow, int lastRow, int sheetNumber): base(fileName)
 		{
 			this.fileName = fileName;
 			
 			this.firstRow = firstRow;
 			this.lastRow = lastRow;
+			this.sheetNumber = sheetNumber;
 		}
 		
 		public override void ReadFromExcelFile()
 		{
 			try
 			{
-				open(1);
+				open(sheetNumber);
 				
 				// назви дисциплін
 				for(int col = getColumnNumber(disciplinesColumn), i = firstRow; i <= lastRow; i++)
@@ -215,7 +218,6 @@ namespace AppConsole
 					}				
 					
 					connection.Close();
-					Console.WriteLine("EconomyAndCustoms Department is loaded!");
 				}
 				catch(Exception ex)
 				{
