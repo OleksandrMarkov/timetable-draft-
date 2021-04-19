@@ -18,7 +18,7 @@ namespace AppConsole
 			//StudyGroups studyGroups = new StudyGroups("StudyGroups.xlsx");
 			
 
-			
+			/*
 			Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
 			
 			Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);
@@ -35,6 +35,9 @@ namespace AppConsole
 			Dep_ComputerSystemsAndNetworks computerSystemsAndNetworks_sheet2 = new Dep_ComputerSystemsAndNetworks("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 23, 2);
 			
 			Dep_MarketingAndLogistics marketingAndLogistics = new Dep_MarketingAndLogistics("МАРКЕТИНГУ ТА ЛОГІСТИКИ_Відомість_денне_ІІ_нова.xls", 15, 72);
+			*/
+			
+			Dep_InternationalEconomicRelations internationalEconomicRelations = new Dep_InternationalEconomicRelations("МІЖНАРОДНИХ ЕКОНОМІЧНИХ ВІДНОСИН_МЕВ-денне 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 57);
 			
 			//auditoryTypes.SendDataToDB();
 			//disciplines.SendDataToDB();
@@ -46,7 +49,7 @@ namespace AppConsole
 			
 			//відомості
 			
-			machineParts.SendDataToDB();
+			/*machineParts.SendDataToDB();
 			mbt.SendDataToDB();
 			economyAndCustoms.SendDataToDB();
 			economicalTheory.SendDataToDB();
@@ -58,6 +61,9 @@ namespace AppConsole
 			Console.WriteLine("ComputerSystemsAndNetworks Department is loaded!");
 			
 			marketingAndLogistics.SendDataToDB();
+			*/
+			
+			internationalEconomicRelations.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
