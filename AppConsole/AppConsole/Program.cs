@@ -19,7 +19,7 @@ namespace AppConsole
 			
 
 			
-		/*	Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
+			Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
 			
 			Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);
 			
@@ -38,7 +38,7 @@ namespace AppConsole
 			Dep_MarketingAndLogistics marketingAndLogistics = new Dep_MarketingAndLogistics("МАРКЕТИНГУ ТА ЛОГІСТИКИ_Відомість_денне_ІІ_нова.xls", 15, 72);
 						
 			Dep_InternationalEconomicRelations internationalEconomicRelations = new Dep_InternationalEconomicRelations("МІЖНАРОДНИХ ЕКОНОМІЧНИХ ВІДНОСИН_МЕВ-денне 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 57);
-			*/
+			
 			Dep_AccountingAndAudit accountingAndAudit_sheet1 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 62, 1);
 			Dep_AccountingAndAudit accountingAndAudit_sheet2 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 64, 2);
 			
@@ -52,7 +52,7 @@ namespace AppConsole
 			
 			//відомості
 			
-			/*machineParts.SendDataToDB();
+			machineParts.SendDataToDB();
 			mbt.SendDataToDB();
 			
 			economyAndCustoms_sheet1.SendDataToDB();
@@ -68,11 +68,11 @@ namespace AppConsole
 			Console.WriteLine("ComputerSystemsAndNetworks Department is loaded!");
 			
 			marketingAndLogistics.SendDataToDB();
-			internationalEconomicRelations.SendDataToDB();*/
+			internationalEconomicRelations.SendDataToDB();
 			
-			//accountingAndAudit_sheet1.SendDataToDB();
-			//accountingAndAudit_sheet2.SendDataToDB();
-			//Console.WriteLine("AccountingAndAudit Department is loaded!");
+			accountingAndAudit_sheet1.SendDataToDB();
+			accountingAndAudit_sheet2.SendDataToDB();
+			Console.WriteLine("AccountingAndAudit Department is loaded!");
 			
 			
 			Console.Write("Press any key to continue . . . ");
