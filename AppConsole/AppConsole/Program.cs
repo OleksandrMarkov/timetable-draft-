@@ -17,9 +17,17 @@ namespace AppConsole
 		 	//Auditories auditories = new Auditories("Auditories.xls");			
 			//StudyGroups studyGroups = new StudyGroups("StudyGroups.xlsx");
 			
+			//auditoryTypes.SendDataToDB();
+			//disciplines.SendDataToDB();
+			//faculties.SendDataToDB();
+			//departments.SendDataToDB();
+			//teachers.SendDataToDB();
+			//auditories.SendDataToDB();
+			//studyGroups.SendDataToDB();
 
+			//відомості
 			
-			Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
+			/*Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
 			
 			Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);
 			
@@ -41,18 +49,10 @@ namespace AppConsole
 			
 			Dep_AccountingAndAudit accountingAndAudit_sheet1 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 62, 1);
 			Dep_AccountingAndAudit accountingAndAudit_sheet2 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 64, 2);
+			*/
+			Dep_AppliedMathematics appliedMathematics = new Dep_AppliedMathematics("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71);
 			
-			//auditoryTypes.SendDataToDB();
-			//disciplines.SendDataToDB();
-			//faculties.SendDataToDB();
-			//departments.SendDataToDB();
-			//teachers.SendDataToDB();
-			//auditories.SendDataToDB();
-			//studyGroups.SendDataToDB();
-			
-			//відомості
-			
-			machineParts.SendDataToDB();
+			/*machineParts.SendDataToDB();
 			mbt.SendDataToDB();
 			
 			economyAndCustoms_sheet1.SendDataToDB();
@@ -72,8 +72,9 @@ namespace AppConsole
 			
 			accountingAndAudit_sheet1.SendDataToDB();
 			accountingAndAudit_sheet2.SendDataToDB();
-			Console.WriteLine("AccountingAndAudit Department is loaded!");
+			Console.WriteLine("AccountingAndAudit Department is loaded!");*/
 			
+			appliedMathematics.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
