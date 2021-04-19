@@ -67,6 +67,7 @@
     <Compile Include="Dep_MachineBuildingTechnology.cs" />
     <Compile Include="Dep_MachineParts.cs" />
     <Compile Include="Dep_MarketingAndLogistics.cs" />
+    <Compile Include="Dep_Psychology.cs" />
     <Compile Include="Disciplines.cs" />
     <Compile Include="ExcelFile.cs" />
     <Compile Include="Faculties.cs" />

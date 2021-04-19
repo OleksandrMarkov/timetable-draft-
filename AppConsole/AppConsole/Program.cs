@@ -49,8 +49,13 @@ namespace AppConsole
 			
 			Dep_AccountingAndAudit accountingAndAudit_sheet1 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 62, 1);
 			Dep_AccountingAndAudit accountingAndAudit_sheet2 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 64, 2);
-			*/
+			
 			Dep_AppliedMathematics appliedMathematics = new Dep_AppliedMathematics("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71);
+			
+			
+			Dep_Psychology psychology = new Dep_Psychology("соціальної роботи та психології Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156);
+			*/
+			
 			
 			/*machineParts.SendDataToDB();
 			mbt.SendDataToDB();
@@ -72,9 +77,13 @@ namespace AppConsole
 			
 			accountingAndAudit_sheet1.SendDataToDB();
 			accountingAndAudit_sheet2.SendDataToDB();
-			Console.WriteLine("AccountingAndAudit Department is loaded!");*/
+			Console.WriteLine("AccountingAndAudit Department is loaded!");
 			
 			appliedMathematics.SendDataToDB();
+			
+			psychology.SendDataToDB();	 
+			 
+			 */
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
