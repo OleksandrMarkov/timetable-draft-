@@ -8,9 +8,8 @@ using MySql.Data.MySqlClient;
 
 namespace AppConsole
 {
-
-	public class Dep_ComputerSystemsAndNetworks : ExcelFile
-	{		
+	public class Dep_MarketingAndLogistics : ExcelFile
+	{
 		int firstRow; // рядок, з якого починаються записи даних у файлі
 		int lastRow; // рядок, на якому закінчуються записи даних у файлі
 		
@@ -31,28 +30,25 @@ namespace AppConsole
 		const char auditoriesColumn = 'I'; // стовпець, з якого беруться запропоновані аудиторії
 		
 		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
-		
-		int sheetNumber; // В даному файлі є 2 листи : для денного (№1) та заочного відділень (№2)
-		
-		public Dep_ComputerSystemsAndNetworks(string fileName, int firstRow, int lastRow, int sheetNumber): base(fileName)
+				
+		public Dep_MarketingAndLogistics(string fileName, int firstRow, int lastRow): base(fileName)
 		{
 			this.fileName = fileName;
 			
 			this.firstRow = firstRow;
 			this.lastRow = lastRow;
-			
-			this.sheetNumber = sheetNumber;
 		}
 		
 		public override void ReadFromExcelFile()
 		{
 			try
 			{
-				open(sheetNumber);
+				open(1);
 				// назви дисциплін
 				for(int col = getColumnNumber(disciplinesColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
+					cellContent = cellContent.Trim();
 					//Console.WriteLine(cellContent + " " + i);
 					disciplines.Add(cellContent);
 				}
@@ -61,7 +57,6 @@ namespace AppConsole
 				for(int col = getColumnNumber(typesColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
-					cellContent = cellContent.Trim();
 					lessonsType.Add(cellContent);
 				}
 				
@@ -69,7 +64,19 @@ namespace AppConsole
 				for(int col = getColumnNumber(hoursColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
-					int h = Convert.ToInt32(cellContent);
+					
+					int a, h;
+					bool b = int.TryParse(cellContent, out a);
+					
+					if (b)
+					{
+						h = Convert.ToInt32(cellContent);
+					}
+					else
+					{
+						h = 0;
+					}
+					
 					hours.Add(h);
 				}
 				
@@ -104,10 +111,15 @@ namespace AppConsole
 		
 		public override void EvaluateData()
 		{
-			if(reading)
+			/*if(reading)
 			{
-				//Console.WriteLine("!!!");
+				Console.WriteLine("!!!");
 			}
+			else
+			{
+				Console.WriteLine("???");
+			}
+			*/
 		}
 		
 		public override void Load()
@@ -140,7 +152,7 @@ namespace AppConsole
 					connection.Open();
 					
 					mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
-					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "КСтаМ");
+					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "Марк.та Лог.");
 					mySqlCommand.ExecuteNonQuery();
 						
 					int departmentID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
@@ -153,8 +165,7 @@ namespace AppConsole
 						
 						int disciplineID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
 						
-						//Console.WriteLine(i + " " + disciplines[i] + "\t" + disciplineID);	
-						//Console.WriteLine(disciplines[i]);
+						//Console.WriteLine(i + " " + disciplines[i] + "\t" + disciplineID);
 						
 						// вставка в Lesson
 						mySqlCommand = new MySqlCommand(insertLessons, connection);
@@ -168,7 +179,7 @@ namespace AppConsole
 						mySqlCommand = new MySqlCommand(selectLessonID, connection);
 						mySqlCommand.ExecuteNonQuery();
 						
-						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
+						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());						
 						
 						string suggestedAuditories = auditories[i].ToString();
 						
@@ -220,12 +231,13 @@ namespace AppConsole
 						}
 					}
 					connection.Close();
+					Console.WriteLine("MarketingAndLogistics Department is loaded!");
 				}
 				catch(Exception ex)
 				{
 					Console.WriteLine("Виникла помилка під час запису з файлу " + FileName + " до бази даних!" + "\n" + ex.Message);
 				}
-			}
+			}		
 		}
 	}
 }
