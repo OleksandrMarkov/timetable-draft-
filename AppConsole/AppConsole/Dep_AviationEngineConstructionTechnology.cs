@@ -8,7 +8,8 @@ using MySql.Data.MySqlClient;
 
 namespace AppConsole
 {
-	public class Dep_Psychology : ExcelFile
+
+	public class Dep_AviationEngineConstructionTechnology : ExcelFile
 	{
 		int firstRow; // рядок, з якого починаються записи даних у файлі
 		int lastRow; // рядок, на якому закінчуються записи даних у файлі
@@ -31,14 +32,13 @@ namespace AppConsole
 		
 		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
 				
-		public Dep_Psychology(string fileName, int firstRow, int lastRow): base(fileName)
+		public Dep_AviationEngineConstructionTechnology(string fileName, int firstRow, int lastRow): base(fileName)
 		{
 			this.fileName = fileName;
 			
 			this.firstRow = firstRow;
 			this.lastRow = lastRow;
 		}
-		
 		
 		public override void ReadFromExcelFile()
 		{
@@ -64,17 +64,7 @@ namespace AppConsole
 				for(int col = getColumnNumber(hoursColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
-					
-					char comma = ',';
-					int index = cellContent.IndexOf(comma);
-					
-					if(index != -1)
-					{
-						cellContent = cellContent.Substring(0, cellContent.Length - index - 1);
-					}
-					
 					int h = Convert.ToInt32(cellContent);
-					
 					hours.Add(h);
 				}
 				
@@ -116,7 +106,7 @@ namespace AppConsole
 			else
 			{
 				Console.WriteLine("???");
-			}*/
+			}*/	
 		}
 		
 		public override void Load()
@@ -149,7 +139,7 @@ namespace AppConsole
 					connection.Open();
 					
 					mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
-					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "СоцРтаП");
+					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "ТАД");
 					mySqlCommand.ExecuteNonQuery();
 						
 					int departmentID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
@@ -225,17 +215,18 @@ namespace AppConsole
 							mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
 							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
 							mySqlCommand.ExecuteNonQuery();
-						}
-			
+						}	
 					}
 					connection.Close();
-					Console.WriteLine("Psychology Department is loaded!");
+					Console.WriteLine("AviationEngineConstructionTechnology Department is loaded!");
 				}
 				catch(Exception ex)
 				{
 					Console.WriteLine("Виникла помилка під час запису з файлу " + FileName + " до бази даних!" + "\n" + ex.Message);
 				}
 			}
-		}		
+		}
+		
+		
 	}
 }

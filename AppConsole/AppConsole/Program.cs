@@ -52,9 +52,10 @@ namespace AppConsole
 			
 			Dep_AppliedMathematics appliedMathematics = new Dep_AppliedMathematics("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71);
 			
-			
 			Dep_Psychology psychology = new Dep_Psychology("соціальної роботи та психології Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156);
 			*/
+			
+			Dep_AviationEngineConstructionTechnology aviationEngineConstructionTechnology = new Dep_AviationEngineConstructionTechnology("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx" ,15, 65);
 			
 			
 			/*machineParts.SendDataToDB();
@@ -81,9 +82,9 @@ namespace AppConsole
 			
 			appliedMathematics.SendDataToDB();
 			
-			psychology.SendDataToDB();	 
-			 
-			 */
+			psychology.SendDataToDB();*/
+			
+			aviationEngineConstructionTechnology.SendDataToDB();
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
