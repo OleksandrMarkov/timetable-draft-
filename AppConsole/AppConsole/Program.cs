@@ -27,7 +27,7 @@ namespace AppConsole
 
 			//відомості
 			
-			/*Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
+			Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
 			
 			Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);
 			
@@ -53,12 +53,14 @@ namespace AppConsole
 			Dep_AppliedMathematics appliedMathematics = new Dep_AppliedMathematics("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71);
 			
 			Dep_Psychology psychology = new Dep_Psychology("соціальної роботи та психології Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156);
-			*/
 			
-			Dep_AviationEngineConstructionTechnology aviationEngineConstructionTechnology = new Dep_AviationEngineConstructionTechnology("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx" ,15, 65);
+			Dep_AviationEngineConstructionTechnology aviationEngineConstructionTechnology = new Dep_AviationEngineConstructionTechnology("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx", 15, 65);
+						
+			Dep_Tourism tourism_sheet1 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 1);
+			Dep_Tourism tourism_sheet2 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 2);
 			
 			
-			/*machineParts.SendDataToDB();
+			machineParts.SendDataToDB();
 			mbt.SendDataToDB();
 			
 			economyAndCustoms_sheet1.SendDataToDB();
@@ -82,9 +84,13 @@ namespace AppConsole
 			
 			appliedMathematics.SendDataToDB();
 			
-			psychology.SendDataToDB();*/
+			psychology.SendDataToDB();
 			
 			aviationEngineConstructionTechnology.SendDataToDB();
+			
+			tourism_sheet1.SendDataToDB();
+			tourism_sheet2.SendDataToDB();
+			Console.WriteLine("Tourism Department is loaded!");			
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
