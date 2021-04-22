@@ -59,6 +59,7 @@
     <Compile Include="Dep_AccountingAndAudit.cs" />
     <Compile Include="Dep_AppliedMathematics.cs" />
     <Compile Include="Dep_AviationEngineConstructionTechnology.cs" />
+    <Compile Include="Dep_ComputerSoftware.cs" />
     <Compile Include="Dep_ComputerSystemsAndNetworks.cs" />
     <Compile Include="Dep_EconomicalTheory.cs" />
     <Compile Include="Dep_EconomyAndCustoms.cs" />
