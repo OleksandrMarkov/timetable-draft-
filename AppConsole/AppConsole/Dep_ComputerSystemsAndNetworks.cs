@@ -15,7 +15,7 @@ namespace AppConsole
 		int lastRow; // рядок, на якому закінчуються записи даних у файлі
 		
 		ArrayList disciplines = new ArrayList();
-		//ArrayList groups = new ArrayList();
+		ArrayList groups = new ArrayList();
 		ArrayList lessonsType = new ArrayList();
 		ArrayList hours = new ArrayList();
 		ArrayList lessonsControl = new ArrayList();
@@ -23,7 +23,7 @@ namespace AppConsole
 		ArrayList auditories = new ArrayList();
 		
 		const char disciplinesColumn = 'B'; // стовпець, з якого беруться назви дисциплін
-		//const char groupsColumn = 'C'; // стовпець, з якого беруться скорочені назви груп
+		const char groupsColumn = 'C'; // стовпець, з якого беруться скорочені назви груп
 		const char typesColumn = 'D'; // стовпець, з якого беруться типи занять 
 		const char hoursColumn = 'E'; // стовпець, з якого беруться кількості годин на заняття 
 		const char controlColumn = 'G'; // стовпець, з якого беруться типи контролю
@@ -55,6 +55,13 @@ namespace AppConsole
 					cellContent = getCellContent(i, col);
 					//Console.WriteLine(cellContent + " " + i);
 					disciplines.Add(cellContent);
+				}
+				
+				// назви груп
+				for(int col = getColumnNumber(groupsColumn), i = firstRow; i <= lastRow; i++)
+				{
+					cellContent = getCellContent(i, col);
+					groups.Add(cellContent);
 				}
 			
 				//типи занять
@@ -218,7 +225,48 @@ namespace AppConsole
 							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
 							mySqlCommand.ExecuteNonQuery();
 						}
+						
+						
+						const string insertStudy_group = "INSERT INTO study_group (department_id, full_name, study_group_code) "
+						+ "VALUES (@DEPARTMENT_ID, @NAME, @CODE)";
+						
+						// запис груп в т-цю БД Study_Group
+						string groupsInCell = groups[i].ToString();
+						if(groupsInCell.Length != 0)
+						{
+							groupsInCell = groupsInCell.Trim();
+							groupsInCell = groupsInCell.TrimEnd(new char [] {',', ';'});
+							groupsInCell = groupsInCell.Replace(" ", "");
+							groupsInCell = groupsInCell.Replace("\n", "");
+							
+							//Console.WriteLine(groupsInCell + "!");
+							string [] separatedGroups = groupsInCell.Split(new char[] {',', ';'});
+							for (int j = 0; j < separatedGroups.Length; j++)
+							{
+								//коди груп
+								int hyphen = separatedGroups[j].IndexOf('-');
+								string code = separatedGroups[j].Substring(0, hyphen + 2);
+								
+								//Console.WriteLine(separatedGroups[j]);
+								mySqlCommand = new MySqlCommand(insertStudy_group, connection);
+								mySqlCommand.Parameters.AddWithValue("@DEPARTMENT_ID", departmentID);
+								mySqlCommand.Parameters.AddWithValue("@NAME", separatedGroups[j]);
+								mySqlCommand.Parameters.AddWithValue("@CODE", code);
+								mySqlCommand.ExecuteNonQuery();				
+							}
 					}
+					}
+					const string createTemporaryTable = "CREATE TEMPORARY TABLE study_group2 AS (SELECT * FROM study_group GROUP BY full_name)";
+	                mySqlCommand = new MySqlCommand(createTemporaryTable, connection);
+	                mySqlCommand.ExecuteNonQuery();
+	                    	
+	                const string deleteTrash = "DELETE FROM study_group WHERE study_group.study_group_id NOT IN (SELECT study_group2.study_group_id FROM study_group2)";
+	                mySqlCommand = new MySqlCommand(deleteTrash, connection);
+	                mySqlCommand.ExecuteNonQuery();
+	                
+	                const string dropTemporaryTable = "DROP TABLE study_group2";
+	                mySqlCommand = new MySqlCommand(dropTemporaryTable, connection);
+	                mySqlCommand.ExecuteNonQuery();										
 					connection.Close();
 				}
 				catch(Exception ex)
