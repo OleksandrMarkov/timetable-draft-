@@ -70,8 +70,10 @@ namespace AppConsole
 			Console.WriteLine("EconomyAndCustoms Department is loaded!");*/
 			
 			//economicalTheory.SendDataToDB();
-			/*electricalMachines.SendDataToDB();
-			industrialEnergySupply.SendDataToDB();
+			
+			//electricalMachines.SendDataToDB();
+			
+			/*industrialEnergySupply.SendDataToDB();
 			
 			computerSystemsAndNetworks_sheet1.SendDataToDB();
 			computerSystemsAndNetworks_sheet2.SendDataToDB();
