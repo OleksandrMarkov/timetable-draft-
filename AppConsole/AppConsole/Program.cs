@@ -79,8 +79,8 @@ namespace AppConsole
 			computerSystemsAndNetworks_sheet2.SendDataToDB();
 			Console.WriteLine("ComputerSystemsAndNetworks Department is loaded!");*/
 			
-			/*marketingAndLogistics.SendDataToDB();
-			internationalEconomicRelations.SendDataToDB();
+			marketingAndLogistics.SendDataToDB();
+			/*internationalEconomicRelations.SendDataToDB();
 			
 			accountingAndAudit_sheet1.SendDataToDB();
 			accountingAndAudit_sheet2.SendDataToDB();
