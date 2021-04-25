@@ -65,12 +65,12 @@ namespace AppConsole
 			//machineParts.SendDataToDB();
 			//mbt.SendDataToDB();
 			
-			economyAndCustoms_sheet1.SendDataToDB();
+			/*economyAndCustoms_sheet1.SendDataToDB();
 			economyAndCustoms_sheet2.SendDataToDB();
-			Console.WriteLine("EconomyAndCustoms Department is loaded!");
+			Console.WriteLine("EconomyAndCustoms Department is loaded!");*/
 			
-			/*economicalTheory.SendDataToDB();
-			electricalMachines.SendDataToDB();
+			//economicalTheory.SendDataToDB();
+			/*electricalMachines.SendDataToDB();
 			industrialEnergySupply.SendDataToDB();
 			
 			computerSystemsAndNetworks_sheet1.SendDataToDB();
