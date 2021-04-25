@@ -73,9 +73,9 @@ namespace AppConsole
 			
 			//electricalMachines.SendDataToDB();
 			
-			/*industrialEnergySupply.SendDataToDB();
+			//industrialEnergySupply.SendDataToDB();
 			
-			computerSystemsAndNetworks_sheet1.SendDataToDB();
+			/*computerSystemsAndNetworks_sheet1.SendDataToDB();
 			computerSystemsAndNetworks_sheet2.SendDataToDB();
 			Console.WriteLine("ComputerSystemsAndNetworks Department is loaded!");
 			
