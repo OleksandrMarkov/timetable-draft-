@@ -63,13 +63,13 @@ namespace AppConsole
 			
 			
 			//machineParts.SendDataToDB();
-			/*mbt.SendDataToDB();
+			//mbt.SendDataToDB();
 			
 			economyAndCustoms_sheet1.SendDataToDB();
 			economyAndCustoms_sheet2.SendDataToDB();
 			Console.WriteLine("EconomyAndCustoms Department is loaded!");
 			
-			economicalTheory.SendDataToDB();
+			/*economicalTheory.SendDataToDB();
 			electricalMachines.SendDataToDB();
 			industrialEnergySupply.SendDataToDB();
 			

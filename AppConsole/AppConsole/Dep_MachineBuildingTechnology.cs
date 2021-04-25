@@ -51,21 +51,11 @@ namespace AppConsole
 					disciplines.Add(cellContent);
 				}
 
-				//  назви груп
+				// назви груп
 				for(int col = getColumnNumber(groupsColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
-					
-					// в конце перечня груп может стоять случайно забытая запятая, которая все ломает
-					cellContent = cellContent.TrimEnd(',');
-					
-					// прибираються пробіли
-					cellContent = cellContent.Replace(" ", "");
-					
-					// групи розділені ';' або ','
-					string [] groupsInCell = cellContent.Split(new char[] {',', ';'});
-					
-					groups.Add(groupsInCell);
+					groups.Add(cellContent);
 				}
 
 				//типи занять
@@ -214,7 +204,41 @@ namespace AppConsole
 							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
 							mySqlCommand.ExecuteNonQuery();
 						}
+						
+						const string insertStudy_group = "INSERT INTO study_group (department_id, full_name, study_group_code) "
+						+ "VALUES (@DEPARTMENT_ID, @NAME, @CODE)";
+						
+						// запис груп в т-цю БД Study_Group
+						string groupsInCell = groups[i].ToString();
+						if(groupsInCell.Length != 0)
+						{
+							groupsInCell = groupsInCell.TrimEnd(new char [] {',', ';'});
+							groupsInCell = groupsInCell.Replace(" ", "");
+							
+							string [] separatedGroups = groupsInCell.Split(new char[] {',', ';'});
+							for (int j = 0; j < separatedGroups.Length; j++)
+							{
+								//коди груп
+								int hyphen = separatedGroups[j].IndexOf('-');
+								string code = separatedGroups[j].Substring(0, hyphen + 2);
+								
+								mySqlCommand = new MySqlCommand(insertStudy_group, connection);
+								mySqlCommand.Parameters.AddWithValue("@DEPARTMENT_ID", departmentID);
+								mySqlCommand.Parameters.AddWithValue("@NAME", separatedGroups[j]);
+								mySqlCommand.Parameters.AddWithValue("@CODE", code);
+								mySqlCommand.ExecuteNonQuery();					
+							}
+						}	
 					}
+					
+					const string createTemporaryTable = "CREATE TEMPORARY TABLE study_group2 AS (SELECT * FROM study_group GROUP BY full_name)";
+	                mySqlCommand = new MySqlCommand(createTemporaryTable, connection);
+	                mySqlCommand.ExecuteNonQuery();
+	                    	
+	                const string deleteTrash = "DELETE FROM study_group WHERE study_group.study_group_id NOT IN (SELECT study_group2.study_group_id FROM study_group2)";
+	                mySqlCommand = new MySqlCommand(deleteTrash, connection);
+	                mySqlCommand.ExecuteNonQuery();				
+					
 					connection.Close();
 					Console.WriteLine("MachineBuildingTechnology Department is loaded!");
 				}

@@ -140,9 +140,6 @@ namespace AppConsole
 					const string insertLesson_auditory = "INSERT INTO lesson_auditory (lesson_id, auditory_id) "
 					+ "VALUES (@LESSON_ID, @AUDITORY_ID)";
 					
-					const string insertStudy_group = "INSERT INTO study_group (department_id, full_name, study_group_code) "
-						+ "VALUES (@DEPARTMENT_ID, @NAME, @CODE)";
-					
 					connection.Open();
 					
 					mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
@@ -224,6 +221,8 @@ namespace AppConsole
 							mySqlCommand.ExecuteNonQuery();
 						}
 						
+						const string insertStudy_group = "INSERT INTO study_group (department_id, full_name, study_group_code) "
+						+ "VALUES (@DEPARTMENT_ID, @NAME, @CODE)";
 						
 						// запис груп в т-цю БД Study_Group
 						string groupsInCell = groups[i].ToString();
@@ -246,8 +245,7 @@ namespace AppConsole
 								mySqlCommand.ExecuteNonQuery();					
 							}
 						}
-					}
-					
+					}		
 					const string createTemporaryTable = "CREATE TEMPORARY TABLE study_group2 AS (SELECT * FROM study_group GROUP BY full_name)";
 	                mySqlCommand = new MySqlCommand(createTemporaryTable, connection);
 	                mySqlCommand.ExecuteNonQuery();
