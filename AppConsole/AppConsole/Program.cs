@@ -27,7 +27,7 @@ namespace AppConsole
 
 			//відомості
 			
-			/*Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
+			Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);
 			
 			Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);
 			
@@ -58,12 +58,12 @@ namespace AppConsole
 						
 			Dep_Tourism tourism_sheet1 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 1);
 			Dep_Tourism tourism_sheet2 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 2);
-			*/
 			
 			Dep_ComputerSoftware computerSoftware = new Dep_ComputerSoftware("Програмних_засобів_26-12-19_Форма 44_ ВIДОМIСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 225);
 			
-			/*machineParts.SendDataToDB();
-			mbt.SendDataToDB();
+			
+			//machineParts.SendDataToDB();
+			/*mbt.SendDataToDB();
 			
 			economyAndCustoms_sheet1.SendDataToDB();
 			economyAndCustoms_sheet2.SendDataToDB();
@@ -92,9 +92,10 @@ namespace AppConsole
 			
 			tourism_sheet1.SendDataToDB();
 			tourism_sheet2.SendDataToDB();
-			Console.WriteLine("Tourism Department is loaded!");*/
+			Console.WriteLine("Tourism Department is loaded!");
 
 			computerSoftware.SendDataToDB();
+			*/
 			
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
