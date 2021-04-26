@@ -232,8 +232,11 @@ namespace AppConsole
 						string groupsInCell = groups[i].ToString();
 						if(groupsInCell.Length != 0)
 						{
+							groupsInCell = groupsInCell.Trim();
 							groupsInCell = groupsInCell.TrimEnd(new char [] {',', ';'});
 							groupsInCell = groupsInCell.Replace(" ", "");
+							groupsInCell = groupsInCell.Replace("\n", "");		
+							
 							string [] separatedGroups = groupsInCell.Split(new char[] {',', ';'});
 							for (int j = 0; j < separatedGroups.Length; j++)
 							{

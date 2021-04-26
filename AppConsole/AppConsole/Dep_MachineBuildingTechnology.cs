@@ -211,9 +211,11 @@ namespace AppConsole
 						// запис груп в т-цю БД Study_Group
 						string groupsInCell = groups[i].ToString();
 						if(groupsInCell.Length != 0)
-						{
+						{	
+							groupsInCell = groupsInCell.Trim();
 							groupsInCell = groupsInCell.TrimEnd(new char [] {',', ';'});
 							groupsInCell = groupsInCell.Replace(" ", "");
+							groupsInCell = groupsInCell.Replace("\n", "");
 							
 							string [] separatedGroups = groupsInCell.Split(new char[] {',', ';'});
 							for (int j = 0; j < separatedGroups.Length; j++)
@@ -237,7 +239,11 @@ namespace AppConsole
 	                    	
 	                const string deleteTrash = "DELETE FROM study_group WHERE study_group.study_group_id NOT IN (SELECT study_group2.study_group_id FROM study_group2)";
 	                mySqlCommand = new MySqlCommand(deleteTrash, connection);
-	                mySqlCommand.ExecuteNonQuery();				
+	                mySqlCommand.ExecuteNonQuery();
+
+	                const string dropTemporaryTable = "DROP TABLE study_group2";
+	                mySqlCommand = new MySqlCommand(dropTemporaryTable, connection);
+	                mySqlCommand.ExecuteNonQuery();	                
 					
 					connection.Close();
 					Console.WriteLine("MachineBuildingTechnology Department is loaded!");
