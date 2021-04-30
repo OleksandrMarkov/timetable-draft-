@@ -16,7 +16,7 @@ namespace AppConsole
 		ArrayList departments = new ArrayList();
 		ArrayList notUsed = new ArrayList();
 		ArrayList places = new ArrayList();
-		
+		ArrayList corpsNumbers = new ArrayList();
 		
 		const char namesColumn = 'E'; // стовпець, з якого беруться назви аудиторій
 		const char typesColumn = 'H'; // стовпець, з якого беруться типи аудиторій
@@ -71,6 +71,25 @@ namespace AppConsole
 					else
 					{	
 						names.Add(trimmedCellContent);
+						// якщо назва аудиторії починається з "4" та номер є трьохзначним числом ("400", "440а", ...)
+						// корпус = 4
+						if (trimmedCellContent.StartsWith("4") && trimmedCellContent.Length > 2 &&
+						    Char.IsDigit(trimmedCellContent[1]) && Char.IsDigit(trimmedCellContent[2]))
+						{
+							corpsNumbers.Add(4);
+						}
+						else
+						{
+							if (trimmedCellContent.StartsWith("5") && trimmedCellContent.Length > 2 &&
+						    Char.IsDigit(trimmedCellContent[1]) && Char.IsDigit(trimmedCellContent[2]))
+							{
+								corpsNumbers.Add(5);
+							}
+							else
+							{
+								corpsNumbers.Add(null);
+							}							
+						}
 					}
 				}
 
@@ -204,7 +223,7 @@ namespace AppConsole
 					const string selectAuditoryTypeID = "SELECT auditory_type_id FROM auditory_type WHERE auditory_type_name = @TYPE";
 					const string selectDepartmentID = "SELECT department_id FROM department WHERE full_name = @DEPARTMENT_NAME";					
 					
-					const string insertAuditories = "INSERT INTO auditory (department_id, auditory_name, not_used, type_auditory, count_of_places) VALUES(@ID, @AUDITORY_NAME, @NOT_USED, @TYPE_ID, @COUNT)";
+					const string insertAuditories = "INSERT INTO auditory (department_id, auditory_name, not_used, type_auditory, count_of_places, corps_number) VALUES(@ID, @AUDITORY_NAME, @NOT_USED, @TYPE_ID, @COUNT, @CORPS_NUMBER)";
 					
 					connection.Open();
 					
@@ -229,6 +248,7 @@ namespace AppConsole
 	                    mySqlCommand.Parameters.AddWithValue("@NOT_USED", notUsed[i]);
 	                    mySqlCommand.Parameters.AddWithValue("@TYPE_ID", auditoryTypeID);
 	                    mySqlCommand.Parameters.AddWithValue("@COUNT", places[i]);
+	                    mySqlCommand.Parameters.AddWithValue("@CORPS_NUMBER", corpsNumbers[i]);
 	                    mySqlCommand.ExecuteNonQuery();	
 					}
 					
