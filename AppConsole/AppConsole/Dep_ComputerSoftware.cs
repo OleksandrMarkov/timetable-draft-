@@ -236,7 +236,7 @@ namespace AppConsole
 							mySqlCommand.ExecuteNonQuery();
 						}
 						
-						const string insertStudy_group = "INSERT INTO study_group (department_id, full_name, study_group_code) "
+						/*const string insertStudy_group = "INSERT INTO study_group (department_id, full_name, study_group_code) "
 						+ "VALUES (@DEPARTMENT_ID, @NAME, @CODE)";
 						
 						// запис груп в т-цю БД Study_Group
@@ -264,10 +264,10 @@ namespace AppConsole
 								mySqlCommand.ExecuteNonQuery();				
 							}
 							//Console.WriteLine();
-						}			
+						}*/			
 					}
 					
-					const string createTemporaryTable = "CREATE TEMPORARY TABLE study_group2 AS (SELECT * FROM study_group GROUP BY full_name)";
+					/*const string createTemporaryTable = "CREATE TEMPORARY TABLE study_group2 AS (SELECT * FROM study_group GROUP BY full_name)";
 	                mySqlCommand = new MySqlCommand(createTemporaryTable, connection);
 	                mySqlCommand.ExecuteNonQuery();
 	                    	
@@ -277,7 +277,7 @@ namespace AppConsole
 	               
 	                const string dropTemporaryTable = "DROP TABLE study_group2";
 	                mySqlCommand = new MySqlCommand(dropTemporaryTable, connection);
-	                mySqlCommand.ExecuteNonQuery();
+	                mySqlCommand.ExecuteNonQuery();*/
 					
 					connection.Close();
 					Console.WriteLine("ComputerSoftware Department is loaded!");
