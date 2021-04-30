@@ -17,6 +17,7 @@ namespace AppConsole
 		
 		ArrayList departments = new ArrayList();
 		ArrayList names = new ArrayList();
+		ArrayList courseNumbers = new ArrayList();
 		ArrayList countOfStudents = new ArrayList();		
 		
 		ArrayList codes = new ArrayList();
@@ -29,6 +30,8 @@ namespace AppConsole
 		const char departmentsColumn = 'A'; // стовпець, з якого беруться назви кафедр (скорочені)
 		const char namesColumn = 'B'; // стовпець, з якого беруться назви груп
 		const char countOfStudentsColumn = 'C'; // стовпець, з якого беруться кількості студентів в групах
+		const char courseNumbersColumn = 'D'; // стовпець, з якого беруться номери курсів
+		
 		
 		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
 		
@@ -50,6 +53,7 @@ namespace AppConsole
 					}					
 					else
 					{
+						cellContent = cellContent.Replace("*", "");
 						departments.Add(cellContent);
 					}
 				}
@@ -62,20 +66,26 @@ namespace AppConsole
 					if(string.IsNullOrEmpty(cellContent))
 					{
 						missingValuesOfNames.Add(i);
-					}		
-
-					if(names.Contains(cellContent))
-					{
-						duplicatesOfNames.Add(i, cellContent);
 					}
 					else
 					{
-						names.Add(cellContent);
+						if(names.Contains(cellContent))
+						{
+							duplicatesOfNames.Add(i, cellContent);
+						}
 						
+						names.Add(cellContent);
 						//коди груп
 						int hyphen = cellContent.IndexOf('-');
 						codes.Add(cellContent.Substring(0, hyphen + 2));
 					}
+				}
+				
+				// курси
+				for(int col = getColumnNumber(courseNumbersColumn), i = row; i <= rowsCount; i++)
+				{
+					cellContent = getCellContent(i, col);
+					courseNumbers.Add(cellContent);
 				}
 				
 				// кількості студентів в групах
@@ -85,7 +95,7 @@ namespace AppConsole
 											
 					if(string.IsNullOrEmpty(cellContent))
 					{
-						countOfStudents.Add(0);
+						countOfStudents.Add(null);
 					}					
 					else
 					{
@@ -105,7 +115,13 @@ namespace AppConsole
 		{
 			if(reading)
 			{
-				if(missingValuesOfNames.Count != 0)
+				/*Console.WriteLine(names.Count);
+				Console.WriteLine(codes.Count);
+				Console.WriteLine(courseNumbers.Count);
+				Console.WriteLine(countOfStudents.Count);
+				*/
+				
+				/*if(missingValuesOfNames.Count != 0)
 				{
 						Console.Write("В файлі " + FileName + " пропущено назви груп в рядках: ");
 		                foreach (int value in missingValuesOfNames)
@@ -133,7 +149,7 @@ namespace AppConsole
                     	Console.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value);
                     }
                         Console.WriteLine();
-                }					
+                }*/					
 			}
 		}
 		
@@ -145,8 +161,9 @@ namespace AppConsole
                 {
 	                MySqlConnection connection = DBUtils.GetDBConnection();
 	                    		
-		            const string selectDepartmentID = "SELECT department_id FROM department WHERE short_name = @DEPARTMENT";
-		            const string insertStudyGroups = "INSERT INTO study_group (department_id, study_group_code, full_name, count_of_students) VALUES(@ID, @CODE, @NAME, @COUNT)";
+		            //const string selectDepartmentID = "SELECT department_id FROM department WHERE short_name = @DEPARTMENT";
+		            const string selectDepartmentID = "SELECT department_id FROM department WHERE full_name = @DEPARTMENT";
+		            const string insertStudyGroups = "INSERT INTO study_group (department_id, study_group_code, full_name, course_number, count_of_students) VALUES(@ID, @CODE, @NAME, @COURSE, @COUNT)";
 	                MySqlCommand mySqlCommand;
 		                    	
 		            connection.Open();
@@ -158,15 +175,18 @@ namespace AppConsole
 			            mySqlCommand.ExecuteNonQuery();
 			                    		
 			            int departmentID =  Convert.ToInt32( mySqlCommand.ExecuteScalar().ToString() );
-			                    		
+			           // Console.WriteLine(departmentID);
+			            
 						mySqlCommand = new MySqlCommand(insertStudyGroups, connection);
 						mySqlCommand.Parameters.AddWithValue("@ID", departmentID);
 						mySqlCommand.Parameters.AddWithValue("@CODE", codes[i]);
 						mySqlCommand.Parameters.AddWithValue("@NAME", names[i]);
+						mySqlCommand.Parameters.AddWithValue("@COURSE", courseNumbers[i]);
 						mySqlCommand.Parameters.AddWithValue("@COUNT", countOfStudents[i]);	                    		
 						mySqlCommand.ExecuteNonQuery();
-					/*	Console.WriteLine(departmentID + " " + groupCodes[i] + " " + groupNamesInExcelFileStudyGroups[i] +
-						" " + countOfStudentsInExcelFileStudyGroups[i]); */
+					
+						/*Console.WriteLine(departmentID + " " + codes[i] + " " + names[i] +
+						" " + countOfStudents[i]);*/
 	            	 }
 	                 connection.Close();
 	                 
