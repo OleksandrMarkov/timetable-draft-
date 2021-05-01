@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 30 2021 г., 20:45
+-- Время создания: Май 01 2021 г., 13:19
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.4.5
 
@@ -5042,6 +5042,18 @@ INSERT INTO `lesson_auditory` (`lesson_auditory_id`, `lesson_id`, `auditory_id`)
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `lesson_group`
+--
+
+CREATE TABLE `lesson_group` (
+  `lesson_group_id` int(11) NOT NULL,
+  `lesson_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `lesson_teacher`
 --
 
@@ -6381,6 +6393,20 @@ INSERT INTO `lesson_teacher` (`lesson_teacher_id`, `lesson_id`, `teacher_id`) VA
 (1323, 1258, 637),
 (1324, 1259, 646),
 (1325, 1260, 646);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `lesson_time`
+--
+
+CREATE TABLE `lesson_time` (
+  `lesson_time_id` int(11) NOT NULL,
+  `lesson_id` int(11) NOT NULL,
+  `number` int(11) NOT NULL,
+  `type_of_week` int(11) NOT NULL,
+  `day_of_week` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -9152,7 +9178,9 @@ ALTER TABLE `lesson`
   ADD KEY `department_id_3` (`department_id`) USING BTREE,
   ADD KEY `discipline_id` (`discipline_id`),
   ADD KEY `lesson_id` (`lesson_id`),
-  ADD KEY `lesson_id_2` (`lesson_id`);
+  ADD KEY `lesson_id_2` (`lesson_id`),
+  ADD KEY `lesson_id_3` (`lesson_id`),
+  ADD KEY `lesson_id_4` (`lesson_id`);
 
 --
 -- Индексы таблицы `lesson_auditory`
@@ -9163,6 +9191,14 @@ ALTER TABLE `lesson_auditory`
   ADD KEY `auditory_id` (`auditory_id`);
 
 --
+-- Индексы таблицы `lesson_group`
+--
+ALTER TABLE `lesson_group`
+  ADD PRIMARY KEY (`lesson_group_id`),
+  ADD KEY `group_id` (`group_id`),
+  ADD KEY `lesson_id_3` (`lesson_id`) USING BTREE;
+
+--
 -- Индексы таблицы `lesson_teacher`
 --
 ALTER TABLE `lesson_teacher`
@@ -9171,11 +9207,19 @@ ALTER TABLE `lesson_teacher`
   ADD KEY `lesson_id_2` (`lesson_id`) USING BTREE;
 
 --
+-- Индексы таблицы `lesson_time`
+--
+ALTER TABLE `lesson_time`
+  ADD PRIMARY KEY (`lesson_time_id`),
+  ADD KEY `lesson_id_4` (`lesson_id`) USING BTREE;
+
+--
 -- Индексы таблицы `study_group`
 --
 ALTER TABLE `study_group`
   ADD PRIMARY KEY (`study_group_id`),
-  ADD KEY `department_id_2` (`department_id`) USING BTREE;
+  ADD KEY `department_id_2` (`department_id`) USING BTREE,
+  ADD KEY `study_group_id` (`study_group_id`);
 
 --
 -- Индексы таблицы `teacher`
@@ -9232,10 +9276,22 @@ ALTER TABLE `lesson_auditory`
   MODIFY `lesson_auditory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1105;
 
 --
+-- AUTO_INCREMENT для таблицы `lesson_group`
+--
+ALTER TABLE `lesson_group`
+  MODIFY `lesson_group_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `lesson_teacher`
 --
 ALTER TABLE `lesson_teacher`
   MODIFY `lesson_teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1326;
+
+--
+-- AUTO_INCREMENT для таблицы `lesson_time`
+--
+ALTER TABLE `lesson_time`
+  MODIFY `lesson_time_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `study_group`
@@ -9281,11 +9337,24 @@ ALTER TABLE `lesson_auditory`
   ADD CONSTRAINT `lesson_auditory_ibfk_2` FOREIGN KEY (`auditory_id`) REFERENCES `auditory` (`auditory_id`) ON UPDATE CASCADE;
 
 --
+-- Ограничения внешнего ключа таблицы `lesson_group`
+--
+ALTER TABLE `lesson_group`
+  ADD CONSTRAINT `lesson_group_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `study_group` (`study_group_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `lesson_group_ibfk_2` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`lesson_id`) ON UPDATE CASCADE;
+
+--
 -- Ограничения внешнего ключа таблицы `lesson_teacher`
 --
 ALTER TABLE `lesson_teacher`
   ADD CONSTRAINT `lesson_teacher_ibfk_1` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`lesson_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `lesson_teacher_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`) ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `lesson_time`
+--
+ALTER TABLE `lesson_time`
+  ADD CONSTRAINT `lesson_time_ibfk_1` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`lesson_id`) ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `study_group`
