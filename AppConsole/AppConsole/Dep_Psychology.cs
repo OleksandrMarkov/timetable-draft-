@@ -234,10 +234,14 @@ namespace AppConsole
 							mySqlCommand.ExecuteNonQuery();
 						}
 						
-						/*const string insertStudy_group = "INSERT INTO study_group (department_id, full_name, study_group_code) "
-						+ "VALUES (@DEPARTMENT_ID, @NAME, @CODE)";
+						const string selectStudyGroups = "SELECT full_name FROM study_group";
+						const string insertLesson_group = "INSERT INTO lesson_group (lesson_id, group_id) "
+						+ "VALUES (@LESSON_ID, @GROUP_ID)";
+						const string insertStudy_group = "INSERT INTO study_group (department_id, full_name, study_group_code) "
+						+ "VALUES (@DEPARTMENT_ID, @NAME, @CODE)";					
+						const string selectGroupID = "SELECT study_group_id FROM study_group WHERE full_name = @GROUP";
 						
-						// запис груп в т-цю БД Study_Group
+						// запис груп в т-цю БД Lesson_Group, та в Study_group (якщо їх там немає) 
 						string groupsInCell = groups[i].ToString();
 						if(groupsInCell.Length != 0)
 						{
@@ -246,33 +250,58 @@ namespace AppConsole
 							groupsInCell = groupsInCell.Replace(" ", "");
 							groupsInCell = groupsInCell.Replace("\n", "");
 							
-							//Console.WriteLine(groupsInCell + "!");
 							string [] separatedGroups = groupsInCell.Split(new char[] {',', ';'});
-							for (int j = 0; j < separatedGroups.Length; j++)
+							
+							// список груп в таблиці Study_group БД
+							ArrayList studyGroupsFromDB = new ArrayList();
+							mySqlCommand = new MySqlCommand(selectStudyGroups, connection);
+							using (MySqlConnection connection2 = DBUtils.GetDBConnection())
 							{
-								//коди груп
-								int hyphen = separatedGroups[j].IndexOf('-');
-								string code = separatedGroups[j].Substring(0, hyphen + 2);
-								
-								//Console.WriteLine(separatedGroups[j]);
-								mySqlCommand = new MySqlCommand(insertStudy_group, connection);
-								mySqlCommand.Parameters.AddWithValue("@DEPARTMENT_ID", departmentID);
-								mySqlCommand.Parameters.AddWithValue("@NAME", separatedGroups[j]);
-								mySqlCommand.Parameters.AddWithValue("@CODE", code);
-								mySqlCommand.ExecuteNonQuery();				
+								using(MySqlDataReader dataReader = mySqlCommand.ExecuteReader())
+								{
+									while(dataReader.Read())
+									{
+										//Console.WriteLine(dataReader[0].ToString());
+										studyGroupsFromDB.Add(dataReader[0].ToString());
+									}
+								}
 							}
-							//Console.WriteLine();
-						}*/			
-					}
-					
-					/*const string createTemporaryTable = "CREATE TEMPORARY TABLE study_group2 AS (SELECT * FROM study_group GROUP BY full_name)";
+							
+							for(int j = 0; j < separatedGroups.Length; j++)
+							{
+								// якщо групи з відомостей ще немає в БД, заносимо в Study_group
+								if (studyGroupsFromDB.Contains(separatedGroups[j]) == false)
+								{
+									int hyphen = separatedGroups[j].IndexOf('-');
+									string code = separatedGroups[j].Substring(0, hyphen + 2);
+									
+									mySqlCommand = new MySqlCommand(insertStudy_group, connection);
+									mySqlCommand.Parameters.AddWithValue("@DEPARTMENT_ID", departmentID);
+									mySqlCommand.Parameters.AddWithValue("@NAME", separatedGroups[j]);
+									mySqlCommand.Parameters.AddWithValue("@CODE", code);
+									mySqlCommand.ExecuteNonQuery();
+								}
+								// занесення в Lesson_group
+								mySqlCommand = new MySqlCommand(selectGroupID, connection);
+								mySqlCommand.Parameters.AddWithValue("@GROUP", separatedGroups[j]);
+								mySqlCommand.ExecuteNonQuery();
+								int groupID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
+								
+								mySqlCommand = new MySqlCommand(insertLesson_group, connection);
+								mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
+								mySqlCommand.Parameters.AddWithValue("@GROUP_ID", groupID);
+								mySqlCommand.ExecuteNonQuery();
+							}
+						}
+					}		
+					/*const string createTemporaryTable = "CREATE TEMPORARY TABLE study_group2 AS (SELECT * FROM study_group GROUP BY full_name, department_id, count_of_students)";
 	                mySqlCommand = new MySqlCommand(createTemporaryTable, connection);
 	                mySqlCommand.ExecuteNonQuery();
 	                    	
 	                const string deleteTrash = "DELETE FROM study_group WHERE study_group.study_group_id NOT IN (SELECT study_group2.study_group_id FROM study_group2)";
 	                mySqlCommand = new MySqlCommand(deleteTrash, connection);
 	                mySqlCommand.ExecuteNonQuery();
-	               
+	                
 	                const string dropTemporaryTable = "DROP TABLE study_group2";
 	                mySqlCommand = new MySqlCommand(dropTemporaryTable, connection);
 	                mySqlCommand.ExecuteNonQuery();*/
