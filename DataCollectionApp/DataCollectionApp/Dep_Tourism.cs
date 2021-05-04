@@ -10,10 +10,8 @@ using System.Windows; // for messageBoxes
 
 namespace DataCollectionApp
 {
-	/// <summary>
-	/// Description of Dep_MachineParts.
-	/// </summary>
-	public class Dep_MachineParts : ExcelFile
+
+	public class Dep_Tourism : ExcelFile
 	{
 		int firstRow; // рядок, з якого починаються записи даних у файлі
 		int lastRow; // рядок, на якому закінчуються записи даних у файлі
@@ -24,7 +22,7 @@ namespace DataCollectionApp
 		ArrayList hours = new ArrayList();
 		ArrayList lessonsControl = new ArrayList();
 		ArrayList teachers = new ArrayList();
-		ArrayList auditories = new ArrayList();
+		//ArrayList auditories = new ArrayList();
 		
 		const char disciplinesColumn = 'B'; // стовпець, з якого беруться назви дисциплін
 		const char groupsColumn = 'C'; // стовпець, з якого беруться скорочені назви груп
@@ -32,29 +30,32 @@ namespace DataCollectionApp
 		const char hoursColumn = 'E'; // стовпець, з якого беруться кількості годин на заняття 
 		const char controlColumn = 'G'; // стовпець, з якого беруться типи контролю
 		const char teachersColumn = 'H'; // стовпець, з якого беруться ПІБ викладачів
-		const char auditoriesColumn = 'I'; // стовпець, з якого беруться запропоновані аудиторії
+		//const char auditoriesColumn = 'I'; // стовпець, з якого беруться запропоновані аудиторії
 		
 		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
-				
-		public Dep_MachineParts(string fileName, int firstRow, int lastRow): base(fileName)
+		
+		int sheetNumber; // В даному файлі є 2 листи : для денного (№1) та заочного відділень (№2)
+		
+		public Dep_Tourism(string fileName, int firstRow, int lastRow, int sheetNumber): base(fileName)
 		{
 			this.fileName = fileName;
 			
 			this.firstRow = firstRow;
 			this.lastRow = lastRow;
+			
+			this.sheetNumber = sheetNumber;
 		}
-
+		
 		public override void ReadFromExcelFile()
 		{
 			try
 			{
-				open(1);
-				
+				open(sheetNumber);
 				// назви дисциплін
 				for(int col = getColumnNumber(disciplinesColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
-					//Console.WriteLine(cellContent + " " + i);
+					//MessageBox.Show(cellContent + " " + i);
 					disciplines.Add(cellContent);
 				}
 				
@@ -69,6 +70,7 @@ namespace DataCollectionApp
 				for(int col = getColumnNumber(typesColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
+					cellContent = cellContent.Trim();
 					lessonsType.Add(cellContent);
 				}
 				
@@ -94,30 +96,33 @@ namespace DataCollectionApp
 					teachers.Add(cellContent);
 				}
 				
-				//  запропоновані аудиторії
+				/*//  запропоновані аудиторії
 				for(int col = getColumnNumber(auditoriesColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);					
 					auditories.Add(cellContent);
-				}	
+				}*/	
 				close();
-			}
+			}			
 			catch (Exception ex)
             {
 				reading = false;
-				MessageBox.Show("Помилка при отриманні даних з файлу " + FileName + " " + ex.Message);
-            	//Console.WriteLine("Помилка при отриманні даних з файлу " + FileName + " " + ex.Message);
+            	MessageBox.Show("Помилка при отриманні даних з файлу " + FileName + " " + ex.Message);
             }
 		}
 		
 		public override void EvaluateData()
 		{
-			if(reading)
+			/*if(reading)
 			{
-				
+				MessageBox.Show("!!!");
 			}
+			else
+			{
+				MessageBox.Show("???");
+			}*/	
 		}
-
+		
 		public override void Load()
 		{
 			if(reading)
@@ -134,8 +139,7 @@ namespace DataCollectionApp
 					+ "VALUES (@DISCIPLINE_ID, @TYPE, @HOURS, @CONTROL, @DEPARTMENT_ID)";
 					
 					const string selectLessonID = "SELECT lesson_id FROM lesson ORDER BY lesson_id DESC LIMIT 1"; // останнє значення id в Lesson 
-					
-					
+								
 					const string selectTeacherID = "SELECT teacher_id FROM teacher WHERE full_name = @TEACHER";
 					
 					const string selectAuditoryID = "SELECT auditory_id FROM auditory WHERE auditory_name = @AUDITORY";
@@ -149,7 +153,7 @@ namespace DataCollectionApp
 					connection.Open();
 					
 					mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
-					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "ДМіПТМ");
+					mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", "ТГтаРБ");
 					mySqlCommand.ExecuteNonQuery();
 						
 					int departmentID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
@@ -162,7 +166,8 @@ namespace DataCollectionApp
 						
 						int disciplineID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
 						
-						//MessageBox.Show(i + " " + disciplines[i] + "\t" + disciplineID);
+						//MessageBox.Show(i + " " + disciplines[i] + "\t" + disciplineID);	
+						
 						
 						// вставка в Lesson
 						mySqlCommand = new MySqlCommand(insertLessons, connection);
@@ -176,9 +181,9 @@ namespace DataCollectionApp
 						mySqlCommand = new MySqlCommand(selectLessonID, connection);
 						mySqlCommand.ExecuteNonQuery();
 						
-						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());						
+						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
 						
-						string suggestedAuditories = auditories[i].ToString();
+						/*string suggestedAuditories = auditories[i].ToString();
 						
 						// якщо є запропоновані аудиторії, вони завантажуються в БД (т-ця Lesson_auditory)
 						if(suggestedAuditories.Length != 0)
@@ -202,8 +207,8 @@ namespace DataCollectionApp
 								mySqlCommand.Parameters.AddWithValue("@AUDITORY_ID", auditoryID);
 								mySqlCommand.ExecuteNonQuery();
 							}	
-						}
-				
+						}*/
+
 						string teachersRecord = teachers[i].ToString();
 						teachersRecord = teachersRecord.TrimEnd(new char [] {',', ';'});
 						//teachersRecord = teachersRecord.Replace(" ", ""); Пробіли є в ПІБ викладачів, вони не видаляються
@@ -220,7 +225,7 @@ namespace DataCollectionApp
 							
 							int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());							
 							//MessageBox.Show(j + "\t" + teacherID + "\t" + separatedTeachers[j]);
-							//MessageBox.Show();
+							//MessageBox.Show(separatedTeachers[j]);
 							mySqlCommand = new MySqlCommand(insertLesson_teacher, connection);
 							mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
 							mySqlCommand.Parameters.AddWithValue("@TEACHER_ID", teacherID);
@@ -298,16 +303,16 @@ namespace DataCollectionApp
 	                const string dropTemporaryTable = "DROP TABLE study_group2";
 	                mySqlCommand = new MySqlCommand(dropTemporaryTable, connection);
 	                mySqlCommand.ExecuteNonQuery();*/
-										
-					connection.Close();
-					//MessageBox.Show("MachineParts Department is loaded!");
 					
+					connection.Close();
 				}
 				catch(Exception ex)
 				{
 					MessageBox.Show("Виникла помилка під час завантаження відомостей доручень до бази даних!" + "\n" + ex.Message);
 				}
 			}
-		}			
+		}
+		
+		
 	}
 }

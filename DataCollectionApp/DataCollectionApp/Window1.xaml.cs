@@ -44,7 +44,7 @@ namespace DataCollectionApp
 		
 		Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);
 			
-		/*Dep_EconomyAndCustoms economyAndCustoms_sheet1 = new Dep_EconomyAndCustoms("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 84, 1);
+		Dep_EconomyAndCustoms economyAndCustoms_sheet1 = new Dep_EconomyAndCustoms("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 84, 1);
 		Dep_EconomyAndCustoms economyAndCustoms_sheet2 = new Dep_EconomyAndCustoms("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 68, 2);
 			
 		Dep_EconomicalTheory economicalTheory = new Dep_EconomicalTheory("ЕКОНОМІЧНОЇ ТЕОРІЇ ТА ПІДПРИЄМНИЦТВА_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 79);
@@ -73,7 +73,7 @@ namespace DataCollectionApp
 		Dep_Tourism tourism_sheet2 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 2);
 			
 		Dep_ComputerSoftware computerSoftware = new Dep_ComputerSoftware("Програмних_засобів_26-12-19_Форма 44_ ВIДОМIСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 225);		
-		*/
+
 			public Window1()
 		{				
 			InitializeComponent();
@@ -165,43 +165,100 @@ namespace DataCollectionApp
 							lbi_mbt.FontWeight = FontWeights.Bold;
 							break;
 						case economyAndCustomsText:
-							//MessageBox.Show(3.ToString());
+							economyAndCustoms_sheet1.SendDataToDB();
+							economyAndCustoms_sheet2.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри економіки та митної справи " +
+							"завантажено до бази даних!");
+							lbi_eac.IsEnabled = false;
+							lbi_eac.FontWeight = FontWeights.Bold;
 							break;
 						case economicalTheoryText:
-							//MessageBox.Show(4.ToString());
+							economicalTheory.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри економічної теорії та підприємництва " +
+							"завантажено до бази даних!");
+							lbi_et.IsEnabled = false;
+							lbi_et.FontWeight = FontWeights.Bold;
 							break;
 						case electricalMachinesText:
-							//MessageBox.Show(5.ToString());
+							electricalMachines.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри електричних машин " +
+							"завантажено до бази даних!");
+							lbi_em.IsEnabled = false;
+							lbi_em.FontWeight = FontWeights.Bold;
 							break;
 						case industrialEnergySupplyText:
-							//MessageBox.Show(6.ToString());
+							industrialEnergySupply.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри електропостачання промислових підприємств " +
+							"завантажено до бази даних!");
+							lbi_ies.IsEnabled = false;
+							lbi_ies.FontWeight = FontWeights.Bold;		
 							break;
 						case computerSystemsAndNetworksText:
-							//MessageBox.Show(7.ToString());
+							computerSystemsAndNetworks_sheet1.SendDataToDB();
+							computerSystemsAndNetworks_sheet2.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри комп’ютерних систем та мереж " +
+							"завантажено до бази даних!");
+							lbi_csan.IsEnabled = false;
+							lbi_csan.FontWeight = FontWeights.Bold;
 							break;
 						case marketingAndLogisticsText:
-							//MessageBox.Show(7.ToString());
+							marketingAndLogistics.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри маркетингу та логістики " +
+							"завантажено до бази даних!");
+							lbi_mal.IsEnabled = false;
+							lbi_mal.FontWeight = FontWeights.Bold;							
 							break;
 						case internationalEconomicRelationsText:
-							//MessageBox.Show(7.ToString());
+							internationalEconomicRelations.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри міжнародних економічних відносин " +
+							"завантажено до бази даних!");
+							lbi_ier.IsEnabled = false;
+							lbi_ier.FontWeight = FontWeights.Bold;
 							break;
 						case accountingAndAuditText:
-							//MessageBox.Show(7.ToString());
+							accountingAndAudit_sheet1.SendDataToDB();
+							accountingAndAudit_sheet2.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри обліку і оподаткування " +
+							"завантажено до бази даних!");
+							lbi_aaa.IsEnabled = false;
+							lbi_aaa.FontWeight = FontWeights.Bold;
 							break;
 						case appliedMathematicsText:
-							//MessageBox.Show(7.ToString());
+							appliedMathematics.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри прикладної математики " +
+							"завантажено до бази даних!");
+							lbi_am.IsEnabled = false;
+							lbi_am.FontWeight = FontWeights.Bold;
 							break;
 						case computerSoftwareText:
-							//MessageBox.Show(7.ToString());
+							computerSoftware.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри програмних засобів " +
+							"завантажено до бази даних!");
+							lbi_cs.IsEnabled = false;
+							lbi_cs.FontWeight = FontWeights.Bold;
 							break;
 						case psychologyText:
-							//MessageBox.Show(7.ToString());
+							psychology.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри соціальної роботи " +
+							"завантажено до бази даних!");
+							lbi_ps.IsEnabled = false;
+							lbi_ps.FontWeight = FontWeights.Bold;
 							break;
 						case aviationEngineConstructionTechnologyText:
-							//MessageBox.Show(7.ToString());
+							aviationEngineConstructionTechnology.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри технології авіаційних двигунів " +
+							"завантажено до бази даних!");
+							lbi_aect.IsEnabled = false;
+							lbi_aect.FontWeight = FontWeights.Bold;
 							break;
 						case tourismText:
-							//MessageBox.Show(7.ToString());
+							tourism_sheet1.SendDataToDB();
+							tourism_sheet2.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри туристичного," +
+"							                готельного та ресторанного бізнесу " +
+							"завантажено до бази даних!");
+							lbi_t.IsEnabled = false;
+							lbi_t.FontWeight = FontWeights.Bold;
 							break;							
 					}							
 					fileName = "";
