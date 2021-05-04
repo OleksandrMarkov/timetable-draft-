@@ -24,9 +24,17 @@
     	<Style TargetType="Button">
 			<Setter Property="FontSize" Value="20"/>
 			<Setter Property="FontWeight" Value="Bold"/>
-			<Setter Property="Padding" Value="20" />		
+			<Setter Property="Padding" Value="20" />
+	<!-- 
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="Cursor" Value="Arrow"></Setter>
+				</Trigger>    		
+    		</Style.Triggers>
+ -->		
 		</Style>
 	
+		
 		<Style x:Key="listBoxItemPadding">
 			<Setter Property="ListBoxItem.Padding" Value="20,15" />
 		</Style>
@@ -37,7 +45,8 @@
 
 		<Style x:Key="textBlockPadding2">
 			<Setter Property="TextBlock.Padding" Value="0, 15, 0, 15" />
-		</Style>	
+		</Style>
+	
 	</Window.Resources>
 	
 	<Grid x:Name="MainGrid">
@@ -46,49 +55,50 @@
 			
 				<StackPanel Margin="10">
 					<TextBlock Text="Загальні дані" FontWeight="Bold" Foreground="Brown"/>
-					<ListBox>
-						<ListBoxItem Background="LightSalmon" Content="Типи аудиторій" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Content="Дисципліни" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Background="LightSalmon" Content="Факультети" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Content="Кафедри" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Background="LightSalmon" Content="Вчителі" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Content="Аудиторії" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Background="LightSalmon" Content="Групи" Style="{StaticResource listBoxItemPadding}"/>
+					<ListBox x:Name="commonDataListBox">
+						<!--  -->
+						<ListBoxItem Selected="lbi_auditoryTypes_selected" x:Name="lbi_auditoryTypes" Background="LightSalmon" Content="Типи аудиторій" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem Selected="lbi_disciplines_selected" x:Name="lbi_disciplines" Content="Дисципліни" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem Selected="lbi_faculties_selected" x:Name="lbi_faculties" Background="LightSalmon" Content="Факультети" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem Selected="lbi_departments_selected" x:Name="lbi_departments" Content="Кафедри" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem Selected="lbi_teachers_selected" x:Name="lbi_teachers" Background="LightSalmon" Content="Вчителі" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem Selected="lbi_auditories_selected" x:Name="lbi_auditories" Content="Аудиторії" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem Selected="lbi_groups_selected" x:Name="lbi_groups" Background="LightSalmon" Content="Групи" Style="{StaticResource listBoxItemPadding}"/>
 					</ListBox>
-					<Button Content="Переглянути" ToolTip="Обраний файл буде відкритий в режимі читання" Background="PeachPuff" Margin="0, 32, 0, 0" Click="WatchButton_Click"></Button>
+					<Button x:Name="WatchButton" Content="Переглянути" ToolTip="Обраний файл буде відкритий в режимі читання" Background="PeachPuff" Margin="0, 32, 0, 0" Click="WatchButton_Click"></Button>
 				</StackPanel>
 			
 				<StackPanel Margin="0, 10, 10, 10">
 					<TextBlock Text="Відомості доручень" FontWeight="Bold" Foreground="Black"/>
 					<ListBox x:Name="statementsListBox">
-						<ListBoxItem Background="LightPink" Content="Кафедра деталей машин і підйомно-транспортних механізмів"/>
-						<ListBoxItem Content="Кафедра технології машинобудування"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра економіки та митної справи"/>
-						<ListBoxItem Content="Кафедра економічної теорії та підприємництва"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра електричних машин"/>
-						<ListBoxItem Content="Кафедра електропостачання промислових підприємств"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра комп’ютерних систем та мереж"/>
-						<ListBoxItem Content="Кафедра маркетингу та логістики"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра міжнародних економічних відносин"/>
-						<ListBoxItem Content="Кафедра обліку і оподаткування"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра прикладної математики"/>
-						<ListBoxItem Content="Кафедра програмних засобів"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра соціальної роботи"/>
-						<ListBoxItem Content="Кафедра технології авіаційних двигунів"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра туристичного, готельного та ресторанного бізнесу"/>
+						<ListBoxItem  Background="LightPink" Content="Кафедра деталей машин і підйомно-транспортних механізмів" Selected="lbi_mp_selected" x:Name="lbi_mp"/>
+						<ListBoxItem Content="Кафедра технології машинобудування" Selected="lbi_mbt_selected" x:Name="lbi_mbt"/>
+						<ListBoxItem Background="LightPink" Content="Кафедра економіки та митної справи" Selected="lbi_eac_selected" x:Name="lbi_eac"/>
+						<ListBoxItem Content="Кафедра економічної теорії та підприємництва" Selected="lbi_et_selected" x:Name="lbi_et"/>
+						<ListBoxItem Background="LightPink" Content="Кафедра електричних машин" Selected="lbi_em_selected" x:Name="lbi_em"/>
+						<ListBoxItem Content="Кафедра електропостачання промислових підприємств" Selected="lbi_ies_selected" x:Name="lbi_ies"/>
+						<ListBoxItem Background="LightPink" Content="Кафедра комп’ютерних систем та мереж" Selected="lbi_csan_selected" x:Name="lbi_csan"/>
+						<ListBoxItem Content="Кафедра маркетингу та логістики" Selected="lbi_mal_selected" x:Name="lbi_mal"/>
+						<ListBoxItem Background="LightPink" Content="Кафедра міжнародних економічних відносин" Selected="lbi_ier_selected" x:Name="lbi_ier"/>
+						<ListBoxItem Content="Кафедра обліку і оподаткування" Selected="lbi_aaa_selected" x:Name="lbi_aaa"/>
+						<ListBoxItem Background="LightPink" Content="Кафедра прикладної математики" Selected="lbi_am_selected" x:Name="lbi_am"/>
+						<ListBoxItem Content="Кафедра програмних засобів" Selected="lbi_cs_selected" x:Name="lbi_cs"/>
+						<ListBoxItem Background="LightPink" Content="Кафедра соціальної роботи" Selected="lbi_ps_selected" x:Name="lbi_ps"/>
+						<ListBoxItem Content="Кафедра технології авіаційних двигунів" Selected="lbi_aect_selected" x:Name="lbi_aect"/>
+						<ListBoxItem Background="LightPink" Content="Кафедра туристичного, готельного та ресторанного бізнесу" Selected="lbi_t_selected" x:Name="lbi_t"/>
 					</ListBox>
-					<Button Content="Завантажити" ToolTip="Інформація з обраного файлу буде завантажена до бази даних" Background="LightGreen" Margin="0, 30, 0, 0" Click="LoadButton_Click"></Button>
+					<Button x:Name="LoadButton" Content="Завантажити" ToolTip="Інформація з обраного файлу буде завантажена до бази даних" Background="LightGreen" Margin="0, 30, 0, 0" Click="LoadButton_Click"></Button>
 				</StackPanel>
 			
-				<StackPanel HorizontalAlignment="Stretch" Margin="0, 10, 10, 10">
-					<TextBlock Text="Обраний файл" FontWeight="Bold" Foreground="Chocolate"/>
+				<StackPanel HorizontalAlignment="Center" Margin="0, 10, 10, 10">
+					<TextBlock Text="Обраний файл" HorizontalAlignment="Stretch" Margin="200,0,0,0" FontWeight="Bold" Foreground="Chocolate"/>
 					<TextBlock Text="Назва:" FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding2}"/>
-					<TextBlock Text="Кафедра деталей машин і підйомно-транспортних механізмів" Background="LightYellow" FontSize="18" Padding="20,15" HorizontalAlignment="Left"/>
+					<TextBlock Text="" x:Name="selectedFileName" Background="LightYellow" FontSize="18" Padding="20,15" HorizontalAlignment="Left"/>
 					<TextBlock Text="Кількість записів:"  FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding2}"/>
 					<TextBlock Text="..." Background="LightYellow" FontSize="18" Width="200" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding1}"/>
 					<TextBlock Text="Дата редагування:" FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding2}"/>
 					<TextBlock Text="drgdrrdh" Background="LightYellow" FontSize="18" Width="200" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding1}"/>
-					<Button Content="Видалити" ToolTip="Відповідна інформація з обраного файлу буде видалена з бази даних" Background="Red" Margin="0, 85, 0, 0" Click="DeleteButton_Click"></Button>
+					<Button x:Name="DeleteButton" Content="Видалити" Width="250" HorizontalAlignment="Left" ToolTip="Відповідна інформація з обраного файлу буде видалена з бази даних" Background="Red" Margin="0, 85, 0, 0" Click="DeleteButton_Click"></Button>
 				</StackPanel>
 
 			</StackPanel>
