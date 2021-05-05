@@ -8,7 +8,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-using System.Threading;
+using System.Diagnostics;
 
 namespace DataCollectionApp
 {
@@ -19,8 +19,8 @@ namespace DataCollectionApp
 		const string facultiesText = "Факультети";
 		const string auditoriesText = "Аудиторії";
 		const string departmentsText = "Кафедри";
-		const string teachersText = "Вчителі";
-		const string groupsText = "Групи";
+		const string teachersText = "Викладачі";
+		const string groupsText = "Учбові групи";
 		
 		const string machinePartsText = "Кафедра деталей машин і підйомно-транспортних механізмів";
 		const string mbtText = "Кафедра технології машинобудування";
@@ -38,6 +38,13 @@ namespace DataCollectionApp
 		const string aviationEngineConstructionTechnologyText = "Кафедра технології авіаційних двигунів";
 		const string tourismText =	"Кафедра туристичного, готельного та ресторанного бізнесу";
 		
+		AuditoryTypes auditoryTypes = new AuditoryTypes("TypesOfAuditories.xlsx");	
+		Disciplines disciplines = new Disciplines("Disciplines.xlsx");
+		Faculties faculties = new Faculties("Faculties.xlsx");		
+		Departments departments = new Departments("Departments.xlsx");		
+		Teachers teachers = new Teachers("Teachers.xlsx");		 
+		Auditories auditories = new Auditories("Auditories.xls");			
+		StudyGroups studyGroups = new StudyGroups("Групи 30.04.2021.xlsx");
 		
 		// відомості
 		Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);		
@@ -58,14 +65,14 @@ namespace DataCollectionApp
 			
 		Dep_MarketingAndLogistics marketingAndLogistics = new Dep_MarketingAndLogistics("МАРКЕТИНГУ ТА ЛОГІСТИКИ_Відомість_денне_ІІ_нова.xls", 15, 72);
 						
-		Dep_InternationalEconomicRelations internationalEconomicRelations = new Dep_InternationalEconomicRelations("МІЖНАРОДНИХ ЕКОНОМІЧНИХ ВІДНОСИН_МЕВ-денне 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 57);
+		Dep_InternationalEconomicRelations internationalEconomicRelations = new Dep_InternationalEconomicRelations("МІЖНАРОДНИХ ЕКОНОМІЧНИХ ВІДНОСИН денне 44 2020.xlsx", 15, 57);
 			
 		Dep_AccountingAndAudit accountingAndAudit_sheet1 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 62, 1);
 		Dep_AccountingAndAudit accountingAndAudit_sheet2 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 64, 2);
 			
 		Dep_AppliedMathematics appliedMathematics = new Dep_AppliedMathematics("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71);
 			
-		Dep_Psychology psychology = new Dep_Psychology("соціальної роботи та психології Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156);
+		Dep_Psychology psychology = new Dep_Psychology("Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156);
 			
 		Dep_AviationEngineConstructionTechnology aviationEngineConstructionTechnology = new Dep_AviationEngineConstructionTechnology("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx", 15, 65);
 						
@@ -74,25 +81,120 @@ namespace DataCollectionApp
 			
 		Dep_ComputerSoftware computerSoftware = new Dep_ComputerSoftware("Програмних_засобів_26-12-19_Форма 44_ ВIДОМIСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 225);		
 
-			public Window1()
+		public Window1()
 		{				
 			InitializeComponent();
 		}
 			
 		void WatchButton_Click(object sender, RoutedEventArgs e)
 		{
-			// доступ к контенту ListBox
-		/*	if(statementsListBox.SelectedItem == null)
+			string fileName = "";
+			ListBoxItem statementsFile = (ListBoxItem)statementsListBox.SelectedItem;
+			ListBoxItem commonDataFile = (ListBoxItem)commonDataListBox.SelectedItem;
+			
+			// відкриття файлу з загальними даними
+			if(statementsFile == null && commonDataFile != null)
 			{
-				MessageBox.Show("select something!");
+				fileName = commonDataFile.Content.ToString();
+				
+				switch(fileName)
+				{
+					case auditoryTypesText:
+						auditoryTypes.openForViewing();
+						break;
+					case disciplinesText:
+						disciplines.openForViewing();
+						break;
+					case facultiesText:
+						faculties.openForViewing();
+						break;
+					case departmentsText:
+						departments.openForViewing();
+						break;
+					case teachersText:
+						teachers.openForViewing();
+						break;
+					case auditoriesText:
+						auditories.openForViewing();
+						break;
+					case groupsText:
+						studyGroups.openForViewing();
+						break;						
+				}
+				
+				fileName = "";
+				commonDataListBox.SelectedItem = null;
 			}
 			else
 			{
-				ListBoxItem lbi = (ListBoxItem)statementsListBox.SelectedItem;
-				MessageBox.Show("watch " + lbi.Content);
-				statementsListBox.SelectedItem = null;
-			}*/
-			//MessageBox.Show("!!!");		
+				// завантаження файлу відомостей доручень
+				if(statementsFile != null && commonDataFile == null)
+				{
+					fileName = statementsFile.Content.ToString();
+					switch(fileName)
+					{
+						case machinePartsText:
+							machineParts.openForViewing();
+							break;
+							
+						case mbtText:						
+							mbt.openForViewing();
+							break;
+						case economyAndCustomsText:
+							economyAndCustoms_sheet1.openForViewing();
+							economyAndCustoms_sheet2.openForViewing();
+							break;
+						case economicalTheoryText:
+							economicalTheory.openForViewing();
+							break;
+						case electricalMachinesText:
+							electricalMachines.openForViewing();
+							break;
+						case industrialEnergySupplyText:
+							industrialEnergySupply.openForViewing();
+							break;
+						case computerSystemsAndNetworksText:
+							computerSystemsAndNetworks_sheet1.openForViewing();
+							computerSystemsAndNetworks_sheet2.openForViewing();
+							break;
+						case marketingAndLogisticsText:
+							marketingAndLogistics.openForViewing();
+							break;
+						case internationalEconomicRelationsText:
+							internationalEconomicRelations.openForViewing();
+							break;
+						case accountingAndAuditText:
+							accountingAndAudit_sheet1.openForViewing();
+							accountingAndAudit_sheet2.openForViewing();
+							break;
+						case appliedMathematicsText:
+							appliedMathematics.openForViewing();
+							break;
+						case computerSoftwareText:
+							computerSoftware.openForViewing();
+							break;
+						case psychologyText:
+							psychology.openForViewing();
+							break;
+						case aviationEngineConstructionTechnologyText:
+							aviationEngineConstructionTechnology.openForViewing();
+							break;
+						case tourismText:
+							tourism_sheet1.openForViewing();
+							tourism_sheet2.openForViewing();
+							break;							
+					}							
+					fileName = "";
+					statementsListBox.SelectedItem = null;
+				}
+				else 
+				{
+					if(statementsFile == null && commonDataFile == null)
+					{
+						MessageBox.Show("Не обрано файл для перегляду!");	
+					}
+				}
+			}		
 		}
 
 		void LoadButton_Click(object sender, RoutedEventArgs e)
@@ -109,29 +211,49 @@ namespace DataCollectionApp
 				switch(fileName)
 				{
 					case auditoryTypesText:
-						//MessageBox.Show(1.ToString());
+						auditoryTypes.SendDataToDB();
+						MessageBox.Show("Дані про типи аудиторій завантажено до бази даних!");
+						lbi_auditoryTypes.IsEnabled = false;
+						lbi_auditoryTypes.FontWeight = FontWeights.Bold;
 						break;
 					case disciplinesText:
-						//MessageBox.Show(2.ToString());
+						disciplines.SendDataToDB();
+						MessageBox.Show("Дані про дисципліни завантажено до бази даних!");
+						lbi_disciplines.IsEnabled = false;
+						lbi_disciplines.FontWeight = FontWeights.Bold;
 						break;
 					case facultiesText:
-						//MessageBox.Show(3.ToString());
+						faculties.SendDataToDB();
+						MessageBox.Show("Дані про факультети завантажено до бази даних!");
+						lbi_faculties.IsEnabled = false;
+						lbi_faculties.FontWeight = FontWeights.Bold;
 						break;
 					case departmentsText:
-						//MessageBox.Show(4.ToString());
+						departments.SendDataToDB();
+						MessageBox.Show("Дані про кафедри завантажено до бази даних!");
+						lbi_departments.IsEnabled = false;
+						lbi_departments.FontWeight = FontWeights.Bold;
 						break;
 					case teachersText:
-						//MessageBox.Show(5.ToString());
+						teachers.SendDataToDB();
+						MessageBox.Show("Дані про викладачів завантажено до бази даних!");
+						lbi_teachers.IsEnabled = false;
+						lbi_teachers.FontWeight = FontWeights.Bold;
 						break;
 					case auditoriesText:
-						//MessageBox.Show(6.ToString());
+						auditories.SendDataToDB();
+						MessageBox.Show("Дані про аудиторії завантажено до бази даних!");
+						lbi_auditories.IsEnabled = false;
+						lbi_auditories.FontWeight = FontWeights.Bold;
 						break;
 					case groupsText:
-						//MessageBox.Show(7.ToString());
+						studyGroups.SendDataToDB();
+						MessageBox.Show("Дані про учбові групи завантажено до бази даних!");
+						lbi_groups.IsEnabled = false;
+						lbi_groups.FontWeight = FontWeights.Bold;
 						break;						
 				}
 				
-				//MessageBox.Show("загал " + fileName);
 				fileName = "";
 				commonDataListBox.SelectedItem = null;
 			}
@@ -262,7 +384,6 @@ namespace DataCollectionApp
 							break;							
 					}							
 					fileName = "";
-					//MessageBox.Show("доручення");
 					statementsListBox.SelectedItem = null;
 				}
 				else 
@@ -275,101 +396,123 @@ namespace DataCollectionApp
 			}
 		}		
 		
-		void DeleteButton_Click(object sender, RoutedEventArgs e)
+		void WatchBugsReport(object sender, RoutedEventArgs e)
 		{
-			MessageBox.Show("delete");
+			const string path = @"E:\BACHELORS WORK\TIMETABLE\DataCollectionApp\BugsReport.txt";
+			Process.Start(path);
+			
 		}
-		
 		
 		void lbi_auditoryTypes_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = auditoryTypesText;
+			lastWriteTime.Text = auditoryTypes.FileName;
 		}
 		void lbi_disciplines_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = disciplinesText;
+			lastWriteTime.Text = disciplines.FileName;			
 		}		
 		void lbi_faculties_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = facultiesText;
+			lastWriteTime.Text = faculties.FileName;
 		}
 		void lbi_departments_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = departmentsText;
+			lastWriteTime.Text = departments.FileName;
 		}		
 		void lbi_teachers_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = teachersText;
+			lastWriteTime.Text = teachers.FileName;
 		}
 		void lbi_auditories_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = auditoriesText;
+			lastWriteTime.Text = auditories.FileName;
 		}
 		void lbi_groups_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = groupsText;
+			lastWriteTime.Text = studyGroups.FileName;
 		}		
 		
 		void lbi_mp_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = machinePartsText;
+			lastWriteTime.Text = machineParts.FileName;
 		}		
 		void lbi_mbt_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = mbtText;
+			lastWriteTime.Text = mbt.FileName;
 		}		
 		void lbi_eac_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = economyAndCustomsText;
+			lastWriteTime.Text = economyAndCustoms_sheet1.FileName;			
 		}		
 		void lbi_et_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = economicalTheoryText;
+			lastWriteTime.Text = economicalTheory.FileName;
 		}	
 		void lbi_em_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = electricalMachinesText;
+			lastWriteTime.Text = electricalMachines.FileName;
 		}		
 		void lbi_ies_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = internationalEconomicRelationsText;
+			selectedFileName.Text = industrialEnergySupplyText;
+			lastWriteTime.Text = industrialEnergySupply.FileName;
 		}
 		void lbi_csan_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = computerSystemsAndNetworksText;
+			lastWriteTime.Text = computerSystemsAndNetworks_sheet1.FileName;
 		}
 		void lbi_mal_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = marketingAndLogisticsText;
+			lastWriteTime.Text = marketingAndLogistics.FileName;
 		}		
 		void lbi_ier_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = internationalEconomicRelationsText;
+			lastWriteTime.Text = internationalEconomicRelations.FileName;
 		}
 		void lbi_aaa_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = accountingAndAuditText;
+			lastWriteTime.Text = accountingAndAudit_sheet1.FileName;
 		}
 		void lbi_am_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = appliedMathematicsText;
+			lastWriteTime.Text = appliedMathematics.FileName;
 		}
 		void lbi_cs_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = computerSoftwareText;
+			lastWriteTime.Text = computerSoftware.FileName;
 		}
 		void lbi_ps_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = psychologyText;
+			lastWriteTime.Text = psychology.FileName;
 		}
 		void lbi_aect_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = aviationEngineConstructionTechnologyText;
+			lastWriteTime.Text = aviationEngineConstructionTechnology.FileName;
 		}
 		void lbi_t_selected(object sender, RoutedEventArgs e)
 		{
 			selectedFileName.Text = tourismText;
+			lastWriteTime.Text = tourism_sheet1.FileName;
 		}
-		
 	}
 }
