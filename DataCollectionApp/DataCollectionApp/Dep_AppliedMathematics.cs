@@ -107,14 +107,6 @@ namespace DataCollectionApp
 		
 		public override void EvaluateData()
 		{
-			/*if(reading)
-			{
-				MessageBox.Show("!!!");
-			}
-			else
-			{
-				MessageBox.Show("???");
-			}*/
 		}
 		
 		public override void Load()

@@ -113,10 +113,6 @@ namespace DataCollectionApp
 		
 		public override void EvaluateData()
 		{
-			if(reading)
-			{
-				//MessageBox.Show("!!!");
-			}
 		}
 		
 		public override void Load()

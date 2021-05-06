@@ -100,6 +100,42 @@ namespace DataCollectionApp
 						sw.WriteLine();
 					}					
 				}
+
+				// Отримання даних з БД та порівняння з даними з Excel-файлу
+                // Якщо вони співпадають - немає сенсу для перезапису, інакше дані в БД перезаписуються
+				const string selectDisciplineNames = "SELECT full_name FROM discipline";
+				MySqlConnection connection = DBUtils.GetDBConnection();
+				MySqlCommand mySqlCommand;
+				MySqlDataReader dataReader;
+				
+				bool noSensetoReload = true;
+				
+				connection.Open();
+				mySqlCommand = new MySqlCommand(selectDisciplineNames, connection);
+				dataReader = mySqlCommand.ExecuteReader();
+				
+				ArrayList disciplinesInDB = new ArrayList();
+				
+				while(dataReader.Read())
+				{
+					disciplinesInDB.Add(dataReader[0].ToString());
+				}
+				connection.Close();
+				
+				foreach (string record in records)
+				{
+					if(!disciplinesInDB.Contains(record))
+					{
+						noSensetoReload = false;
+						break;
+					}
+				}
+				
+				if (noSensetoReload)
+				{
+					reading = false;
+					MessageBox.Show("Дані про дисципліни вже містяться в базі даних!");
+				}				
 			}		
 		}
 		
@@ -120,7 +156,8 @@ namespace DataCollectionApp
 						mySqlCommand.Parameters.AddWithValue("@FULL_NAME", record);
 		                mySqlCommand.ExecuteNonQuery();
 					}
-					connection.Close();					
+					connection.Close();
+					MessageBox.Show("Дані про дисципліни завантажено до бази даних!");					
 				}
 				catch(Exception ex)
 				{

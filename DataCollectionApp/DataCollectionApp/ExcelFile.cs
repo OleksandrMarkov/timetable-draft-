@@ -119,10 +119,15 @@ namespace DataCollectionApp
         	Process.Start(FullPathToFile);
         }
         
-        // повертає к-ть записів у файлі
-        public string getLastWriteTime()
+        // повертає дату останього редагування
+        public string LastWriteTime
         {
-        	return File.GetLastWriteTime(FileName).ToString();
+        	get
+        	{
+        		FileInfo f = new FileInfo(FullPathToFile);
+        		f.Refresh();	
+        		return f.LastWriteTime.ToString(); //File.GetLastWriteTime(FileName).ToString();	        		
+        	}
         }
         
         // Перевірка існування файлу в директорії

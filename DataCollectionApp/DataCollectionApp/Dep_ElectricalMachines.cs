@@ -107,10 +107,6 @@ namespace DataCollectionApp
 		
 		public override void EvaluateData()
 		{
-			if(reading)
-			{
-				
-			}
 		}
 				
 		public override void Load()

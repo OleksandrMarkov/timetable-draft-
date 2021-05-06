@@ -93,15 +93,20 @@
 				<StackPanel HorizontalAlignment="Center" Margin="0, 10, 10, 10">
 					<TextBlock Text="Обраний файл" HorizontalAlignment="Stretch" Margin="200,0,0,0" FontWeight="Bold" Foreground="Chocolate"/>
 					<TextBlock Text="Назва:" FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding2}"/>
-					<TextBlock Text="" x:Name="selectedFileName" Background="LightYellow" FontSize="18" Padding="20,15" HorizontalAlignment="Left"/>
+					<TextBlock Text="" x:Name="selectedFile" Background="LightYellow" FontSize="18" Padding="20,15" HorizontalAlignment="Left"/>
 					
 					<!--
 						<TextBlock Text="Кількість записів:"  FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding2}"/>
 					<TextBlock Text="" x:Name="recordsNumber" Background="LightYellow" FontSize="18" Width="200" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding1}"/>		 
 					! -->
 					<TextBlock Text="Файл:" FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding2}"/>
+					<TextBlock Text="" x:Name="selectedFileName" Background="LightYellow" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding1}"/>
+					
+					<TextBlock Text="Останнє редагування:" FontWeight="Bold" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding2}"/>
 					<TextBlock Text="" x:Name="lastWriteTime" Background="LightYellow" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource textBlockPadding1}"/>
-					<Button Content="Переглянути звіт про помилки в файлах" HorizontalAlignment="Left" ToolTip="Буде відкрито текстовий файл із записами про помилки в Excel-файлах з даними" Background="Red" Margin="0, 192, 0, 0" Click="WatchBugsReport"></Button>
+					
+					<Button Content="Переглянути звіт про помилки в файлах" HorizontalAlignment="Left" ToolTip="Буде відкрито текстовий файл із записами про помилки в Excel-файлах з даними" Background="Red" Margin="0, 85, 0, 0" Click="WatchBugsReport"></Button>
+					<!-- <Button Content="Переглянути звіт про помилки в файлах" HorizontalAlignment="Left" ToolTip="Буде відкрито текстовий файл із записами про помилки в Excel-файлах з даними" Background="Red" Margin="0, 192, 0, 0" Click="WatchBugsReport"></Button> -->				
 				</StackPanel>
 
 			</StackPanel>

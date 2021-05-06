@@ -100,6 +100,42 @@ namespace DataCollectionApp
 						sw.WriteLine();
 					}					
 				}
+				
+				// Отримання даних з БД та порівняння з даними з Excel-файлу
+                // Якщо вони співпадають - немає сенсу для перезапису, інакше дані в БД перезаписуються
+				const string selectAuditoryTypes = "SELECT auditory_type_name FROM auditory_type";
+				MySqlConnection connection = DBUtils.GetDBConnection();
+				MySqlCommand mySqlCommand;
+				MySqlDataReader dataReader;
+				
+				bool noSensetoReload = true;
+				
+				connection.Open();
+				mySqlCommand = new MySqlCommand(selectAuditoryTypes, connection);
+				dataReader = mySqlCommand.ExecuteReader();
+				
+				ArrayList auditoryTypesInDB = new ArrayList();
+				
+				while(dataReader.Read())
+				{
+					auditoryTypesInDB.Add(dataReader[0].ToString());
+				}
+				connection.Close();
+				
+				foreach (string record in records)
+				{
+					if(!auditoryTypesInDB.Contains(record))
+					{
+						noSensetoReload = false;
+						break;
+					}
+				}
+				
+				if (noSensetoReload)
+				{
+					reading = false;
+					MessageBox.Show("Дані про типи аудиторій вже містяться в базі даних!");
+				}			
 			}
 		}
 		
@@ -120,7 +156,8 @@ namespace DataCollectionApp
 						mySqlCommand.Parameters.AddWithValue("@TYPE", record);
 		                mySqlCommand.ExecuteNonQuery();
 					}
-					connection.Close();					
+					connection.Close();
+					MessageBox.Show("Дані про типи аудиторій завантажено до бази даних!");					
 				}
 				catch(Exception ex)
 				{

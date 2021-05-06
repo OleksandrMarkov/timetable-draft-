@@ -156,7 +156,62 @@ namespace DataCollectionApp
 						}
 						sw.WriteLine();
 					}
-				}	
+				}
+
+				// Отримання даних з БД та порівняння з даними з Excel-файлу
+                // Якщо вони співпадають - немає сенсу для перезапису, інакше дані в БД перезаписуються
+				const string selectFacultyNames = "SELECT full_name FROM faculty";
+				const string selectFacultyCodes = "SELECT faculty_code FROM faculty";
+				MySqlConnection connection = DBUtils.GetDBConnection();
+				MySqlCommand mySqlCommand;
+				MySqlDataReader dataReader;
+				
+				bool noSensetoReload = true;
+				
+				ArrayList facultyNamesInDB = new ArrayList();
+				ArrayList facultyCodesInDB = new ArrayList();
+								
+				connection.Open();	
+				mySqlCommand = new MySqlCommand(selectFacultyNames, connection);
+				dataReader = mySqlCommand.ExecuteReader();		
+				while(dataReader.Read())
+				{
+					facultyNamesInDB.Add(dataReader[0].ToString());
+				}
+				connection.Close();
+				
+				connection.Open();
+				mySqlCommand = new MySqlCommand(selectFacultyCodes, connection);
+				dataReader = mySqlCommand.ExecuteReader();
+				while(dataReader.Read())
+				{
+					facultyCodesInDB.Add(dataReader[0].ToString());
+				}			
+				connection.Close();
+				
+				
+				foreach (string name in names)
+				{
+					if(!facultyNamesInDB.Contains(name))
+					{
+						noSensetoReload = false;
+						break;
+					}
+				}
+				foreach (string code in codes)
+				{
+					if(!facultyCodesInDB.Contains(code))
+					{
+						noSensetoReload = false;
+						break;
+					}
+				}
+						
+				if (noSensetoReload)
+				{
+					reading = false;
+					MessageBox.Show("Дані про факультети вже містяться в базі даних!");
+				}				
 			}						
 		}
 		
@@ -185,6 +240,7 @@ namespace DataCollectionApp
 					}
 					
 					connection.Close();
+					MessageBox.Show("Дані про факультети завантажено до бази даних!");
 				}
 				catch(Exception ex)
 				{

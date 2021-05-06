@@ -41,8 +41,8 @@ namespace DataCollectionApp
 			this.firstRow = firstRow;
 			this.lastRow = lastRow;
 		}
-		
-				public override void ReadFromExcelFile()
+				
+		public override void ReadFromExcelFile()
 		{
 			try
 			{

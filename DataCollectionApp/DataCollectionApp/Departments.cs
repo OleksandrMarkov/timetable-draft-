@@ -110,6 +110,8 @@ namespace DataCollectionApp
 			{
 				const string path = @"E:\BACHELORS WORK\TIMETABLE\DataCollectionApp\BugsReport.txt";
 				
+				/*const string selectFacultiesID = "SELECT "*/
+				
 				if (missingValuesOfFullNames.Count !=0 || missingValuesOfShortNames.Count != 0
 				   || missingValuesOfFacultyCodes.Count != 0 || duplicatesOfFullNames.Count != 0
 				  || duplicatesOfShortNames.Count != 0)

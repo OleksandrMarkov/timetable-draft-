@@ -212,21 +212,18 @@ namespace DataCollectionApp
 				{
 					case auditoryTypesText:
 						auditoryTypes.SendDataToDB();
-						MessageBox.Show("Дані про типи аудиторій завантажено до бази даних!");
-						lbi_auditoryTypes.IsEnabled = false;
-						lbi_auditoryTypes.FontWeight = FontWeights.Bold;
+						/*lbi_auditoryTypes.IsEnabled = false;
+						lbi_auditoryTypes.FontWeight = FontWeights.Bold;*/
 						break;
 					case disciplinesText:
 						disciplines.SendDataToDB();
-						MessageBox.Show("Дані про дисципліни завантажено до бази даних!");
-						lbi_disciplines.IsEnabled = false;
-						lbi_disciplines.FontWeight = FontWeights.Bold;
+						/*lbi_disciplines.IsEnabled = false;
+						lbi_disciplines.FontWeight = FontWeights.Bold;*/
 						break;
 					case facultiesText:
 						faculties.SendDataToDB();
-						MessageBox.Show("Дані про факультети завантажено до бази даних!");
-						lbi_faculties.IsEnabled = false;
-						lbi_faculties.FontWeight = FontWeights.Bold;
+						/*lbi_faculties.IsEnabled = false;
+						lbi_faculties.FontWeight = FontWeights.Bold;*/
 						break;
 					case departmentsText:
 						departments.SendDataToDB();
@@ -377,7 +374,7 @@ namespace DataCollectionApp
 							tourism_sheet1.SendDataToDB();
 							tourism_sheet2.SendDataToDB();
 							MessageBox.Show("Відомості доручень кафедри туристичного," +
-"							                готельного та ресторанного бізнесу " +
+"							готельного та ресторанного бізнесу " +
 							"завантажено до бази даних!");
 							lbi_t.IsEnabled = false;
 							lbi_t.FontWeight = FontWeights.Bold;
@@ -405,114 +402,140 @@ namespace DataCollectionApp
 		
 		void lbi_auditoryTypes_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = auditoryTypesText;
-			lastWriteTime.Text = auditoryTypes.FileName;
+			selectedFile.Text = auditoryTypesText;
+			selectedFileName.Text = auditoryTypes.FileName;
+			lastWriteTime.Text = auditoryTypes.LastWriteTime;
 		}
 		void lbi_disciplines_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = disciplinesText;
-			lastWriteTime.Text = disciplines.FileName;			
+			selectedFile.Text = disciplinesText;
+			selectedFileName.Text = disciplines.FileName;
+			lastWriteTime.Text = disciplines.LastWriteTime;			
 		}		
 		void lbi_faculties_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = facultiesText;
-			lastWriteTime.Text = faculties.FileName;
+			selectedFile.Text = facultiesText;
+			selectedFileName.Text = faculties.FileName;
+			lastWriteTime.Text = faculties.LastWriteTime;			
 		}
 		void lbi_departments_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = departmentsText;
-			lastWriteTime.Text = departments.FileName;
+			selectedFile.Text = departmentsText;
+			selectedFileName.Text = departments.FileName;
+			lastWriteTime.Text = departments.LastWriteTime;			
 		}		
 		void lbi_teachers_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = teachersText;
-			lastWriteTime.Text = teachers.FileName;
+			selectedFile.Text = teachersText;
+			selectedFileName.Text = teachers.FileName;
+			lastWriteTime.Text = teachers.LastWriteTime;			
 		}
 		void lbi_auditories_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = auditoriesText;
-			lastWriteTime.Text = auditories.FileName;
+			selectedFile.Text = auditoriesText;
+			selectedFileName.Text = auditories.FileName;
+			lastWriteTime.Text = auditories.LastWriteTime;			
 		}
 		void lbi_groups_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = groupsText;
-			lastWriteTime.Text = studyGroups.FileName;
+			selectedFile.Text = groupsText;
+			selectedFileName.Text = studyGroups.FileName;
+			lastWriteTime.Text = studyGroups.LastWriteTime;			
 		}		
 		
 		void lbi_mp_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = machinePartsText;
-			lastWriteTime.Text = machineParts.FileName;
+			selectedFile.Text = machinePartsText;
+			selectedFileName.Text = machineParts.FileName;
+			lastWriteTime.Text = machineParts.LastWriteTime;			
 		}		
 		void lbi_mbt_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = mbtText;
-			lastWriteTime.Text = mbt.FileName;
+			selectedFile.Text = mbtText;
+			selectedFileName.Text = mbt.FileName;
+			lastWriteTime.Text = mbt.LastWriteTime;			
 		}		
 		void lbi_eac_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = economyAndCustomsText;
-			lastWriteTime.Text = economyAndCustoms_sheet1.FileName;			
+			selectedFile.Text = economyAndCustomsText;
+			selectedFileName.Text = economyAndCustoms_sheet1.FileName;
+			lastWriteTime.Text = String.Compare(economyAndCustoms_sheet1.LastWriteTime, economyAndCustoms_sheet2.LastWriteTime)  >= 0 ?
+				economyAndCustoms_sheet1.LastWriteTime : economyAndCustoms_sheet2.LastWriteTime;
 		}		
 		void lbi_et_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = economicalTheoryText;
-			lastWriteTime.Text = economicalTheory.FileName;
+			selectedFile.Text = economicalTheoryText;
+			selectedFileName.Text = economicalTheory.FileName;
+			lastWriteTime.Text = economicalTheory.LastWriteTime;
 		}	
 		void lbi_em_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = electricalMachinesText;
-			lastWriteTime.Text = electricalMachines.FileName;
+			selectedFile.Text = electricalMachinesText;
+			selectedFileName.Text = electricalMachines.FileName;
+			lastWriteTime.Text = electricalMachines.LastWriteTime;			
 		}		
 		void lbi_ies_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = industrialEnergySupplyText;
-			lastWriteTime.Text = industrialEnergySupply.FileName;
+			selectedFile.Text = industrialEnergySupplyText;
+			selectedFileName.Text = industrialEnergySupply.FileName;
+			lastWriteTime.Text = industrialEnergySupply.LastWriteTime;			
 		}
 		void lbi_csan_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = computerSystemsAndNetworksText;
-			lastWriteTime.Text = computerSystemsAndNetworks_sheet1.FileName;
+			selectedFile.Text = computerSystemsAndNetworksText;
+			selectedFileName.Text = computerSystemsAndNetworks_sheet1.FileName;
+			lastWriteTime.Text = String.Compare(computerSystemsAndNetworks_sheet1.LastWriteTime, computerSystemsAndNetworks_sheet2.LastWriteTime)  >= 0 ?
+				computerSystemsAndNetworks_sheet1.LastWriteTime : computerSystemsAndNetworks_sheet2.LastWriteTime;			
 		}
 		void lbi_mal_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = marketingAndLogisticsText;
-			lastWriteTime.Text = marketingAndLogistics.FileName;
+			selectedFile.Text = marketingAndLogisticsText;
+			selectedFileName.Text = marketingAndLogistics.FileName;
+			lastWriteTime.Text = marketingAndLogistics.LastWriteTime;			
 		}		
 		void lbi_ier_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = internationalEconomicRelationsText;
-			lastWriteTime.Text = internationalEconomicRelations.FileName;
+			selectedFile.Text = internationalEconomicRelationsText;
+			selectedFileName.Text = internationalEconomicRelations.FileName;
+			lastWriteTime.Text = internationalEconomicRelations.LastWriteTime;			
 		}
 		void lbi_aaa_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = accountingAndAuditText;
-			lastWriteTime.Text = accountingAndAudit_sheet1.FileName;
+			selectedFile.Text = accountingAndAuditText;
+			selectedFileName.Text = accountingAndAudit_sheet1.FileName;
+			lastWriteTime.Text = String.Compare(accountingAndAudit_sheet1.LastWriteTime, accountingAndAudit_sheet2.LastWriteTime)  >= 0 ?
+				accountingAndAudit_sheet1.LastWriteTime : accountingAndAudit_sheet2.LastWriteTime;			
 		}
 		void lbi_am_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = appliedMathematicsText;
-			lastWriteTime.Text = appliedMathematics.FileName;
+			selectedFile.Text = appliedMathematicsText;
+			selectedFileName.Text = appliedMathematics.FileName;
+			lastWriteTime.Text = appliedMathematics.LastWriteTime;			
 		}
 		void lbi_cs_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = computerSoftwareText;
-			lastWriteTime.Text = computerSoftware.FileName;
+			selectedFile.Text = computerSoftwareText;
+			selectedFileName.Text = computerSoftware.FileName;
+			lastWriteTime.Text = computerSoftware.LastWriteTime;			
 		}
 		void lbi_ps_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = psychologyText;
-			lastWriteTime.Text = psychology.FileName;
+			selectedFile.Text = psychologyText;
+			selectedFileName.Text = psychology.FileName;
+			lastWriteTime.Text = psychology.LastWriteTime;			
 		}
 		void lbi_aect_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = aviationEngineConstructionTechnologyText;
-			lastWriteTime.Text = aviationEngineConstructionTechnology.FileName;
+			selectedFile.Text = aviationEngineConstructionTechnologyText;
+			selectedFileName.Text = aviationEngineConstructionTechnology.FileName;
+			lastWriteTime.Text = aviationEngineConstructionTechnology.LastWriteTime;			
 		}
 		void lbi_t_selected(object sender, RoutedEventArgs e)
 		{
-			selectedFileName.Text = tourismText;
-			lastWriteTime.Text = tourism_sheet1.FileName;
+			selectedFile.Text = tourismText;
+			selectedFileName.Text = tourism_sheet1.FileName;
+			lastWriteTime.Text = String.Compare(tourism_sheet1.LastWriteTime, tourism_sheet2.LastWriteTime)  >= 0 ?
+				tourism_sheet1.LastWriteTime : tourism_sheet2.LastWriteTime;			
 		}
 	}
 }
