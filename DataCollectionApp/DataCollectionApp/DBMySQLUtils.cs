@@ -10,7 +10,6 @@ namespace DataCollectionApp
         {
             String ConnectionString = "Server=" + host + ";Database=" + db
                 + ";port=" + port + ";User Id=" + username + ";password=" + password;
-
             MySqlConnection connection = new MySqlConnection(ConnectionString);
             return connection;
         }

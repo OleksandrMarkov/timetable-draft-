@@ -7,7 +7,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-
 using System.Diagnostics;
 
 namespace DataCollectionApp
@@ -45,46 +44,28 @@ namespace DataCollectionApp
 		Teachers teachers = new Teachers("Teachers.xlsx");		 
 		Auditories auditories = new Auditories("Auditories.xls");			
 		StudyGroups studyGroups = new StudyGroups("Групи 30.04.2021.xlsx");
-		
-		// відомості
-		Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);		
-		
-		Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);
-			
+		Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);			
+		Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);	
 		Dep_EconomyAndCustoms economyAndCustoms_sheet1 = new Dep_EconomyAndCustoms("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 84, 1);
 		Dep_EconomyAndCustoms economyAndCustoms_sheet2 = new Dep_EconomyAndCustoms("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 68, 2);
-			
 		Dep_EconomicalTheory economicalTheory = new Dep_EconomicalTheory("ЕКОНОМІЧНОЇ ТЕОРІЇ ТА ПІДПРИЄМНИЦТВА_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 79);
-			
 		Dep_ElectricalMachines electricalMachines = new Dep_ElectricalMachines("Електричних_машин-Форма 44 ВІД ДОРУЧЕНЬ- 2020_кафЕМ_ден2 сем.xlsx", 15, 45);
-			
 		Dep_IndustrialEnergySupply industrialEnergySupply = new Dep_IndustrialEnergySupply("Електропостачання промислових підприємств_Форма 44 ЕПП - 2020д.xlsx", 15, 76);
-			
 		Dep_ComputerSystemsAndNetworks computerSystemsAndNetworks_sheet1 = new Dep_ComputerSystemsAndNetworks("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 93, 1);
 		Dep_ComputerSystemsAndNetworks computerSystemsAndNetworks_sheet2 = new Dep_ComputerSystemsAndNetworks("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 23, 2);
-			
 		Dep_MarketingAndLogistics marketingAndLogistics = new Dep_MarketingAndLogistics("МАРКЕТИНГУ ТА ЛОГІСТИКИ_Відомість_денне_ІІ_нова.xls", 15, 72);
-						
 		Dep_InternationalEconomicRelations internationalEconomicRelations = new Dep_InternationalEconomicRelations("МІЖНАРОДНИХ ЕКОНОМІЧНИХ ВІДНОСИН денне 44 2020.xlsx", 15, 57);
-			
 		Dep_AccountingAndAudit accountingAndAudit_sheet1 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 62, 1);
 		Dep_AccountingAndAudit accountingAndAudit_sheet2 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 64, 2);
-			
 		Dep_AppliedMathematics appliedMathematics = new Dep_AppliedMathematics("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71);
-			
 		Dep_Psychology psychology = new Dep_Psychology("Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156);
-			
 		Dep_AviationEngineConstructionTechnology aviationEngineConstructionTechnology = new Dep_AviationEngineConstructionTechnology("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx", 15, 65);
-						
 		Dep_Tourism tourism_sheet1 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 1);
-		Dep_Tourism tourism_sheet2 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 2);
-			
+		Dep_Tourism tourism_sheet2 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 2);	
 		Dep_ComputerSoftware computerSoftware = new Dep_ComputerSoftware("Програмних_засобів_26-12-19_Форма 44_ ВIДОМIСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 225);		
 
 		public Window1()
-		{				
-			InitializeComponent();
-		}
+		{ InitializeComponent(); }
 			
 		void WatchButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -92,11 +73,9 @@ namespace DataCollectionApp
 			ListBoxItem statementsFile = (ListBoxItem)statementsListBox.SelectedItem;
 			ListBoxItem commonDataFile = (ListBoxItem)commonDataListBox.SelectedItem;
 			
-			// відкриття файлу з загальними даними
 			if(statementsFile == null && commonDataFile != null)
 			{
-				fileName = commonDataFile.Content.ToString();
-				
+				fileName = commonDataFile.Content.ToString();	
 				switch(fileName)
 				{
 					case auditoryTypesText:
@@ -121,13 +100,11 @@ namespace DataCollectionApp
 						studyGroups.openForViewing();
 						break;						
 				}
-				
 				fileName = "";
 				commonDataListBox.SelectedItem = null;
 			}
 			else
 			{
-				// завантаження файлу відомостей доручень
 				if(statementsFile != null && commonDataFile == null)
 				{
 					fileName = statementsFile.Content.ToString();
@@ -135,8 +112,7 @@ namespace DataCollectionApp
 					{
 						case machinePartsText:
 							machineParts.openForViewing();
-							break;
-							
+							break;			
 						case mbtText:						
 							mbt.openForViewing();
 							break;
@@ -190,9 +166,7 @@ namespace DataCollectionApp
 				else 
 				{
 					if(statementsFile == null && commonDataFile == null)
-					{
-						MessageBox.Show("Не обрано файл для перегляду!");	
-					}
+					{ MessageBox.Show("Не обрано файл для перегляду!");	}
 				}
 			}		
 		}
@@ -203,27 +177,19 @@ namespace DataCollectionApp
 			ListBoxItem statementsFile = (ListBoxItem)statementsListBox.SelectedItem;
 			ListBoxItem commonDataFile = (ListBoxItem)commonDataListBox.SelectedItem;
 			
-			// завантаження файлу з загальними даними
 			if(statementsFile == null && commonDataFile != null)
 			{
 				fileName = commonDataFile.Content.ToString();
-				
 				switch(fileName)
 				{
 					case auditoryTypesText:
 						auditoryTypes.SendDataToDB();
-						/*lbi_auditoryTypes.IsEnabled = false;
-						lbi_auditoryTypes.FontWeight = FontWeights.Bold;*/
 						break;
 					case disciplinesText:
 						disciplines.SendDataToDB();
-						/*lbi_disciplines.IsEnabled = false;
-						lbi_disciplines.FontWeight = FontWeights.Bold;*/
 						break;
 					case facultiesText:
 						faculties.SendDataToDB();
-						/*lbi_faculties.IsEnabled = false;
-						lbi_faculties.FontWeight = FontWeights.Bold;*/
 						break;
 					case departmentsText:
 						departments.SendDataToDB();
@@ -250,32 +216,23 @@ namespace DataCollectionApp
 						lbi_groups.FontWeight = FontWeights.Bold;
 						break;						
 				}
-				
 				fileName = "";
 				commonDataListBox.SelectedItem = null;
 			}
 			else
 			{
-				// завантаження файлу відомостей доручень
 				if(statementsFile != null && commonDataFile == null)
 				{
 					fileName = statementsFile.Content.ToString();
 					switch(fileName)
 					{
-						case machinePartsText:
-							/*WatchButton.IsEnabled = false;
-							LoadButton.IsEnabled = false;
-							DeleteButton.IsEnabled = false;	*/						
+						case machinePartsText:						
 							machineParts.SendDataToDB();
 							MessageBox.Show("Відомості доручень кафедри деталей машин " +
 							"і підйомно-транспортних механізмів завантажено до бази даних!");
 							lbi_mp.IsEnabled = false;
 							lbi_mp.FontWeight = FontWeights.Bold;
-							/*WatchButton.IsEnabled = true;
-							LoadButton.IsEnabled = true;
-							DeleteButton.IsEnabled = true;*/
-							break;
-							
+							break;		
 						case mbtText:						
 							mbt.SendDataToDB();
 							MessageBox.Show("Відомості доручень кафедри технології машинобудування " +

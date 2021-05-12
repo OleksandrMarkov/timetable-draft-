@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using System.IO;
-
 using Excel = Microsoft.Office.Interop.Excel;
 using MySql.Data.MySqlClient;
-
-using System.Windows; // for messageBoxes
+using System.Windows;
 
 namespace DataCollectionApp
 {
@@ -16,15 +13,12 @@ namespace DataCollectionApp
 		ArrayList records = new ArrayList();
 		ArrayList missingValues = new ArrayList();
 		Dictionary <int, string> duplicates = new Dictionary<int, string>();
-		int row = 1; // рядок, з якого починаються записи даних у файлі
-		const char column = 'A'; // стовпець, з якого беруться дані
-		
-		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
+		int row = 1;
+		const char column = 'A';
+		bool reading = true;
 				
 		public AuditoryTypes(string fileName): base(fileName)
-		{
-			this.fileName = fileName;
-		}
+		{ this.fileName = fileName; }
 				
 		public override void ReadFromExcelFile()
 		{
@@ -34,22 +28,14 @@ namespace DataCollectionApp
 				
 				for(int col = getColumnNumber(column), i = row; i <= rowsCount; i++)
 				{
-					cellContent = getCellContent(i, col);
-					//MessageBox.Show(cellContent);
-					
+					cellContent = getCellContent(i, col);					
 					if(records.Contains(cellContent))
-					{
-						duplicates.Add(i, cellContent);
-					}
+					{ duplicates.Add(i, cellContent); }
 					else
-					{
-						records.Add(cellContent);
-					}
+					{ records.Add(cellContent); }
 					
 					if(string.IsNullOrEmpty(cellContent))
-					{
-						missingValues.Add(i);
-					}
+					{ missingValues.Add(i); }
 				}				
 				close();
 			}
@@ -81,9 +67,7 @@ namespace DataCollectionApp
 					{
 						sw.WriteLine("Є пропуски в рядках: ");
 						foreach (int value in missingValues)
-						{
-							sw.Write(value + "|");
-						}
+						{ sw.Write(value + "|"); }
 						sw.WriteLine();
 					}
 				}
@@ -94,32 +78,23 @@ namespace DataCollectionApp
 					{
 						sw.WriteLine("Є дублікати: ");
 						foreach (KeyValuePair<int, string> duplicate in duplicates)
-						{
-							sw.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value);
-						}
+						{ sw.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value); }
 						sw.WriteLine();
 					}					
 				}
 				
-				// Отримання даних з БД та порівняння з даними з Excel-файлу
-                // Якщо вони співпадають - немає сенсу для перезапису, інакше дані в БД перезаписуються
 				const string selectAuditoryTypes = "SELECT auditory_type_name FROM auditory_type";
 				MySqlConnection connection = DBUtils.GetDBConnection();
 				MySqlCommand mySqlCommand;
 				MySqlDataReader dataReader;
-				
-				bool noSensetoReload = true;
-				
+				bool noSensetoReload = true;		
 				connection.Open();
 				mySqlCommand = new MySqlCommand(selectAuditoryTypes, connection);
 				dataReader = mySqlCommand.ExecuteReader();
-				
 				ArrayList auditoryTypesInDB = new ArrayList();
 				
 				while(dataReader.Read())
-				{
-					auditoryTypesInDB.Add(dataReader[0].ToString());
-				}
+				{ auditoryTypesInDB.Add(dataReader[0].ToString()); }
 				connection.Close();
 				
 				foreach (string record in records)
@@ -147,8 +122,7 @@ namespace DataCollectionApp
 				{
 					MySqlConnection connection  = DBUtils.GetDBConnection();
 					MySqlCommand mySqlCommand;			
-					const string insertTypes = "INSERT INTO auditory_type (auditory_type_name) VALUES (@TYPE)";
-					
+					const string insertTypes = "INSERT INTO auditory_type (auditory_type_name) VALUES (@TYPE)";			
 					connection.Open();
 					foreach (string record in records)
 					{

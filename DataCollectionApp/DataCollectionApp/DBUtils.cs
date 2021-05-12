@@ -12,7 +12,6 @@ namespace DataCollectionApp
             string db = "app_db";
             string username = "root";
             string password = "pbx93fq26";
-
             return DBMySQLUtils.GetDBConnection(host, port, db, username, password);
         }
 	}

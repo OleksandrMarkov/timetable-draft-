@@ -1,19 +1,16 @@
 ﻿using System;
-
 using System.Collections;
 using System.Collections.Generic;
-
 using Excel = Microsoft.Office.Interop.Excel;
 using MySql.Data.MySqlClient;
-
-using System.Windows; // for messageBoxes
+using System.Windows;
 
 namespace DataCollectionApp
 {
 	public class Dep_AppliedMathematics : ExcelFile
 	{
-		int firstRow; // рядок, з якого починаються записи даних у файлі
-		int lastRow; // рядок, на якому закінчуються записи даних у файлі
+		int firstRow;
+		int lastRow;
 		
 		ArrayList disciplines = new ArrayList();
 		ArrayList groups = new ArrayList();
@@ -23,20 +20,19 @@ namespace DataCollectionApp
 		ArrayList teachers = new ArrayList();
 		ArrayList auditories = new ArrayList();
 		
-		const char disciplinesColumn = 'B'; // стовпець, з якого беруться назви дисциплін
-		const char groupsColumn = 'C'; // стовпець, з якого беруться скорочені назви груп
-		const char typesColumn = 'D'; // стовпець, з якого беруться типи занять 
-		const char hoursColumn = 'E'; // стовпець, з якого беруться кількості годин на заняття 
-		const char controlColumn = 'G'; // стовпець, з якого беруться типи контролю
-		const char teachersColumn = 'H'; // стовпець, з якого беруться ПІБ викладачів
-		const char auditoriesColumn = 'I'; // стовпець, з якого беруться запропоновані аудиторії
+		const char disciplinesColumn = 'B';
+		const char groupsColumn = 'C';
+		const char typesColumn = 'D'; 
+		const char hoursColumn = 'E';
+		const char controlColumn = 'G';
+		const char teachersColumn = 'H';
+		const char auditoriesColumn = 'I';
 		
-		bool reading = true; // стане false, якщо відбудеться помилка при зчитуванні з Excel-файлу
+		bool reading = true;
 				
 		public Dep_AppliedMathematics(string fileName, int firstRow, int lastRow): base(fileName)
 		{
 			this.fileName = fileName;
-			
 			this.firstRow = firstRow;
 			this.lastRow = lastRow;
 		}
@@ -46,51 +42,37 @@ namespace DataCollectionApp
 			try
 			{
 				open(1);
-				// назви дисциплін
 				for(int col = getColumnNumber(disciplinesColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
-					//MessageBox.Show(cellContent + " " + i);
 					disciplines.Add(cellContent);
 				}
-				
-				// назви груп
 				for(int col = getColumnNumber(groupsColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
 					groups.Add(cellContent);
 				}
-				
-				//типи занять
 				for(int col = getColumnNumber(typesColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
 					lessonsType.Add(cellContent);
 				}
-				
-				//кількості годин
 				for(int col = getColumnNumber(hoursColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
 					int h = Convert.ToInt32(cellContent);
 					hours.Add(h);
 				}
-				
-				//типи контролю
 				for(int col = getColumnNumber(controlColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
 					lessonsControl.Add(cellContent);
 				}
-								
-				//  викладачі
 				for(int col = getColumnNumber(teachersColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);
 					teachers.Add(cellContent);
 				}
-				
-				//  запропоновані аудиторії
 				for(int col = getColumnNumber(auditoriesColumn), i = firstRow; i <= lastRow; i++)
 				{
 					cellContent = getCellContent(i, col);					
@@ -105,9 +87,7 @@ namespace DataCollectionApp
             }
 		}
 		
-		public override void EvaluateData()
-		{
-		}
+		public override void EvaluateData() {}
 		
 		public override void Load()
 		{
@@ -119,20 +99,14 @@ namespace DataCollectionApp
 					MySqlCommand mySqlCommand;
 					
 					const string selectDepartmentID = "SELECT department_id FROM department WHERE short_name = @DEPARTMENT";
-					const string selectDisciplineID = "SELECT discipline_id FROM discipline WHERE full_name = @DISCIPLINE";
-					
+					const string selectDisciplineID = "SELECT discipline_id FROM discipline WHERE full_name = @DISCIPLINE";					
 					const string insertLessons = "INSERT INTO lesson (discipline_id, type, countOfHours, control, department_id) "
 					+ "VALUES (@DISCIPLINE_ID, @TYPE, @HOURS, @CONTROL, @DEPARTMENT_ID)";
-					
-					const string selectLessonID = "SELECT lesson_id FROM lesson ORDER BY lesson_id DESC LIMIT 1"; // останнє значення id в Lesson 
-								
+					const string selectLessonID = "SELECT lesson_id FROM lesson ORDER BY lesson_id DESC LIMIT 1";
 					const string selectTeacherID = "SELECT teacher_id FROM teacher WHERE full_name = @TEACHER";
-					
 					const string selectAuditoryID = "SELECT auditory_id FROM auditory WHERE auditory_name = @AUDITORY";
-					
 					const string insertLesson_teacher = "INSERT INTO lesson_teacher (lesson_id, teacher_id) "
 					+ "VALUES (@LESSON_ID, @TEACHER_ID)";
-					
 					const string insertLesson_auditory = "INSERT INTO lesson_auditory (lesson_id, auditory_id) "
 					+ "VALUES (@LESSON_ID, @AUDITORY_ID)";
 					
@@ -151,10 +125,7 @@ namespace DataCollectionApp
 						mySqlCommand.ExecuteNonQuery();
 						
 						int disciplineID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-						
-						//MessageBox.Show(i + " " + disciplines[i] + "\t" + disciplineID);
-						
-						// вставка в Lesson
+		
 						mySqlCommand = new MySqlCommand(insertLessons, connection);
 						mySqlCommand.Parameters.AddWithValue("@DISCIPLINE_ID", disciplineID);
 						mySqlCommand.Parameters.AddWithValue("@TYPE", lessonsType[i]);
@@ -166,11 +137,9 @@ namespace DataCollectionApp
 						mySqlCommand = new MySqlCommand(selectLessonID, connection);
 						mySqlCommand.ExecuteNonQuery();
 						
-						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());						
-						
+						int lessonID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());					
 						string suggestedAuditories = auditories[i].ToString();
 						
-						// якщо є запропоновані аудиторії, вони завантажуються в БД (т-ця Lesson_auditory)
 						if(suggestedAuditories.Length != 0)
 						{
 							suggestedAuditories = suggestedAuditories.TrimEnd(new char [] {',', ';'});
@@ -184,9 +153,7 @@ namespace DataCollectionApp
 								mySqlCommand.ExecuteNonQuery();
 						
 								int auditoryID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-								
-								//MessageBox.Show(auditoryID + "\t" + separatedAuditories[j]);
-								
+										
 								mySqlCommand = new MySqlCommand(insertLesson_auditory, connection);
 								mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
 								mySqlCommand.Parameters.AddWithValue("@AUDITORY_ID", auditoryID);
@@ -196,20 +163,16 @@ namespace DataCollectionApp
 
 						string teachersRecord = teachers[i].ToString();
 						teachersRecord = teachersRecord.TrimEnd(new char [] {',', ';'});
-						//teachersRecord = teachersRecord.Replace(" ", ""); Пробіли є в ПІБ викладачів, вони не видаляються
-						//MessageBox.Show(teachersRecord);
 						string [] separatedTeachers = teachersRecord.Split(new char[] {',', ';'});
-						
-						// вставка в Lesson_teacher
+			
 						for(int j = 0; j < separatedTeachers.Length; j++)
 						{
-							separatedTeachers[j] = separatedTeachers[j].Trim(); // прибираються можливі зайві пробіли
+							separatedTeachers[j] = separatedTeachers[j].Trim();
 							mySqlCommand = new MySqlCommand(selectTeacherID, connection);
 							mySqlCommand.Parameters.AddWithValue("@TEACHER", separatedTeachers[j]);
 							mySqlCommand.ExecuteNonQuery();
 							
 							int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());							
-							//MessageBox.Show(j + "\t" + teacherID + "\t" + separatedTeachers[j]);
 							
 							mySqlCommand = new MySqlCommand(insertLesson_teacher, connection);
 							mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
@@ -224,18 +187,15 @@ namespace DataCollectionApp
 						+ "VALUES (@DEPARTMENT_ID, @NAME, @CODE)";					
 						const string selectGroupID = "SELECT study_group_id FROM study_group WHERE full_name = @GROUP";
 						
-						// запис груп в т-цю БД Lesson_Group, та в Study_group (якщо їх там немає) 
 						string groupsInCell = groups[i].ToString();
 						if(groupsInCell.Length != 0)
 						{
 							groupsInCell = groupsInCell.Trim();
 							groupsInCell = groupsInCell.TrimEnd(new char [] {',', ';'});
 							groupsInCell = groupsInCell.Replace(" ", "");
-							groupsInCell = groupsInCell.Replace("\n", "");
-							
+							groupsInCell = groupsInCell.Replace("\n", "");					
 							string [] separatedGroups = groupsInCell.Split(new char[] {',', ';'});
-							
-							// список груп в таблиці Study_group БД
+						
 							ArrayList studyGroupsFromDB = new ArrayList();
 							mySqlCommand = new MySqlCommand(selectStudyGroups, connection);
 							using (MySqlConnection connection2 = DBUtils.GetDBConnection())
@@ -244,7 +204,6 @@ namespace DataCollectionApp
 								{
 									while(dataReader.Read())
 									{
-										//MessageBox.Show(dataReader[0].ToString());
 										studyGroupsFromDB.Add(dataReader[0].ToString());
 									}
 								}
@@ -252,7 +211,6 @@ namespace DataCollectionApp
 							
 							for(int j = 0; j < separatedGroups.Length; j++)
 							{
-								// якщо групи з відомостей ще немає в БД, заносимо в Study_group
 								if (studyGroupsFromDB.Contains(separatedGroups[j]) == false)
 								{
 									int hyphen = separatedGroups[j].IndexOf('-');
@@ -264,7 +222,6 @@ namespace DataCollectionApp
 									mySqlCommand.Parameters.AddWithValue("@CODE", code);
 									mySqlCommand.ExecuteNonQuery();
 								}
-								// занесення в Lesson_group
 								mySqlCommand = new MySqlCommand(selectGroupID, connection);
 								mySqlCommand.Parameters.AddWithValue("@GROUP", separatedGroups[j]);
 								mySqlCommand.ExecuteNonQuery();
@@ -277,18 +234,6 @@ namespace DataCollectionApp
 							}
 						}
 					}		
-					/*const string createTemporaryTable = "CREATE TEMPORARY TABLE study_group2 AS (SELECT * FROM study_group GROUP BY full_name, department_id, count_of_students)";
-	                mySqlCommand = new MySqlCommand(createTemporaryTable, connection);
-	                mySqlCommand.ExecuteNonQuery();
-	                    	
-	                const string deleteTrash = "DELETE FROM study_group WHERE study_group.study_group_id NOT IN (SELECT study_group2.study_group_id FROM study_group2)";
-	                mySqlCommand = new MySqlCommand(deleteTrash, connection);
-	                mySqlCommand.ExecuteNonQuery();
-	                
-	                const string dropTemporaryTable = "DROP TABLE study_group2";
-	                mySqlCommand = new MySqlCommand(dropTemporaryTable, connection);
-	                mySqlCommand.ExecuteNonQuery();*/				
-					
 					connection.Close();
 				}
 				catch(Exception ex)
