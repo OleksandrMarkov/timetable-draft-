@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -21,21 +22,21 @@ namespace DataCollectionApp
 		const string teachersText = "Викладачі";
 		const string groupsText = "Учбові групи";
 		
-		const string machinePartsText = "Кафедра деталей машин і підйомно-транспортних механізмів";
-		const string mbtText = "Кафедра технології машинобудування";
-		const string economyAndCustomsText = "Кафедра економіки та митної справи";
-		const string economicalTheoryText = "Кафедра економічної теорії та підприємництва";
-		const string electricalMachinesText = "Кафедра електричних машин";
-		const string industrialEnergySupplyText = "Кафедра електропостачання промислових підприємств";
-		const string computerSystemsAndNetworksText = "Кафедра комп’ютерних систем та мереж";
-		const string marketingAndLogisticsText = "Кафедра маркетингу та логістики";
-		const string internationalEconomicRelationsText = "Кафедра міжнародних економічних відносин";
-		const string accountingAndAuditText = "Кафедра обліку і оподаткування";
-		const string appliedMathematicsText = "Кафедра прикладної математики";
-		const string computerSoftwareText = "Кафедра програмних засобів";
-		const string psychologyText = "Кафедра соціальної роботи";
-		const string aviationEngineConstructionTechnologyText = "Кафедра технології авіаційних двигунів";
-		const string tourismText =	"Кафедра туристичного, готельного та ресторанного бізнесу";
+		const string machinePartsText = "Деталей машин і підйомно-транспортних механізмів";
+		const string mbtText = "Технології машинобудування";
+		const string economyAndCustomsText = "Економіки та митної справи";
+		const string economicalTheoryText = "Економічної теорії та підприємництва";
+		const string electricalMachinesText = "Електричних машин";
+		const string industrialEnergySupplyText = "Електропостачання промислових підприємств";
+		const string computerSystemsAndNetworksText = "Комп'ютерних систем та мереж";
+		const string marketingAndLogisticsText = "Маркетингу та логістики";
+		const string internationalEconomicRelationsText = "Міжнародних економічних відносин";
+		const string accountingAndAuditText = "Обліку і оподаткування";
+		const string appliedMathematicsText = "Прикладної математики";
+		const string computerSoftwareText = "Програмних засобів";
+		const string psychologyText = "Соціальної роботи та психології";
+		const string aviationEngineConstructionTechnologyText = "Технології авіаційних двигунів";
+		const string tourismText =	"Туристичного, готельного та ресторанного бізнесу";
 		
 		AuditoryTypes auditoryTypes = new AuditoryTypes("TypesOfAuditories.xlsx");	
 		Disciplines disciplines = new Disciplines("Disciplines.xlsx");
@@ -44,28 +45,42 @@ namespace DataCollectionApp
 		Teachers teachers = new Teachers("Teachers.xlsx");		 
 		Auditories auditories = new Auditories("Auditories.xls");			
 		StudyGroups studyGroups = new StudyGroups("Групи 30.04.2021.xlsx");
-		Dep_MachineParts machineParts = new Dep_MachineParts("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50);			
-		Dep_MachineBuildingTechnology mbt = new Dep_MachineBuildingTechnology("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46);	
-		Dep_EconomyAndCustoms economyAndCustoms_sheet1 = new Dep_EconomyAndCustoms("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 84, 1);
-		Dep_EconomyAndCustoms economyAndCustoms_sheet2 = new Dep_EconomyAndCustoms("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 68, 2);
-		Dep_EconomicalTheory economicalTheory = new Dep_EconomicalTheory("ЕКОНОМІЧНОЇ ТЕОРІЇ ТА ПІДПРИЄМНИЦТВА_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 79);
-		Dep_ElectricalMachines electricalMachines = new Dep_ElectricalMachines("Електричних_машин-Форма 44 ВІД ДОРУЧЕНЬ- 2020_кафЕМ_ден2 сем.xlsx", 15, 45);
-		Dep_IndustrialEnergySupply industrialEnergySupply = new Dep_IndustrialEnergySupply("Електропостачання промислових підприємств_Форма 44 ЕПП - 2020д.xlsx", 15, 76);
-		Dep_ComputerSystemsAndNetworks computerSystemsAndNetworks_sheet1 = new Dep_ComputerSystemsAndNetworks("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 93, 1);
-		Dep_ComputerSystemsAndNetworks computerSystemsAndNetworks_sheet2 = new Dep_ComputerSystemsAndNetworks("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 23, 2);
-		Dep_MarketingAndLogistics marketingAndLogistics = new Dep_MarketingAndLogistics("МАРКЕТИНГУ ТА ЛОГІСТИКИ_Відомість_денне_ІІ_нова.xls", 15, 72);
-		Dep_InternationalEconomicRelations internationalEconomicRelations = new Dep_InternationalEconomicRelations("МІЖНАРОДНИХ ЕКОНОМІЧНИХ ВІДНОСИН денне 44 2020.xlsx", 15, 57);
-		Dep_AccountingAndAudit accountingAndAudit_sheet1 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 62, 1);
-		Dep_AccountingAndAudit accountingAndAudit_sheet2 = new Dep_AccountingAndAudit("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 64, 2);
-		Dep_AppliedMathematics appliedMathematics = new Dep_AppliedMathematics("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71);
-		Dep_Psychology psychology = new Dep_Psychology("Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156);
-		Dep_AviationEngineConstructionTechnology aviationEngineConstructionTechnology = new Dep_AviationEngineConstructionTechnology("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx", 15, 65);
-		Dep_Tourism tourism_sheet1 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 1);
-		Dep_Tourism tourism_sheet2 = new Dep_Tourism("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 2);	
-		Dep_ComputerSoftware computerSoftware = new Dep_ComputerSoftware("Програмних_засобів_26-12-19_Форма 44_ ВIДОМIСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 225);		
-
+		
+		Statements appliedMathematics = new Statements("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71, 1, "ПМ");
+		Statements internationalEconomicRelations = new Statements("МІЖНАРОДНИХ ЕКОНОМІЧНИХ ВІДНОСИН денне 44 2020.xlsx", 15, 57, 1, "МЕВ");
+		Statements machineParts = new Statements("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50, 1, "ДМіПТМ");
+		Statements mbt = new Statements("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46, 1, "ТМБ");
+		Statements economyAndCustoms_sheet1 = new Statements("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 84, 1, "ЕтаМС");
+		Statements economyAndCustoms_sheet2 = new Statements("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 68, 2, "ЕтаМС");		
+		Statements economicalTheory = new Statements("ЕКОНОМІЧНОЇ ТЕОРІЇ ТА ПІДПРИЄМНИЦТВА_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 79, 1, "ЕТтаП");
+		Statements electricalMachines = new Statements("Електричних_машин-Форма 44 ВІД ДОРУЧЕНЬ- 2020_кафЕМ_ден2 сем.xlsx", 15, 45, 1, "ЕМ");
+		Statements industrialEnergySupply = new Statements("Електропостачання промислових підприємств_Форма 44 ЕПП - 2020д.xlsx", 15, 76, 1, "ЕПП");
+		Statements computerSystemsAndNetworks_sheet1 = new Statements("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 93, 1, "КСтаМ");
+		Statements computerSystemsAndNetworks_sheet2 = new Statements("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 23, 2, "КСтаМ");		
+		Statements marketingAndLogistics = new Statements("МАРКЕТИНГУ ТА ЛОГІСТИКИ_Відомість_денне_ІІ_нова.xls", 15, 72, 1, "Марк.та Лог.");
+		Statements accountingAndAudit_sheet1 = new Statements("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 62, 1, "ОіО");
+		Statements accountingAndAudit_sheet2 = new Statements("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 64, 2, "ОіО");
+		Statements psychology = new Statements("Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156, 1, "СоцРтаП");
+		Statements aviationEngineConstructionTechnology = new Statements("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx", 15, 65, 1, "ТАД");		
+		Statements computerSoftware = new Statements("Програмних_засобів_26-12-19_Форма 44_ ВIДОМIСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 225, 1, "ПЗ");
+		
+ 		Statements tourism_sheet1 = new Statements("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 1, "ТГтаРБ");
+		Statements tourism_sheet2 = new Statements("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 2, "ТГтаРБ");
+		
 		public Window1()
-		{ InitializeComponent(); }
+		{ 
+			InitializeComponent();
+			
+			DbOperations dbo = new DbOperations();
+			Dictionary<int, string> departments = dbo.getDepartments();
+			foreach (var d in departments)
+			{
+				ListBoxItem lbi = new ListBoxItem();
+				lbi.Content = d.Value;
+				lbi.Uid = d.Key.ToString();
+				statementsListBox.Items.Add(lbi);
+			}
+		}
 			
 		void WatchButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -144,7 +159,7 @@ namespace DataCollectionApp
 							accountingAndAudit_sheet2.openForViewing();
 							break;
 						case appliedMathematicsText:
-							appliedMathematics.openForViewing();
+							appliedMathematics.openForViewing();				
 							break;
 						case computerSoftwareText:
 							computerSoftware.openForViewing();
@@ -212,10 +227,9 @@ namespace DataCollectionApp
 					case groupsText:
 						studyGroups.SendDataToDB();
 						MessageBox.Show("Дані про учбові групи завантажено до бази даних!");
-						lbi_groups.IsEnabled = false;
-						lbi_groups.FontWeight = FontWeights.Bold;
 						break;						
 				}
+				//MessageBox.Show("Дані про " + fileName.ToLower() + " завантажено до бази даних!");
 				fileName = "";
 				commonDataListBox.SelectedItem = null;
 			}
@@ -224,119 +238,60 @@ namespace DataCollectionApp
 				if(statementsFile != null && commonDataFile == null)
 				{
 					fileName = statementsFile.Content.ToString();
-					switch(fileName)
-					{
+					 switch(fileName)
+					{							
 						case machinePartsText:						
 							machineParts.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри деталей машин " +
-							"і підйомно-транспортних механізмів завантажено до бази даних!");
-							lbi_mp.IsEnabled = false;
-							lbi_mp.FontWeight = FontWeights.Bold;
 							break;		
 						case mbtText:						
 							mbt.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри технології машинобудування " +
-							"завантажено до бази даних!");
-							lbi_mbt.IsEnabled = false;
-							lbi_mbt.FontWeight = FontWeights.Bold;
 							break;
 						case economyAndCustomsText:
 							economyAndCustoms_sheet1.SendDataToDB();
 							economyAndCustoms_sheet2.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри економіки та митної справи " +
-							"завантажено до бази даних!");
-							lbi_eac.IsEnabled = false;
-							lbi_eac.FontWeight = FontWeights.Bold;
 							break;
 						case economicalTheoryText:
 							economicalTheory.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри економічної теорії та підприємництва " +
-							"завантажено до бази даних!");
-							lbi_et.IsEnabled = false;
-							lbi_et.FontWeight = FontWeights.Bold;
 							break;
 						case electricalMachinesText:
 							electricalMachines.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри електричних машин " +
-							"завантажено до бази даних!");
-							lbi_em.IsEnabled = false;
-							lbi_em.FontWeight = FontWeights.Bold;
 							break;
 						case industrialEnergySupplyText:
 							industrialEnergySupply.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри електропостачання промислових підприємств " +
-							"завантажено до бази даних!");
-							lbi_ies.IsEnabled = false;
-							lbi_ies.FontWeight = FontWeights.Bold;		
 							break;
 						case computerSystemsAndNetworksText:
 							computerSystemsAndNetworks_sheet1.SendDataToDB();
 							computerSystemsAndNetworks_sheet2.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри комп’ютерних систем та мереж " +
-							"завантажено до бази даних!");
-							lbi_csan.IsEnabled = false;
-							lbi_csan.FontWeight = FontWeights.Bold;
 							break;
 						case marketingAndLogisticsText:
-							marketingAndLogistics.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри маркетингу та логістики " +
-							"завантажено до бази даних!");
-							lbi_mal.IsEnabled = false;
-							lbi_mal.FontWeight = FontWeights.Bold;							
+							marketingAndLogistics.SendDataToDB();		
 							break;
 						case internationalEconomicRelationsText:
 							internationalEconomicRelations.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри міжнародних економічних відносин " +
-							"завантажено до бази даних!");
-							lbi_ier.IsEnabled = false;
-							lbi_ier.FontWeight = FontWeights.Bold;
 							break;
 						case accountingAndAuditText:
 							accountingAndAudit_sheet1.SendDataToDB();
 							accountingAndAudit_sheet2.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри обліку і оподаткування " +
-							"завантажено до бази даних!");
-							lbi_aaa.IsEnabled = false;
-							lbi_aaa.FontWeight = FontWeights.Bold;
 							break;
 						case appliedMathematicsText:
 							appliedMathematics.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри прикладної математики " +
-							"завантажено до бази даних!");
-							lbi_am.IsEnabled = false;
-							lbi_am.FontWeight = FontWeights.Bold;
 							break;
 						case computerSoftwareText:
 							computerSoftware.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри програмних засобів " +
-							"завантажено до бази даних!");
-							lbi_cs.IsEnabled = false;
-							lbi_cs.FontWeight = FontWeights.Bold;
 							break;
 						case psychologyText:
 							psychology.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри соціальної роботи " +
-							"завантажено до бази даних!");
-							lbi_ps.IsEnabled = false;
-							lbi_ps.FontWeight = FontWeights.Bold;
 							break;
 						case aviationEngineConstructionTechnologyText:
 							aviationEngineConstructionTechnology.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри технології авіаційних двигунів " +
-							"завантажено до бази даних!");
-							lbi_aect.IsEnabled = false;
-							lbi_aect.FontWeight = FontWeights.Bold;
 							break;
 						case tourismText:
-							tourism_sheet1.SendDataToDB();
-							tourism_sheet2.SendDataToDB();
-							MessageBox.Show("Відомості доручень кафедри туристичного," +
-"							готельного та ресторанного бізнесу " +
-							"завантажено до бази даних!");
-							lbi_t.IsEnabled = false;
-							lbi_t.FontWeight = FontWeights.Bold;
-							break;							
-					}							
+							/*tourism_sheet1.SendDataToDB();
+							tourism_sheet2.SendDataToDB();*/
+							break;	
+					}
+					MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");					 
 					fileName = "";
 					statementsListBox.SelectedItem = null;
 				}
@@ -353,146 +308,129 @@ namespace DataCollectionApp
 		void WatchBugsReport(object sender, RoutedEventArgs e)
 		{
 			const string path = @"E:\BACHELORS WORK\TIMETABLE\DataCollectionApp\BugsReport.txt";
-			Process.Start(path);
+			Process.Start(path);		
+		}		
+		
+		void statementsListBox_Changed(object sender, SelectionChangedEventArgs e)
+		{
+			try
+			{
+				selectedFile.Text = ((ListBoxItem)statementsListBox.SelectedItem).Content.ToString();	
+			}
+			catch (Exception ex)
+			{
+				selectedFile.Text = null;
+			}
 			
+			switch(selectedFile.Text)
+			{
+				case machinePartsText:
+					selectedFileName.Text = machineParts.FileName;
+					lastWriteTime.Text = machineParts.LastWriteTime;
+					break;			
+				case mbtText:						
+					selectedFileName.Text = mbt.FileName;
+					lastWriteTime.Text = mbt.LastWriteTime;
+					break;
+				case economyAndCustomsText:
+					selectedFileName.Text =	economyAndCustoms_sheet1.FileName;
+					lastWriteTime.Text = economyAndCustoms_sheet1.LastWriteTime;
+					break;
+				case economicalTheoryText:
+					selectedFileName.Text = economicalTheory.FileName;
+					lastWriteTime.Text = economicalTheory.LastWriteTime;
+					break;
+				case electricalMachinesText:
+					selectedFileName.Text = electricalMachines.FileName;
+					lastWriteTime.Text = electricalMachines.LastWriteTime;
+					break;
+				case industrialEnergySupplyText:
+					selectedFileName.Text = industrialEnergySupply.FileName;
+					lastWriteTime.Text = industrialEnergySupply.LastWriteTime;
+					break;
+				case computerSystemsAndNetworksText:
+					selectedFileName.Text = computerSystemsAndNetworks_sheet1.FileName;
+					lastWriteTime.Text = computerSystemsAndNetworks_sheet1.LastWriteTime;
+					break;
+				case marketingAndLogisticsText:
+					selectedFileName.Text = marketingAndLogistics.FileName;
+					lastWriteTime.Text = marketingAndLogistics.LastWriteTime;
+					break;
+				case internationalEconomicRelationsText:
+					selectedFileName.Text = internationalEconomicRelations.FileName;
+					lastWriteTime.Text = internationalEconomicRelations.LastWriteTime;
+					break;
+				case accountingAndAuditText:
+					selectedFileName.Text = accountingAndAudit_sheet1.FileName;
+					lastWriteTime.Text = accountingAndAudit_sheet1.LastWriteTime;
+					break;
+				case appliedMathematicsText:
+					selectedFileName.Text = appliedMathematics.FileName;
+					lastWriteTime.Text = appliedMathematics.LastWriteTime;
+					break;
+				case computerSoftwareText:
+					selectedFileName.Text = computerSoftware.FileName;
+					lastWriteTime.Text = computerSoftware.LastWriteTime;
+					break;
+				case psychologyText:
+					selectedFileName.Text = psychology.FileName;
+					lastWriteTime.Text = psychology.LastWriteTime;
+					break;
+				case aviationEngineConstructionTechnologyText:
+					selectedFileName.Text = aviationEngineConstructionTechnology.FileName;
+					lastWriteTime.Text = aviationEngineConstructionTechnology.LastWriteTime;
+					break;
+				case tourismText:
+					selectedFileName.Text = tourism_sheet1.FileName;
+					lastWriteTime.Text = tourism_sheet1.LastWriteTime;
+					break;
+				default:
+					selectedFileName.Text = "Відомості доручень цієї кафедри ще не завантажили...";
+					lastWriteTime.Text = "...";
+					break;
+			}
 		}
-		
-		void lbi_auditoryTypes_selected(object sender, RoutedEventArgs e)
+		void commonDataListBox_Changed(object sender, SelectionChangedEventArgs e)
 		{
-			selectedFile.Text = auditoryTypesText;
-			selectedFileName.Text = auditoryTypes.FileName;
-			lastWriteTime.Text = auditoryTypes.LastWriteTime;
-		}
-		void lbi_disciplines_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = disciplinesText;
-			selectedFileName.Text = disciplines.FileName;
-			lastWriteTime.Text = disciplines.LastWriteTime;			
-		}		
-		void lbi_faculties_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = facultiesText;
-			selectedFileName.Text = faculties.FileName;
-			lastWriteTime.Text = faculties.LastWriteTime;			
-		}
-		void lbi_departments_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = departmentsText;
-			selectedFileName.Text = departments.FileName;
-			lastWriteTime.Text = departments.LastWriteTime;			
-		}		
-		void lbi_teachers_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = teachersText;
-			selectedFileName.Text = teachers.FileName;
-			lastWriteTime.Text = teachers.LastWriteTime;			
-		}
-		void lbi_auditories_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = auditoriesText;
-			selectedFileName.Text = auditories.FileName;
-			lastWriteTime.Text = auditories.LastWriteTime;			
-		}
-		void lbi_groups_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = groupsText;
-			selectedFileName.Text = studyGroups.FileName;
-			lastWriteTime.Text = studyGroups.LastWriteTime;			
-		}		
-		
-		void lbi_mp_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = machinePartsText;
-			selectedFileName.Text = machineParts.FileName;
-			lastWriteTime.Text = machineParts.LastWriteTime;			
-		}		
-		void lbi_mbt_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = mbtText;
-			selectedFileName.Text = mbt.FileName;
-			lastWriteTime.Text = mbt.LastWriteTime;			
-		}		
-		void lbi_eac_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = economyAndCustomsText;
-			selectedFileName.Text = economyAndCustoms_sheet1.FileName;
-			lastWriteTime.Text = String.Compare(economyAndCustoms_sheet1.LastWriteTime, economyAndCustoms_sheet2.LastWriteTime)  >= 0 ?
-				economyAndCustoms_sheet1.LastWriteTime : economyAndCustoms_sheet2.LastWriteTime;
-		}		
-		void lbi_et_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = economicalTheoryText;
-			selectedFileName.Text = economicalTheory.FileName;
-			lastWriteTime.Text = economicalTheory.LastWriteTime;
-		}	
-		void lbi_em_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = electricalMachinesText;
-			selectedFileName.Text = electricalMachines.FileName;
-			lastWriteTime.Text = electricalMachines.LastWriteTime;			
-		}		
-		void lbi_ies_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = industrialEnergySupplyText;
-			selectedFileName.Text = industrialEnergySupply.FileName;
-			lastWriteTime.Text = industrialEnergySupply.LastWriteTime;			
-		}
-		void lbi_csan_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = computerSystemsAndNetworksText;
-			selectedFileName.Text = computerSystemsAndNetworks_sheet1.FileName;
-			lastWriteTime.Text = String.Compare(computerSystemsAndNetworks_sheet1.LastWriteTime, computerSystemsAndNetworks_sheet2.LastWriteTime)  >= 0 ?
-				computerSystemsAndNetworks_sheet1.LastWriteTime : computerSystemsAndNetworks_sheet2.LastWriteTime;			
-		}
-		void lbi_mal_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = marketingAndLogisticsText;
-			selectedFileName.Text = marketingAndLogistics.FileName;
-			lastWriteTime.Text = marketingAndLogistics.LastWriteTime;			
-		}		
-		void lbi_ier_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = internationalEconomicRelationsText;
-			selectedFileName.Text = internationalEconomicRelations.FileName;
-			lastWriteTime.Text = internationalEconomicRelations.LastWriteTime;			
-		}
-		void lbi_aaa_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = accountingAndAuditText;
-			selectedFileName.Text = accountingAndAudit_sheet1.FileName;
-			lastWriteTime.Text = String.Compare(accountingAndAudit_sheet1.LastWriteTime, accountingAndAudit_sheet2.LastWriteTime)  >= 0 ?
-				accountingAndAudit_sheet1.LastWriteTime : accountingAndAudit_sheet2.LastWriteTime;			
-		}
-		void lbi_am_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = appliedMathematicsText;
-			selectedFileName.Text = appliedMathematics.FileName;
-			lastWriteTime.Text = appliedMathematics.LastWriteTime;			
-		}
-		void lbi_cs_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = computerSoftwareText;
-			selectedFileName.Text = computerSoftware.FileName;
-			lastWriteTime.Text = computerSoftware.LastWriteTime;			
-		}
-		void lbi_ps_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = psychologyText;
-			selectedFileName.Text = psychology.FileName;
-			lastWriteTime.Text = psychology.LastWriteTime;			
-		}
-		void lbi_aect_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = aviationEngineConstructionTechnologyText;
-			selectedFileName.Text = aviationEngineConstructionTechnology.FileName;
-			lastWriteTime.Text = aviationEngineConstructionTechnology.LastWriteTime;			
-		}
-		void lbi_t_selected(object sender, RoutedEventArgs e)
-		{
-			selectedFile.Text = tourismText;
-			selectedFileName.Text = tourism_sheet1.FileName;
-			lastWriteTime.Text = String.Compare(tourism_sheet1.LastWriteTime, tourism_sheet2.LastWriteTime)  >= 0 ?
-				tourism_sheet1.LastWriteTime : tourism_sheet2.LastWriteTime;			
+			try
+			{
+				selectedFile.Text = ((ListBoxItem)commonDataListBox.SelectedItem).Content.ToString();	
+			}
+			catch (Exception ex)
+			{
+				selectedFile.Text = null;
+			}
+			switch(selectedFile.Text)
+			{
+					case auditoryTypesText:
+						selectedFileName.Text = auditoryTypes.FileName;
+						lastWriteTime.Text = auditoryTypes.LastWriteTime;
+						break;
+					case disciplinesText:
+						selectedFileName.Text = disciplines.FileName;
+						lastWriteTime.Text = disciplines.LastWriteTime;
+						break;
+					case facultiesText:
+						selectedFileName.Text = faculties.FileName;
+						lastWriteTime.Text = faculties.LastWriteTime;
+						break;
+					case departmentsText:
+						selectedFileName.Text = departments.FileName;
+						lastWriteTime.Text = departments.LastWriteTime;
+						break;
+					case teachersText:
+						selectedFileName.Text = teachers.FileName;
+						lastWriteTime.Text = teachers.LastWriteTime;
+						break;
+					case auditoriesText:
+						selectedFileName.Text = auditories.FileName;
+						lastWriteTime.Text = auditories.LastWriteTime;
+						break;
+					case groupsText:
+						selectedFileName.Text = studyGroups.FileName;
+						lastWriteTime.Text = studyGroups.LastWriteTime;
+						break;				
+			}			
 		}
 	}
 }

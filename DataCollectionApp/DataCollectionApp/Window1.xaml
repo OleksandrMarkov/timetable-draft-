@@ -3,7 +3,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local = "clr-namespace:DataCollectionApp"
-	Title="DataCollectionApp" Height="575" Width="1500"
+	Title="DataCollectionApp" Width="1500" Height="575" 
 	ResizeMode="NoResize" Background="#dfe7e8"
 >
 	
@@ -47,37 +47,23 @@
 			
 				<StackPanel Margin="10">
 					<TextBlock Text="Загальні дані" FontWeight="Bold" Foreground="Brown"/>
-					<ListBox x:Name="commonDataListBox">
-						<ListBoxItem Selected="lbi_auditoryTypes_selected" x:Name="lbi_auditoryTypes" Background="LightSalmon" Content="Типи аудиторій" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Selected="lbi_disciplines_selected" x:Name="lbi_disciplines" Content="Дисципліни" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Selected="lbi_faculties_selected" x:Name="lbi_faculties" Background="LightSalmon" Content="Факультети" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Selected="lbi_departments_selected" x:Name="lbi_departments" Content="Кафедри" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Selected="lbi_teachers_selected" x:Name="lbi_teachers" Background="LightSalmon" Content="Викладачі" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Selected="lbi_auditories_selected" x:Name="lbi_auditories" Content="Аудиторії" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem Selected="lbi_groups_selected" x:Name="lbi_groups" Background="LightSalmon" Content="Учбові групи" Style="{StaticResource listBoxItemPadding}"/>
+					<ListBox x:Name="commonDataListBox" SelectionChanged="commonDataListBox_Changed">
+						<ListBoxItem x:Name="lbi_auditoryTypes" Background="LightSalmon" Content="Типи аудиторій" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem x:Name="lbi_disciplines" Content="Дисципліни" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem x:Name="lbi_faculties" Background="LightSalmon" Content="Факультети" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem x:Name="lbi_departments" Content="Кафедри" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem x:Name="lbi_teachers" Background="LightSalmon" Content="Викладачі" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem x:Name="lbi_auditories" Content="Аудиторії" Style="{StaticResource listBoxItemPadding}"/>
+						<ListBoxItem x:Name="lbi_groups" Background="LightSalmon" Content="Учбові групи" Style="{StaticResource listBoxItemPadding}"/>					
 					</ListBox>
 					<Button x:Name="WatchButton" Content="Переглянути" ToolTip="Обраний файл буде відкритий в режимі читання" Background="PeachPuff" Margin="0, 32, 0, 0" Click="WatchButton_Click"></Button>
 				</StackPanel>
 			
 				<StackPanel Margin="0, 10, 10, 10">
 					<TextBlock Text="Відомості доручень" FontWeight="Bold" Foreground="Black"/>
-					<ListBox x:Name="statementsListBox">
-						<ListBoxItem  Background="LightPink" Content="Кафедра деталей машин і підйомно-транспортних механізмів" Selected="lbi_mp_selected" x:Name="lbi_mp"/>
-						<ListBoxItem Content="Кафедра технології машинобудування" Selected="lbi_mbt_selected" x:Name="lbi_mbt"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра економіки та митної справи" Selected="lbi_eac_selected" x:Name="lbi_eac"/>
-						<ListBoxItem Content="Кафедра економічної теорії та підприємництва" Selected="lbi_et_selected" x:Name="lbi_et"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра електричних машин" Selected="lbi_em_selected" x:Name="lbi_em"/>
-						<ListBoxItem Content="Кафедра електропостачання промислових підприємств" Selected="lbi_ies_selected" x:Name="lbi_ies"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра комп’ютерних систем та мереж" Selected="lbi_csan_selected" x:Name="lbi_csan"/>
-						<ListBoxItem Content="Кафедра маркетингу та логістики" Selected="lbi_mal_selected" x:Name="lbi_mal"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра міжнародних економічних відносин" Selected="lbi_ier_selected" x:Name="lbi_ier"/>
-						<ListBoxItem Content="Кафедра обліку і оподаткування" Selected="lbi_aaa_selected" x:Name="lbi_aaa"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра прикладної математики" Selected="lbi_am_selected" x:Name="lbi_am"/>
-						<ListBoxItem Content="Кафедра програмних засобів" Selected="lbi_cs_selected" x:Name="lbi_cs"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра соціальної роботи" Selected="lbi_ps_selected" x:Name="lbi_ps"/>
-						<ListBoxItem Content="Кафедра технології авіаційних двигунів" Selected="lbi_aect_selected" x:Name="lbi_aect"/>
-						<ListBoxItem Background="LightPink" Content="Кафедра туристичного, готельного та ресторанного бізнесу" Selected="lbi_t_selected" x:Name="lbi_t"/>
-					</ListBox>
+					<ScrollViewer CanContentScroll="True" Height="375">
+						<ListBox x:Name="statementsListBox" SelectionChanged="statementsListBox_Changed"></ListBox>
+					</ScrollViewer>
 					<Button x:Name="LoadButton" Content="Завантажити" ToolTip="Інформація з обраного файлу буде завантажена до бази даних" Background="LightGreen" Margin="0, 30, 0, 0" Click="LoadButton_Click"></Button>
 				</StackPanel>
 			
