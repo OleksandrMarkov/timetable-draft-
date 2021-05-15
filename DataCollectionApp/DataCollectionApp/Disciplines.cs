@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Excel = Microsoft.Office.Interop.Excel;
-using MySql.Data.MySqlClient;
 using System.Windows;
 
 namespace DataCollectionApp
@@ -16,6 +14,8 @@ namespace DataCollectionApp
 		int row = 2;
 		const char column = 'G';
 		bool reading = true;
+		
+		DbOperations dbo = new DbOperations();
 		
 		public Disciplines(string fileName): base(fileName)
 		{ this.fileName = fileName; }
@@ -83,22 +83,9 @@ namespace DataCollectionApp
 					}					
 				}
 
-				const string selectDisciplineNames = "SELECT full_name FROM discipline";
-				MySqlConnection connection = DBUtils.GetDBConnection();
-				MySqlCommand mySqlCommand;
-				MySqlDataReader dataReader;				
 				bool noSensetoReload = true;
-				
-				connection.Open();
-				mySqlCommand = new MySqlCommand(selectDisciplineNames, connection);
-				dataReader = mySqlCommand.ExecuteReader();
-				
-				ArrayList disciplinesInDB = new ArrayList();
-				
-				while(dataReader.Read())
-				{ disciplinesInDB.Add(dataReader[0].ToString()); }
-				connection.Close();
-				
+				ArrayList disciplinesInDB = dbo.getDisciplines();
+								
 				foreach (string record in records)
 				{
 					if(!disciplinesInDB.Contains(record))
@@ -121,18 +108,10 @@ namespace DataCollectionApp
 			{
 				try
 				{
-					MySqlConnection connection = DBUtils.GetDBConnection();
-					MySqlCommand mySqlCommand;			
-					const string insertDisciplines = "INSERT INTO discipline (full_name) VALUES (@FULL_NAME)";
-					
-					connection.Open();
 					foreach (string record in records)
 					{
-						mySqlCommand = new MySqlCommand(insertDisciplines, connection);
-						mySqlCommand.Parameters.AddWithValue("@FULL_NAME", record);
-		                mySqlCommand.ExecuteNonQuery();
+						dbo.insertDiscipline(record);
 					}
-					connection.Close();
 					MessageBox.Show("Дані про дисципліни завантажено до бази даних!");					
 				}
 				catch(Exception ex)

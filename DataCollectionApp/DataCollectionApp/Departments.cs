@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Excel = Microsoft.Office.Interop.Excel;
-using MySql.Data.MySqlClient;
 using System.Windows;
 
 namespace DataCollectionApp
@@ -25,6 +23,8 @@ namespace DataCollectionApp
 		const char facultyCodesColumn = 'C';
 		
 		bool reading = true;
+		
+		DbOperations dbo = new DbOperations();
 		
 		public Departments(string fileName): base(fileName)
 		{ this.fileName = fileName; }
@@ -151,29 +151,11 @@ namespace DataCollectionApp
 			{
 				try
 				{
-					MySqlConnection connection = DBUtils.GetDBConnection();
-					MySqlCommand mySqlCommand;
-					
-					const string selectFacultyIDs = "SELECT faculty_id FROM faculty WHERE faculty_code = @CODE";				
-					const string insertDepartments = "INSERT INTO department (faculty_id, full_name, short_name) "
-					+ "VALUES (@FACULTY_ID, @FULL_NAME, @SHORT_NAME)";
-					
-					connection.Open();		
 					for(int i = 0; i < faculty_codes.Count; i++)
 					{
-						mySqlCommand = new MySqlCommand(selectFacultyIDs, connection);
-						mySqlCommand.Parameters.AddWithValue("@CODE", faculty_codes[i]);			
-						mySqlCommand.ExecuteNonQuery();
-						
-						int facultyID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-						
-						mySqlCommand = new MySqlCommand(insertDepartments, connection);	
-						mySqlCommand.Parameters.AddWithValue("@FACULTY_ID", facultyID);
-	                    mySqlCommand.Parameters.AddWithValue("@FULL_NAME", full_names[i]);
-	                    mySqlCommand.Parameters.AddWithValue("@SHORT_NAME", short_names[i]);
-	                    mySqlCommand.ExecuteNonQuery();
-					}
-					connection.Close();			
+						int facultyID = dbo.getFacultyID(faculty_codes[i].ToString());
+						dbo.insertDepartment(facultyID, full_names[i].ToString(), short_names[i].ToString());
+					}			
 				}
 				catch(Exception ex)
 				{

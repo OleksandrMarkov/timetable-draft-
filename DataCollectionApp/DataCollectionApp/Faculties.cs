@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Excel = Microsoft.Office.Interop.Excel;
-using MySql.Data.MySqlClient;
 using System.Windows;
 
 namespace DataCollectionApp
@@ -20,6 +18,8 @@ namespace DataCollectionApp
 		const char namesColumn = 'B';
 		const char codesColumn = 'D';
 		bool reading = true;
+		
+		DbOperations dbo = new DbOperations();
 		
 		public Faculties(string fileName): base(fileName)
 		{ this.fileName = fileName; }
@@ -115,30 +115,12 @@ namespace DataCollectionApp
 						sw.WriteLine();
 					}
 				}
-
-				const string selectFacultyNames = "SELECT full_name FROM faculty";
-				const string selectFacultyCodes = "SELECT faculty_code FROM faculty";
-				MySqlConnection connection = DBUtils.GetDBConnection();
-				MySqlCommand mySqlCommand;
-				MySqlDataReader dataReader;
+	
 				bool noSensetoReload = true;
-				ArrayList facultyNamesInDB = new ArrayList();
-				ArrayList facultyCodesInDB = new ArrayList();
+				
+				ArrayList facultyNamesInDB = dbo.getFacultyNames();
+				ArrayList facultyCodesInDB = dbo.getFacultyCodes();
 								
-				connection.Open();	
-				mySqlCommand = new MySqlCommand(selectFacultyNames, connection);
-				dataReader = mySqlCommand.ExecuteReader();		
-				while(dataReader.Read())
-				{ facultyNamesInDB.Add(dataReader[0].ToString()); }
-				connection.Close();
-				
-				connection.Open();
-				mySqlCommand = new MySqlCommand(selectFacultyCodes, connection);
-				dataReader = mySqlCommand.ExecuteReader();
-				while(dataReader.Read())
-				{ facultyCodesInDB.Add(dataReader[0].ToString()); }			
-				connection.Close();
-				
 				foreach (string name in names)
 				{
 					if(!facultyNamesInDB.Contains(name))
@@ -169,19 +151,10 @@ namespace DataCollectionApp
 			{
 				try
 				{
-					MySqlConnection connection = DBUtils.GetDBConnection();
-					MySqlCommand mySqlCommand;			
-					const string insertFaculties = "INSERT INTO faculty (full_name, faculty_code) VALUES (@FULL_NAME, @CODE)";
-					
-					connection.Open();
 					for(int i = 0; i < names.Count; i++)
 					{
-						mySqlCommand = new MySqlCommand(insertFaculties, connection);	
-						mySqlCommand.Parameters.AddWithValue("@FULL_NAME", names[i]);
-                        mySqlCommand.Parameters.AddWithValue("@CODE", codes[i]);
-                        mySqlCommand.ExecuteNonQuery();
-					}				
-					connection.Close();
+						dbo.insertFaculty(names[i].ToString(), codes[i].ToString());
+					}
 					MessageBox.Show("Дані про факультети завантажено до бази даних!");
 				}
 				catch(Exception ex)

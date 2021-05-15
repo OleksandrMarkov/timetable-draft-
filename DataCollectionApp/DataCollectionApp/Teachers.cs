@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Excel = Microsoft.Office.Interop.Excel;
-using MySql.Data.MySqlClient;
+
 using System.IO;
 using System.Windows;
 
@@ -31,6 +30,10 @@ namespace DataCollectionApp
 		Dictionary <int, string> wrongValuesOfSex = new Dictionary<int, string>();
 		
 		bool reading = true;
+		
+		
+		DbOperations dbo = new DbOperations();
+		
 		
 		public Teachers(string fileName): base(fileName)
 		{ this.fileName = fileName; }
@@ -154,47 +157,27 @@ namespace DataCollectionApp
 				}		
 			}
 		}
+		
 		public override void Load()
 		{
 			if(reading)
 			{								
 				try
 				{
-					MySqlConnection connection = DBUtils.GetDBConnection();
-					MySqlCommand mySqlCommand;
-
-					const string selectDepartmentID = "SELECT department_id FROM department WHERE full_name = @DEPARTMENT";
-	                const string insertTeachers = "INSERT INTO teacher (department_id, full_name, sex, post, status) VALUES(@ID, @NAME, @SEX, @POST, @STATUS)";
-					connection.Open();			
 					for(int i = 0; i < rowsCount - row + 1; i++)
 					{
-						mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
-						mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departments[i]);
-						mySqlCommand.ExecuteNonQuery();
-						
-						int departmentID =  Convert.ToInt32( mySqlCommand.ExecuteScalar().ToString());
-						
-						mySqlCommand = new MySqlCommand(insertTeachers, connection);
-						mySqlCommand.Parameters.AddWithValue("@ID", departmentID);
-						mySqlCommand.Parameters.AddWithValue("@NAME", names[i]);
-						mySqlCommand.Parameters.AddWithValue("@SEX", sex[i]);
-						mySqlCommand.Parameters.AddWithValue("@POST", posts[i]);
-						mySqlCommand.Parameters.AddWithValue("@STATUS", statuses[i]);
-						mySqlCommand.ExecuteNonQuery();
-	                 }                    	
-	                 const string createTemporaryTable = "CREATE TEMPORARY TABLE teacher2 AS (SELECT * FROM teacher GROUP BY department_id, full_name)";
-	                 mySqlCommand = new MySqlCommand(createTemporaryTable, connection);
-	                 mySqlCommand.ExecuteNonQuery();
-	                 const string deleteTrash = "DELETE FROM teacher WHERE teacher.teacher_id NOT IN (SELECT teacher2.teacher_id FROM teacher2)";
-	                 mySqlCommand = new MySqlCommand(deleteTrash, connection);
-	                 mySqlCommand.ExecuteNonQuery();
-	                 connection.Close();			
+						int departmentID = dbo.getDepartmentIDbyFullName(departments[i].ToString());
+						dbo.insertTeacher(departmentID, names[i].ToString(), sex[i].ToString(),
+						posts[i].ToString(), statuses[i].ToString());
+					}
+					dbo.correctTeacherTable();	
 				}
 				catch (Exception ex)
 	            {
 					MessageBox.Show("Виникла помилка під час завантаження даних про викладачів з файлу " + FileName + " до бази даних!" + "\n " + ex.Message);
 				}
 			}
-		}		
+		}
+		
 	}
 }

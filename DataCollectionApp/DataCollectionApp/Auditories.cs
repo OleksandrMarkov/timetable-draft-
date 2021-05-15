@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Excel = Microsoft.Office.Interop.Excel;
-using MySql.Data.MySqlClient;
+
 using System.Windows;
 namespace DataCollectionApp
 {
@@ -28,6 +27,8 @@ namespace DataCollectionApp
 		ArrayList missingValuesOfDepartments = new ArrayList();
 		
 		Dictionary <int, string> duplicatesOfNames = new Dictionary<int, string>();
+		
+		DbOperations dbo = new DbOperations();
 		
 		public Auditories(string fileName): base(fileName)
 		{ this.fileName = fileName; }
@@ -96,7 +97,7 @@ namespace DataCollectionApp
 				{
 					cellContent = getCellContent(i, col);												
 					if(string.IsNullOrEmpty(cellContent))
-					{ places.Add(0); }						
+					{ places.Add(null); }						
 					else
 					{ places.Add(Convert.ToInt32(cellContent)); }
 				}				
@@ -178,42 +179,15 @@ namespace DataCollectionApp
 			if(reading)
 			{
 				try
-				{
-					MySqlConnection connection = DBUtils.GetDBConnection();
-					MySqlCommand mySqlCommand;
-					
-					const string selectAuditoryTypeID = "SELECT auditory_type_id FROM auditory_type WHERE auditory_type_name = @TYPE";
-					const string selectDepartmentID = "SELECT department_id FROM department WHERE full_name = @DEPARTMENT_NAME";										
-					const string insertAuditories = "INSERT INTO auditory (department_id, auditory_name, not_used, type_auditory, count_of_places, corps_number) VALUES(@ID, @AUDITORY_NAME, @NOT_USED, @TYPE_ID, @COUNT, @CORPS_NUMBER)";
-					
-					connection.Open();
-					
+				{					
 					for(int i = 0; i < rowsCount - row + 1; i++)
 					{
-						mySqlCommand = new MySqlCommand(selectAuditoryTypeID, connection);
-	                    mySqlCommand.Parameters.AddWithValue("@TYPE", types[i]);
-	                    mySqlCommand.ExecuteNonQuery();
-	                    		
-	                    int auditoryTypeID =  Convert.ToInt32( mySqlCommand.ExecuteScalar().ToString() );
-	                    		
-	                    mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
-	                    mySqlCommand.Parameters.AddWithValue("@DEPARTMENT_NAME", departments[i]);
-	                    mySqlCommand.ExecuteNonQuery();
-	                    		
-	                    int departmentID = Convert.ToInt32( mySqlCommand.ExecuteScalar().ToString() );
-	                    		
-	                    mySqlCommand = new MySqlCommand(insertAuditories, connection); 		
-	                    mySqlCommand.Parameters.AddWithValue("@ID", departmentID);
-	                    mySqlCommand.Parameters.AddWithValue("@AUDITORY_NAME", names[i]);
-	                    mySqlCommand.Parameters.AddWithValue("@NOT_USED", notUsed[i]);
-	                    mySqlCommand.Parameters.AddWithValue("@TYPE_ID", auditoryTypeID);
-	                    mySqlCommand.Parameters.AddWithValue("@COUNT", places[i]);
-	                    mySqlCommand.Parameters.AddWithValue("@CORPS_NUMBER", corpsNumbers[i]);
-	                    mySqlCommand.ExecuteNonQuery();	
-					}				
-					connection.Close();
-				}
-				
+						int auditoryTypeID = dbo.getAuditoryTypeID(types[i].ToString());
+						int departmentID = dbo.getDepartmentIDbyFullName(departments[i].ToString());
+						dbo.insertAuditory(departmentID, names[i].ToString(), Convert.ToBoolean(notUsed[i]),
+							auditoryTypeID, Convert.ToInt32(places[i]), Convert.ToInt32(corpsNumbers[i]));
+					}
+				}	
                 catch (Exception ex)
 	            {
 					MessageBox.Show("Виникла помилка під час завантаження даних про аудиторії з файлу " + FileName + " до бази даних!");

@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Excel = Microsoft.Office.Interop.Excel;
-using MySql.Data.MySqlClient;
 using System.Windows;
 
 namespace DataCollectionApp
@@ -29,6 +27,8 @@ namespace DataCollectionApp
 		
 		bool reading = true;
 		int row = 1;
+		
+		DbOperations dbo = new DbOperations();
 		
 		public override void ReadFromExcelFile()
 		{
@@ -135,26 +135,12 @@ namespace DataCollectionApp
 			{
 				try
                 {
-	                MySqlConnection connection = DBUtils.GetDBConnection();
-		            const string selectDepartmentID = "SELECT department_id FROM department WHERE full_name = @DEPARTMENT";
-		            const string insertStudyGroups = "INSERT INTO study_group (department_id, study_group_code, full_name, course_number, count_of_students) VALUES(@ID, @CODE, @NAME, @COURSE, @COUNT)";
-	                MySqlCommand mySqlCommand;           
-		            connection.Open();           
-		            for (int i = 0; i < rowsCount; i++)
+					for (int i = 0; i < rowsCount; i++)
 		            {
-			            mySqlCommand = new MySqlCommand(selectDepartmentID, connection);
-			            mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departments[i]);
-			            mySqlCommand.ExecuteNonQuery();	                    		
-			            int departmentID =  Convert.ToInt32( mySqlCommand.ExecuteScalar().ToString() );	              
-						mySqlCommand = new MySqlCommand(insertStudyGroups, connection);
-						mySqlCommand.Parameters.AddWithValue("@ID", departmentID);
-						mySqlCommand.Parameters.AddWithValue("@CODE", codes[i]);
-						mySqlCommand.Parameters.AddWithValue("@NAME", names[i]);
-						mySqlCommand.Parameters.AddWithValue("@COURSE", courseNumbers[i]);
-						mySqlCommand.Parameters.AddWithValue("@COUNT", countOfStudents[i]);	                    		
-						mySqlCommand.ExecuteNonQuery();
-	            	 }
-	                 connection.Close();                
+						int departmentID = dbo.getDepartmentIDbyFullName(departments[i].ToString());
+						dbo.insertFullDataStudy_group(departmentID, codes[i].ToString(), names[i].ToString(),
+						courseNumbers[i].ToString(), Convert.ToInt32(countOfStudents[i]));
+					}                
                  }
 				catch (Exception ex)
 				{

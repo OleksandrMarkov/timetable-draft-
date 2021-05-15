@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Excel = Microsoft.Office.Interop.Excel;
-using MySql.Data.MySqlClient;
 using System.Windows;
 
 namespace DataCollectionApp
@@ -16,7 +14,9 @@ namespace DataCollectionApp
 		int row = 1;
 		const char column = 'A';
 		bool reading = true;
-				
+
+		DbOperations dbo = new DbOperations();				
+		
 		public AuditoryTypes(string fileName): base(fileName)
 		{ this.fileName = fileName; }
 				
@@ -24,8 +24,7 @@ namespace DataCollectionApp
 		{
 			try
 			{
-				open(1);
-				
+				open(1);				
 				for(int col = getColumnNumber(column), i = row; i <= rowsCount; i++)
 				{
 					cellContent = getCellContent(i, col);					
@@ -77,26 +76,16 @@ namespace DataCollectionApp
 					using (StreamWriter sw = new StreamWriter(path, true, System.Text.Encoding.Default))
 					{
 						sw.WriteLine("Є дублікати: ");
-						foreach (KeyValuePair<int, string> duplicate in duplicates)
+						foreach (KeyValuePair <int, string> duplicate in duplicates)
 						{ sw.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value); }
 						sw.WriteLine();
 					}					
 				}
 				
-				const string selectAuditoryTypes = "SELECT auditory_type_name FROM auditory_type";
-				MySqlConnection connection = DBUtils.GetDBConnection();
-				MySqlCommand mySqlCommand;
-				MySqlDataReader dataReader;
-				bool noSensetoReload = true;		
-				connection.Open();
-				mySqlCommand = new MySqlCommand(selectAuditoryTypes, connection);
-				dataReader = mySqlCommand.ExecuteReader();
+				bool noSensetoReload = true;				
 				ArrayList auditoryTypesInDB = new ArrayList();
-				
-				while(dataReader.Read())
-				{ auditoryTypesInDB.Add(dataReader[0].ToString()); }
-				connection.Close();
-				
+				auditoryTypesInDB = dbo.getAuditory_types();
+
 				foreach (string record in records)
 				{
 					if(!auditoryTypesInDB.Contains(record))
@@ -105,7 +94,6 @@ namespace DataCollectionApp
 						break;
 					}
 				}
-				
 				if (noSensetoReload)
 				{
 					reading = false;
@@ -120,17 +108,10 @@ namespace DataCollectionApp
 			{
 				try
 				{
-					MySqlConnection connection  = DBUtils.GetDBConnection();
-					MySqlCommand mySqlCommand;			
-					const string insertTypes = "INSERT INTO auditory_type (auditory_type_name) VALUES (@TYPE)";			
-					connection.Open();
 					foreach (string record in records)
 					{
-						mySqlCommand = new MySqlCommand(insertTypes, connection);
-						mySqlCommand.Parameters.AddWithValue("@TYPE", record);
-		                mySqlCommand.ExecuteNonQuery();
+						dbo.insertAuditory_type(record);
 					}
-					connection.Close();
 					MessageBox.Show("Дані про типи аудиторій завантажено до бази даних!");					
 				}
 				catch(Exception ex)
