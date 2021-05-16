@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using MySql.Data.MySqlClient;
 
 namespace DataCollectionApp
@@ -12,11 +11,22 @@ namespace DataCollectionApp
 		MySqlCommand mySqlCommand;
 		MySqlDataReader mySqlDataReader;
 		
+		public int getID(string command, string parameter, string parameterValue)
+		{
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlCommand.Parameters.AddWithValue(parameter, parameterValue);
+			mySqlCommand.ExecuteNonQuery();
+			int ID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
+			mySqlConnection.Close();
+			return ID;
+		}		
+		
 		public Dictionary<int, string> getDepartments()
 		{
 			Dictionary <int, string> departments = new Dictionary<int, string>();
 			mySqlConnection.Open();
-			const string getDepartments = "SELECT department_id, full_name FROM department WHERE department_id < 328";
+			const string getDepartments = "SELECT department_id, full_name FROM department WHERE department_id < 60";
 			mySqlCommand = new MySqlCommand (getDepartments, mySqlConnection);
 			
 			using(mySqlDataReader = mySqlCommand.ExecuteReader())
@@ -31,27 +41,15 @@ namespace DataCollectionApp
 		}
 		
 		public int getDepartmentID(string departmentName)
-		{
-			const string command = "SELECT department_id FROM department WHERE short_name = @DEPARTMENT";	
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departmentName);
-			mySqlCommand.ExecuteNonQuery();
-			int departmentID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-			mySqlConnection.Close();
-			return departmentID;
+		{			
+			const string command = "SELECT department_id FROM department WHERE short_name = @DEPARTMENT";
+			return getID(command, "@DEPARTMENT", departmentName);
 		}
 		
 		public int getDisciplineID(string discipline)
 		{
 			const string command = "SELECT discipline_id FROM discipline WHERE full_name = @DISCIPLINE";
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlCommand.Parameters.AddWithValue("@DISCIPLINE", discipline);
-			mySqlCommand.ExecuteNonQuery();
-			int disciplineID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-			mySqlConnection.Close();
-			return disciplineID;
+			return getID(command, "@DISCIPLINE", discipline);
 		}
 		
 		public void insertLesson(int disciplineID, string lessonsType, int hours, string lessonsControl, int departmentID)
@@ -81,15 +79,9 @@ namespace DataCollectionApp
 		}
 		
 		public int getAuditoryID(string auditory)
-		{
+		{	
 			const string command = "SELECT auditory_id FROM auditory WHERE auditory_name = @AUDITORY";
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlCommand.Parameters.AddWithValue("@AUDITORY", auditory);
-			mySqlCommand.ExecuteNonQuery();
-			int auditoryID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-			mySqlConnection.Close();
-			return auditoryID;
+			return getID(command, "@AUDITORY", auditory);
 		}
 		
 		public void insertLesson_Auditory(int lastLessonID, int auditoryID)
@@ -107,13 +99,7 @@ namespace DataCollectionApp
 		public int getTeacherID(string teacher)
 		{
 			const string command = "SELECT teacher_id FROM teacher WHERE full_name = @TEACHER";
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlCommand.Parameters.AddWithValue("@TEACHER", teacher);
-			mySqlCommand.ExecuteNonQuery();
-			int teacherID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-			mySqlConnection.Close();
-			return teacherID;
+			return getID(command, "@TEACHER", teacher);
 		}
 		
 		public void insertLesson_Teacher(int lastLessonID, int teacherID)
@@ -159,13 +145,7 @@ namespace DataCollectionApp
 		public int getStudy_groupID(string study_group)
 		{
 			const string command = "SELECT study_group_id FROM study_group WHERE full_name = @GROUP";
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlCommand.Parameters.AddWithValue("@GROUP", study_group);
-			mySqlCommand.ExecuteNonQuery();
-			int study_groupID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-			mySqlConnection.Close();
-			return study_groupID;	
+			return getID(command, "@GROUP", study_group);
 		}
 		
 		public void insertLesson_group(int lessonID, int groupID)
@@ -264,8 +244,7 @@ namespace DataCollectionApp
 
 		public void insertFaculty(string name, string code)
 		{
-			const string command = "INSERT INTO faculty (full_name, faculty_code) VALUES (@FULL_NAME, @CODE)";
-			
+			const string command = "INSERT INTO faculty (full_name, faculty_code) VALUES (@FULL_NAME, @CODE)";		
 			mySqlConnection.Open();
 			mySqlCommand = new MySqlCommand(command, mySqlConnection);
 			mySqlCommand.Parameters.AddWithValue("@FULL_NAME", name);
@@ -277,13 +256,7 @@ namespace DataCollectionApp
 		public int getFacultyID(string code)
 		{
 			const string command = "SELECT faculty_id FROM faculty WHERE faculty_code = @CODE";
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlCommand.Parameters.AddWithValue("@CODE", code);
-			mySqlCommand.ExecuteNonQuery();
-			int facultyID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-			mySqlConnection.Close();
-			return facultyID;	
+			return getID(command, "@CODE", code);
 		}
 
 		public void insertDepartment(int facultyID, string fullName, string shortName)
@@ -310,7 +283,6 @@ namespace DataCollectionApp
 			mySqlConnection.Close();
 			return departmentID;	
 		}
-
 
 		public void insertTeacher(int departmentID, string name, string sex, string post, string status)
 		{
@@ -341,13 +313,7 @@ namespace DataCollectionApp
 		public int getAuditoryTypeID(string type)
 		{
 			const string command = "SELECT auditory_type_id FROM auditory_type WHERE auditory_type_name = @TYPE";
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlCommand.Parameters.AddWithValue("@TYPE", type);
-			mySqlCommand.ExecuteNonQuery();
-			int auditoryTypeID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-			mySqlConnection.Close();
-			return auditoryTypeID;	
+			return getID(command, "@TYPE", type);
 		}
 		
 		public void insertAuditory(int departmentID, string name, bool not_used, int auditoryTypeID, int count, int corpsNumber)
@@ -381,5 +347,63 @@ namespace DataCollectionApp
 			mySqlConnection.Close();
 		}
 		
+		public ArrayList getDepartmentNames()
+		{
+			ArrayList departmentNames = new ArrayList();
+			mySqlConnection.Open();
+			const string command = "SELECT full_name FROM department WHERE department_id < 60";
+			mySqlCommand = new MySqlCommand (command, mySqlConnection);
+			using(mySqlDataReader = mySqlCommand.ExecuteReader())
+			{
+				while(mySqlDataReader.Read())
+				{
+					departmentNames.Add(mySqlDataReader[0].ToString());
+				}
+			}
+			mySqlConnection.Close();		
+			return departmentNames;					
+		}
+
+		public ArrayList getTeachers()
+		{
+			const string command =  "SELECT full_name FROM teacher";
+			ArrayList teachers = new ArrayList();
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlDataReader = mySqlCommand.ExecuteReader();
+			while(mySqlDataReader.Read())
+			{
+				teachers.Add(mySqlDataReader[0].ToString());
+			}
+			mySqlConnection.Close();
+			return teachers;
+		}
+
+		public ArrayList getAuditoryNames()
+		{
+			const string command = "SELECT auditory_name FROM auditory";
+			ArrayList auditories = new ArrayList();
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlDataReader = mySqlCommand.ExecuteReader();
+			while(mySqlDataReader.Read())
+			{
+				auditories.Add(mySqlDataReader[0].ToString());
+			}
+			mySqlConnection.Close();
+			return auditories;
+		}
+
+		public void insertLesson_time(int lessonID, string day)
+		{
+			const string command = "INSERT INTO lesson_time (lesson_id, day_of_week) "
+			+ "VALUES (@LESSON_ID, @DAY)";
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlCommand.Parameters.AddWithValue("@LESSON_ID", lessonID);
+			mySqlCommand.Parameters.AddWithValue("@DAY", day);
+			mySqlCommand.ExecuteNonQuery();
+			mySqlConnection.Close();
+		}		
 	}
 }
