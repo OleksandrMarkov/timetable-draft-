@@ -20,7 +20,21 @@ namespace DataCollectionApp
 			int ID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
 			mySqlConnection.Close();
 			return ID;
-		}		
+		}
+
+		public ArrayList getArrayList(string command)
+		{
+			ArrayList arrayList = new ArrayList();
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlDataReader = mySqlCommand.ExecuteReader();
+			while(mySqlDataReader.Read())
+			{
+				arrayList.Add(mySqlDataReader[0].ToString());
+			}			
+			mySqlConnection.Close();
+			return arrayList;
+		}
 		
 		public Dictionary<int, string> getDepartments()
 		{
@@ -163,16 +177,7 @@ namespace DataCollectionApp
 		public ArrayList getAuditory_types()
 		{
 			const string command = "SELECT auditory_type_name FROM auditory_type";
-			ArrayList auditoryTypes = new ArrayList();
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlDataReader = mySqlCommand.ExecuteReader();
-			while(mySqlDataReader.Read())
-			{
-				auditoryTypes.Add(mySqlDataReader[0].ToString());
-			}
-			mySqlConnection.Close();
-			return auditoryTypes;
+			return getArrayList(command);
 		}		
 		
 		public void insertAuditory_type(string auditory_type)
@@ -188,17 +193,8 @@ namespace DataCollectionApp
 		
 		public ArrayList getDisciplines()
 		{
-			const string command =  "SELECT full_name FROM discipline";
-			ArrayList disciplines = new ArrayList();
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlDataReader = mySqlCommand.ExecuteReader();
-			while(mySqlDataReader.Read())
-			{
-				disciplines.Add(mySqlDataReader[0].ToString());
-			}
-			mySqlConnection.Close();
-			return disciplines;
+			const string command = "SELECT full_name FROM discipline";
+			return getArrayList(command);
 		}
 
 		public void insertDiscipline(string discipline)
@@ -214,32 +210,14 @@ namespace DataCollectionApp
 
 		public ArrayList getFacultyNames()
 		{
-			const string command =  "SELECT full_name FROM faculty";
-			ArrayList facultyNames = new ArrayList();
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlDataReader = mySqlCommand.ExecuteReader();
-			while(mySqlDataReader.Read())
-			{
-				facultyNames.Add(mySqlDataReader[0].ToString());
-			}
-			mySqlConnection.Close();
-			return facultyNames;
+			const string command = "SELECT full_name FROM faculty";
+			return getArrayList(command);		
 		}		
 
 		public ArrayList getFacultyCodes()
 		{
-			const string command =  "SELECT faculty_code FROM faculty";
-			ArrayList facultyCodes = new ArrayList();
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlDataReader = mySqlCommand.ExecuteReader();
-			while(mySqlDataReader.Read())
-			{
-				facultyCodes.Add(mySqlDataReader[0].ToString());
-			}
-			mySqlConnection.Close();
-			return facultyCodes;
+			const string command = "SELECT faculty_code FROM faculty";
+			return getArrayList(command);
 		}
 
 		public void insertFaculty(string name, string code)
@@ -273,15 +251,9 @@ namespace DataCollectionApp
 		}
 
 		public int getDepartmentIDbyFullName(string departmentName)
-		{
+		{	
 			const string command = "SELECT department_id FROM department WHERE full_name = @DEPARTMENT";
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departmentName);
-			mySqlCommand.ExecuteNonQuery();
-			int departmentID = Convert.ToInt32(mySqlCommand.ExecuteScalar().ToString());
-			mySqlConnection.Close();
-			return departmentID;	
+			return getID(command, "@DEPARTMENT", departmentName);
 		}
 
 		public void insertTeacher(int departmentID, string name, string sex, string post, string status)
@@ -366,32 +338,14 @@ namespace DataCollectionApp
 
 		public ArrayList getTeachers()
 		{
-			const string command =  "SELECT full_name FROM teacher";
-			ArrayList teachers = new ArrayList();
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlDataReader = mySqlCommand.ExecuteReader();
-			while(mySqlDataReader.Read())
-			{
-				teachers.Add(mySqlDataReader[0].ToString());
-			}
-			mySqlConnection.Close();
-			return teachers;
+			const string command = "SELECT full_name FROM teacher";
+			return getArrayList(command);			
 		}
 
 		public ArrayList getAuditoryNames()
 		{
 			const string command = "SELECT auditory_name FROM auditory";
-			ArrayList auditories = new ArrayList();
-			mySqlConnection.Open();
-			mySqlCommand = new MySqlCommand(command, mySqlConnection);
-			mySqlDataReader = mySqlCommand.ExecuteReader();
-			while(mySqlDataReader.Read())
-			{
-				auditories.Add(mySqlDataReader[0].ToString());
-			}
-			mySqlConnection.Close();
-			return auditories;
+			return getArrayList(command);
 		}
 
 		public void insertLesson_time(int lessonID, string day)
