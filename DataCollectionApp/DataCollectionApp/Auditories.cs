@@ -15,6 +15,7 @@ namespace DataCollectionApp
 		ArrayList places = new ArrayList();
 		ArrayList corpsNumbers = new ArrayList();
 		
+		const char corpsNumberColumn = 'B';
 		const char namesColumn = 'E';
 		const char typesColumn = 'H';
 		const char departmentsColumn = 'I';
@@ -52,7 +53,7 @@ namespace DataCollectionApp
 					else
 					{	
 						names.Add(trimmedCellContent);
-						if (trimmedCellContent.StartsWith("4") && trimmedCellContent.Length > 2 &&
+						/*if (trimmedCellContent.StartsWith("4") && trimmedCellContent.Length > 2 &&
 						    Char.IsDigit(trimmedCellContent[1]) && Char.IsDigit(trimmedCellContent[2]))
 						{ corpsNumbers.Add(4);}
 						else
@@ -62,7 +63,21 @@ namespace DataCollectionApp
 							{ corpsNumbers.Add(5); }
 							else
 							{ corpsNumbers.Add(null); }							
-						}
+						}*/
+					}
+				}
+				
+				for(int col = getColumnNumber(corpsNumberColumn), i = row; i <= rowsCount; i++)
+				{
+					cellContent = getCellContent(i, col);
+					
+					if(string.IsNullOrEmpty(cellContent))
+					{
+						corpsNumbers.Add(null);
+					}
+					else
+					{
+						corpsNumbers.Add(cellContent);	
 					}
 				}
 
@@ -170,7 +185,24 @@ namespace DataCollectionApp
 						{ sw.WriteLine("В рядку номер " + duplicate.Key + ": " + duplicate.Value); }
 						sw.WriteLine();
 					}
+				}
+
+				bool noSensetoReload = true;
+				ArrayList auditoriesInDB = dbo.getAuditoryNames();
+				
+				foreach(string name in names)
+				{
+					if(!auditoriesInDB.Contains(name))
+					{
+						noSensetoReload = false;
+						break;
+					}
 				}	
+				if (noSensetoReload)
+				{
+					reading = false;
+					MessageBox.Show("Дані про аудиторії вже містяться в базі даних!");
+				}			
 			}
 		}
 		
@@ -179,19 +211,22 @@ namespace DataCollectionApp
 			if(reading)
 			{
 				try
-				{					
+				{	
 					for(int i = 0; i < rowsCount - row + 1; i++)
 					{
 						int auditoryTypeID = dbo.getAuditoryTypeID(types[i].ToString());
 						int departmentID = dbo.getDepartmentIDbyFullName(departments[i].ToString());
+						
 						dbo.insertAuditory(departmentID, names[i].ToString(), Convert.ToBoolean(notUsed[i]),
 							auditoryTypeID, Convert.ToInt32(places[i]), Convert.ToInt32(corpsNumbers[i]));
 					}
+					MessageBox.Show("Дані про аудиторії завантажено до бази даних!");
 				}	
                 catch (Exception ex)
 	            {
-					MessageBox.Show("Виникла помилка під час завантаження даних про аудиторії з файлу " + FileName + " до бази даних!");
-	            }								
+					//MessageBox.Show("Виникла помилка під час завантаження даних про аудиторії з файлу " + FileName + " до бази даних!");
+					MessageBox.Show(ex.Message);
+                }
 			}
 		}
 	}
