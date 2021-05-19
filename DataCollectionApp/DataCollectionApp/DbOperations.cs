@@ -304,6 +304,18 @@ namespace DataCollectionApp
 			mySqlConnection.Close();
 		}
 		
+		public void insertAuditory(int departmentID, string name)
+		{
+			const string command = "INSERT INTO auditory (department_id, auditory_name) " +
+				"VALUES(@ID, @AUDITORY_NAME)";
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlCommand.Parameters.AddWithValue("@ID", departmentID);
+			mySqlCommand.Parameters.AddWithValue("@AUDITORY_NAME", name);
+			mySqlCommand.ExecuteNonQuery();
+			mySqlConnection.Close();
+		}	
+		
 		public void insertFullDataStudy_group(int departmentID, string code, string name, string course, int count)
 		{
 			const string command = "INSERT INTO study_group (department_id, study_group_code, full_name," +
@@ -358,6 +370,65 @@ namespace DataCollectionApp
 			mySqlCommand.Parameters.AddWithValue("@DAY", day);
 			mySqlCommand.ExecuteNonQuery();
 			mySqlConnection.Close();
+		}
+
+		public void deleteExcessData(int departmentID)
+		{
+			deleteExcessInLesson_Teacher(departmentID);
+			deleteExcessInLesson_Group(departmentID);
+			deleteExcessInLesson_Auditory(departmentID);
+			deleteExcessInLesson_Time(departmentID);
+			deleteExcessInLesson(departmentID);		
+		}
+		
+		public void deleteExcessInLesson_Teacher(int departmentID)
+		{
+			const string command = "DELETE FROM lesson_teacher WHERE lesson_id IN (SELECT lesson_id FROM lesson WHERE department_id = @DEPARTMENT)";
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departmentID);
+			mySqlCommand.ExecuteNonQuery();
+			mySqlConnection.Close();
 		}		
+		
+		public void deleteExcessInLesson_Group(int departmentID)
+		{
+			const string command = "DELETE FROM lesson_group WHERE lesson_id IN (SELECT lesson_id FROM lesson WHERE department_id = @DEPARTMENT)";
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departmentID);
+			mySqlCommand.ExecuteNonQuery();
+			mySqlConnection.Close();
+		}
+
+		public void deleteExcessInLesson_Auditory(int departmentID)
+		{
+			const string command = "DELETE FROM lesson_auditory WHERE lesson_id IN (SELECT lesson_id FROM lesson WHERE department_id = @DEPARTMENT)";
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departmentID);
+			mySqlCommand.ExecuteNonQuery();
+			mySqlConnection.Close();
+		}
+
+		public void deleteExcessInLesson_Time(int departmentID)
+		{
+			const string command = "DELETE FROM lesson_time WHERE lesson_id IN (SELECT lesson_id FROM lesson WHERE department_id = @DEPARTMENT)";
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departmentID);
+			mySqlCommand.ExecuteNonQuery();
+			mySqlConnection.Close();
+		}
+
+		public void deleteExcessInLesson(int departmentID)
+		{
+			const string command = "DELETE FROM lesson WHERE department_id = @DEPARTMENT";
+			mySqlConnection.Open();
+			mySqlCommand = new MySqlCommand(command, mySqlConnection);
+			mySqlCommand.Parameters.AddWithValue("@DEPARTMENT", departmentID);
+			mySqlCommand.ExecuteNonQuery();
+			mySqlConnection.Close();
+		}
 	}
 }
