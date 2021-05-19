@@ -53,7 +53,8 @@ namespace DataCollectionApp
         public string FullPathToFile
         {
             get { return String.Concat(directoryName, @"\", fileName); }
-        }	
+        }		
+        
         public ExcelFile(){}
         public ExcelFile(string fileName)
         { FileName = fileName; }
@@ -85,6 +86,19 @@ namespace DataCollectionApp
                 }
             }
         }
+        
+        public int SheetsCount
+        {        	 
+        	get
+        	{
+        		app = new Excel.Application();
+        		const int readingMode = 0;
+        		workbook = app.Workbooks.Open(FullPathToFile, readingMode, true);
+        		return workbook.Worksheets.Count;
+        	}  	
+        }
+        
+        
         public void openForViewing()
         {	Process.Start(FullPathToFile); }   
         public string LastWriteTime
