@@ -23,8 +23,9 @@ namespace DataCollectionApp
 		
 		const char disciplinesColumn = 'B';
 		const char groupsColumn = 'C';
-		const char typesColumn = 'D'; 
-		const char hoursColumn = 'E';
+		const char typesColumn = 'D';
+		//const char hoursColumn = 'E';		
+		const char hoursColumn = 'F';
 		const char controlColumn = 'G';
 		const char teachersColumn = 'H';
 		const char auditoriesColumn = 'I';
@@ -43,6 +44,9 @@ namespace DataCollectionApp
 			this.sheetNumber = sheetNumber;
 			this.departmentShortName = departmentShortName;
 		}
+		
+		DbOperations dbo = new DbOperations();
+		CellContentCorrection ccc = new CellContentCorrection();
 		
 		public override void ReadFromExcelFile()
 		{
@@ -73,7 +77,12 @@ namespace DataCollectionApp
 					}
 					else
 					{
-						int h = Convert.ToInt32(cellContent);
+						char comma = ',';
+						int index = cellContent.IndexOf(comma);
+					
+						if(index != -1)
+						{ cellContent = cellContent.Substring(0, cellContent.Length - index - 1); }			
+						double h = Convert.ToDouble(cellContent); //Convert.ToInt32(cellContent);
 						hours.Add(h);	
 					}
 				}
@@ -107,19 +116,23 @@ namespace DataCollectionApp
             }
 		}
 		
-		public override void EvaluateData() {}
+		public override void EvaluateData()
+		{
+			int departmentID = dbo.getDepartmentID(departmentShortName);
+			
+			if (SheetsCount == 1)
+			{
+				dbo.deleteExcessData(departmentID);	
+			}
+		}
 		
 		public override void Load()
 		{
 			if(reading)
 			{
 				try
-				{
-					DbOperations dbo = new DbOperations();
-					CellContentCorrection ccc = new CellContentCorrection();
-					
-					
-					int departmentID = dbo.getDepartmentID("ПМ");
+				{	
+					int departmentID = dbo.getDepartmentID(departmentShortName);
 					
 					for(int i = 0; i < disciplines.Count; i++)
 					{
@@ -140,6 +153,13 @@ namespace DataCollectionApp
 							
 							for (int j = 0; j < separatedAuditories.Length; j++)
 							{
+								ArrayList auditoriesInDB  = dbo.getAuditoryNames();
+								
+								if(auditoriesInDB.Contains(separatedAuditories[j]) == false)
+								{
+									dbo.insertAuditory(departmentID, separatedAuditories[j]);
+								}
+								
 								int auditoryID = dbo.getAuditoryID(separatedAuditories[j]);
 								dbo.insertLesson_Auditory(lastLessonID, auditoryID);
 							}	
@@ -193,7 +213,6 @@ namespace DataCollectionApp
 								dbo.insertLesson_time(lastLessonID, separatedDays[j]);
 							}
 						}
-						
 					}		
 				}
 				catch(Exception ex)
