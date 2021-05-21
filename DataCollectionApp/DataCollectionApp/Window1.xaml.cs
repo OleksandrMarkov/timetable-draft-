@@ -43,7 +43,7 @@ namespace DataCollectionApp
 		Faculties faculties = new Faculties("Faculties.xlsx");		
 		Departments departments = new Departments("Departments.xlsx");		
 		Teachers teachers = new Teachers("Teachers.xlsx");		 
-		Auditories auditories = new Auditories("Auditories.xls");			
+		Auditories auditories = new Auditories("Auditories_недостающие_корпуса_из_путеводителя_ЗНТУ_мои_предположения.xls");			
 		StudyGroups studyGroups = new StudyGroups("Групи 30.04.2021.xlsx");
 		
 		Statements appliedMathematics = new Statements("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71, 1, "ПМ");
@@ -63,7 +63,6 @@ namespace DataCollectionApp
 		Statements psychology = new Statements("Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156, 1, "СоцРтаП");
 		Statements aviationEngineConstructionTechnology = new Statements("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx", 15, 65, 1, "ТАД");		
 		Statements computerSoftware = new Statements("Програмних_засобів_26-12-19_Форма 44_ ВIДОМIСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 225, 1, "ПЗ");
-		
  		Statements tourism_sheet1 = new Statements("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 1, "ТГтаРБ");
 		Statements tourism_sheet2 = new Statements("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 2, "ТГтаРБ");
 		
@@ -89,7 +88,7 @@ namespace DataCollectionApp
 			ListBoxItem commonDataFile = (ListBoxItem)commonDataListBox.SelectedItem;
 			
 			if(statementsFile == null && commonDataFile != null)
-			{
+			{				
 				fileName = commonDataFile.Content.ToString();	
 				switch(fileName)
 				{
@@ -193,7 +192,7 @@ namespace DataCollectionApp
 			ListBoxItem commonDataFile = (ListBoxItem)commonDataListBox.SelectedItem;
 			
 			if(statementsFile == null && commonDataFile != null)
-			{
+			{	
 				fileName = commonDataFile.Content.ToString();
 				switch(fileName)
 				{
@@ -207,26 +206,16 @@ namespace DataCollectionApp
 						faculties.SendDataToDB();
 						break;
 					case departmentsText:
-						departments.SendDataToDB();
-						MessageBox.Show("Дані про кафедри завантажено до бази даних!");
-						lbi_departments.IsEnabled = false;
-						lbi_departments.FontWeight = FontWeights.Bold;
+						departments.SendDataToDB();		
 						break;
 					case teachersText:
 						teachers.SendDataToDB();
-						MessageBox.Show("Дані про викладачів завантажено до бази даних!");
-						lbi_teachers.IsEnabled = false;
-						lbi_teachers.FontWeight = FontWeights.Bold;
 						break;
 					case auditoriesText:
 						auditories.SendDataToDB();
-						MessageBox.Show("Дані про аудиторії завантажено до бази даних!");
-						lbi_auditories.IsEnabled = false;
-						lbi_auditories.FontWeight = FontWeights.Bold;
 						break;
 					case groupsText:
 						studyGroups.SendDataToDB();
-						MessageBox.Show("Дані про учбові групи завантажено до бази даних!");
 						break;						
 				}
 				//MessageBox.Show("Дані про " + fileName.ToLower() + " завантажено до бази даних!");
@@ -242,56 +231,88 @@ namespace DataCollectionApp
 					{							
 						case machinePartsText:						
 							machineParts.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;		
 						case mbtText:						
 							mbt.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;
 						case economyAndCustomsText:
 							economyAndCustoms_sheet1.SendDataToDB();
 							economyAndCustoms_sheet2.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;
 						case economicalTheoryText:
 							economicalTheory.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;
 						case electricalMachinesText:
 							electricalMachines.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;
 						case industrialEnergySupplyText:
 							industrialEnergySupply.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;
 						case computerSystemsAndNetworksText:
 							computerSystemsAndNetworks_sheet1.SendDataToDB();
 							computerSystemsAndNetworks_sheet2.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;
 						case marketingAndLogisticsText:
-							marketingAndLogistics.SendDataToDB();		
+							marketingAndLogistics.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");							
 							break;
 						case internationalEconomicRelationsText:
 							internationalEconomicRelations.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;
 						case accountingAndAuditText:
 							accountingAndAudit_sheet1.SendDataToDB();
 							accountingAndAudit_sheet2.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");						
 							break;
 						case appliedMathematicsText:
 							appliedMathematics.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");		
 							break;
 						case computerSoftwareText:
 							computerSoftware.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");							
 							break;
 						case psychologyText:
 							psychology.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;
 						case aviationEngineConstructionTechnologyText:
 							aviationEngineConstructionTechnology.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
 							break;
 						case tourismText:
-							/*tourism_sheet1.SendDataToDB();
-							tourism_sheet2.SendDataToDB();*/
-							break;	
-					}
-					MessageBox.Show("Відомості доручень кафедри " + fileName +
-					" завантажено до бази даних!");					 
+							tourism_sheet1.SendDataToDB();
+							tourism_sheet2.SendDataToDB();
+							MessageBox.Show("Відомості доручень кафедри " + fileName +
+					" завантажено до бази даних!");
+							break;
+						default:
+							MessageBox.Show("Відомості доручень цієї кафедри ще не завантажили...");
+							break;
+					}				
+					 
 					fileName = "";
 					statementsListBox.SelectedItem = null;
 				}
@@ -312,7 +333,7 @@ namespace DataCollectionApp
 		}		
 		
 		void statementsListBox_Changed(object sender, SelectionChangedEventArgs e)
-		{
+		{			
 			try
 			{
 				selectedFile.Text = ((ListBoxItem)statementsListBox.SelectedItem).Content.ToString();	
@@ -390,6 +411,7 @@ namespace DataCollectionApp
 					break;
 			}
 		}
+		
 		void commonDataListBox_Changed(object sender, SelectionChangedEventArgs e)
 		{
 			try
