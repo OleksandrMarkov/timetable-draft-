@@ -5,6 +5,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 using MySql.Data.MySqlClient;
 using System.Windows;
 
+using System.IO;
+
 namespace DataCollectionApp
 {
 	public class Statements : ExcelFile
@@ -82,7 +84,7 @@ namespace DataCollectionApp
 					
 						if(index != -1)
 						{ cellContent = cellContent.Substring(0, cellContent.Length - index - 1); }			
-						double h = Convert.ToDouble(cellContent); //Convert.ToInt32(cellContent);
+						double h = Convert.ToDouble(cellContent);
 						hours.Add(h);	
 					}
 				}
@@ -132,6 +134,8 @@ namespace DataCollectionApp
 			{
 				try
 				{	
+					const string path = @"E:\BACHELORS WORK\TIMETABLE\DataCollectionApp\BugsReport.txt";
+					
 					int departmentID = dbo.getDepartmentID(departmentShortName);
 					
 					for(int i = 0; i < disciplines.Count; i++)
@@ -158,6 +162,12 @@ namespace DataCollectionApp
 								if(auditoriesInDB.Contains(separatedAuditories[j]) == false)
 								{
 									dbo.insertAuditory(departmentID, separatedAuditories[j]);
+									using (StreamWriter sw = new StreamWriter(path, true, System.Text.Encoding.Default))
+									{
+										sw.Write("Аудиторію \"" + separatedAuditories[j] + "\" кафедри \"" + departmentShortName +
+										         "\" завантажено до бази даних з файлу \"" + FileName + "\"");
+										sw.WriteLine();
+									}
 								}
 								
 								int auditoryID = dbo.getAuditoryID(separatedAuditories[j]);
@@ -196,8 +206,13 @@ namespace DataCollectionApp
 									string code = gc.getGroupCode(separatedGroups[j]);
 									
 									dbo.insertStudy_group(departmentID, separatedGroups[j], code);
+									using (StreamWriter sw = new StreamWriter(path, true, System.Text.Encoding.Default))
+									{
+										sw.Write("Учбову групу \"" + separatedGroups[j] + "\" кафедри \"" + departmentShortName +
+										         "\" завантажено до бази даних з файлу \"" + FileName + "\"");
+										sw.WriteLine();
+									}									
 								}
-								
 								int groupID = dbo.getStudy_groupID(separatedGroups[j]);
 								dbo.insertLesson_group(lastLessonID, groupID);
 							}
