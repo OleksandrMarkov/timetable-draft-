@@ -4,8 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local = "clr-namespace:DataCollectionApp"
 	Title="DataCollectionApp" Width="1500" Height="575" 
-	ResizeMode="NoResize" Background="#dfe7e8"
->
+	ResizeMode="NoResize" Background="#dfe7e8">
 	
 	<Window.Resources>
     	<Style TargetType="ListBox">
@@ -14,7 +13,7 @@
 			<Setter Property="HorizontalAlignment" Value="Stretch"/>
 			<Setter Property="HorizontalContentAlignment" Value="Center"/>
     	</Style>
-
+		
     	<Style TargetType="TextBlock">
     		<Setter Property="FontFamily" Value="Arial"/>
 			<Setter Property="HorizontalAlignment" Value="Center"></Setter>
@@ -26,11 +25,7 @@
 			<Setter Property="FontWeight" Value="Bold"/>
 			<Setter Property="Padding" Value="20" />
 		</Style>
-	
-		<Style x:Key="listBoxItemPadding">
-			<Setter Property="ListBoxItem.Padding" Value="20,15" />
-		</Style>
-	
+
 		<Style x:Key="textBlockPadding1">
 			<Setter Property="TextBlock.Padding" Value="20,15" />
 		</Style>
@@ -47,23 +42,72 @@
 			
 				<StackPanel Margin="10">
 					<TextBlock Text="Загальні дані" FontWeight="Bold" Foreground="Brown"/>
-					<ListBox x:Name="commonDataListBox" SelectionChanged="commonDataListBox_Changed">
-						<ListBoxItem x:Name="lbi_auditoryTypes" Background="LightSalmon" Content="Типи аудиторій" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem x:Name="lbi_disciplines" Content="Дисципліни" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem x:Name="lbi_faculties" Background="LightSalmon" Content="Факультети" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem x:Name="lbi_departments" Content="Кафедри" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem x:Name="lbi_teachers" Background="LightSalmon" Content="Викладачі" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem x:Name="lbi_auditories" Content="Аудиторії" Style="{StaticResource listBoxItemPadding}"/>
-						<ListBoxItem x:Name="lbi_groups" Background="LightSalmon" Content="Учбові групи" Style="{StaticResource listBoxItemPadding}"/>					
-					</ListBox>
-					<Button x:Name="WatchButton" Content="Переглянути" ToolTip="Обраний файл буде відкритий в режимі читання" Background="PeachPuff" Margin="0, 32, 0, 0" Click="WatchButton_Click"></Button>
+					
+					<ListBox x:Name="commonDataListBox" BorderBrush="DarkSlateBlue" SelectionChanged="commonDataListBox_Changed">			
+
+					<ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Style.Setters>
+										<Setter Property="BorderBrush" Value="DarkSlateBlue" />
+										<Setter Property="Padding" Value="20,15" />
+										<Setter Property="FontFamily" Value="Arial"/>
+										<Setter Property="FontSize" Value="18"/>
+										<Setter Property="Background" Value="Bisque"/>                                	
+                                    </Style.Setters>                        	
+                                	<Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="FontSize" Value="20" />
+                                        </Trigger>
+										<Trigger Property="IsMouseOver" Value="True">
+											<Setter Property="Cursor" Value="Hand"/>
+                                    		<Setter Property="FontSize" Value="20" />
+                                    	</Trigger>
+                                    </Style.Triggers>									
+                                </Style>
+					</ListBox.ItemContainerStyle>						
+						
+						<ListBoxItem x:Name="lbi_auditoryTypes" Content="Типи аудиторій"/>
+						<ListBoxItem x:Name="lbi_disciplines" Content="Дисципліни"/>
+						<ListBoxItem x:Name="lbi_faculties" Content="Факультети"/>
+						<ListBoxItem x:Name="lbi_departments" Content="Кафедри"/>
+						<ListBoxItem x:Name="lbi_teachers" Content="Викладачі"/>
+						<ListBoxItem x:Name="lbi_auditories" Content="Аудиторії"/>
+						<ListBoxItem x:Name="lbi_groups" Content="Учбові групи"/>						
+					</ListBox>			
+					
+					<Button x:Name="WatchButton" Content="Переглянути" ToolTip="Обраний файл буде відкрито в режимі читання" Background="Yellow" Margin="0, 30, 0, 0" Click="WatchButton_Click"></Button>
 				</StackPanel>
 			
 				<StackPanel Margin="0, 10, 10, 10">
 					<TextBlock Text="Відомості доручень" FontWeight="Bold" Foreground="Black"/>
 					<ScrollViewer CanContentScroll="True" Height="375">
-						<ListBox x:Name="statementsListBox" SelectionChanged="statementsListBox_Changed"></ListBox>
+						
+						<ListBox x:Name="statementsListBox" BorderBrush="DarkSlateBlue" SelectionChanged="statementsListBox_Changed">
+							<ListBox.ItemContainerStyle>
+		                                <Style TargetType="{x:Type ListBoxItem}">		 
+		                                    <Style.Setters>
+												<Setter Property="BorderBrush" Value="DarkSlateBlue" />
+												<Setter Property="Padding" Value="20,15" />
+												<Setter Property="FontFamily" Value="Arial"/>
+												<Setter Property="FontSize" Value="18"/>
+												<Setter Property="Background" Value="Bisque"/>                       	
+		                                    </Style.Setters>
+		                                	
+		                                	<Style.Triggers>
+		                                        <Trigger Property="IsSelected" Value="True">
+		                                      		<Setter Property="FontSize" Value="20" />
+		                                        </Trigger>			                                		
+												<Trigger Property="IsMouseOver" Value="True">
+													<Setter Property="Cursor" Value="Hand"/>
+		                                    		<Setter Property="FontSize" Value="20" />
+		                                    	</Trigger>
+		                                    </Style.Triggers>					
+		                                </Style>
+							</ListBox.ItemContainerStyle>
+						</ListBox>
+
 					</ScrollViewer>
+
 					<Button x:Name="LoadButton" Content="Завантажити" ToolTip="Інформація з обраного файлу буде завантажена до бази даних" Background="LightGreen" Margin="0, 30, 0, 0" Click="LoadButton_Click"></Button>
 				</StackPanel>
 			
