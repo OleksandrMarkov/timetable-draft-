@@ -45,27 +45,27 @@ namespace DataCollectionApp
 		Teachers teachers = new Teachers("Teachers.xlsx");		 
 		Auditories auditories = new Auditories("Auditories_недостающие_корпуса_из_путеводителя_ЗНТУ_мои_предположения.xls");			
 		StudyGroups studyGroups = new StudyGroups("Групи 30.04.2021.xlsx");
-		
-		Statements appliedMathematics = new Statements("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 71, 1, "ПМ");
-		Statements internationalEconomicRelations = new Statements("МІЖНАРОДНИХ ЕКОНОМІЧНИХ ВІДНОСИН денне 44 2020.xlsx", 15, 57, 1, "МЕВ");
-		Statements machineParts = new Statements("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 50, 1, "ДМіПТМ");
-		Statements mbt = new Statements("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 46, 1, "ТМБ");
-		Statements economyAndCustoms_sheet1 = new Statements("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 84, 1, "ЕтаМС");
-		Statements economyAndCustoms_sheet2 = new Statements("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 68, 2, "ЕтаМС");		
-		Statements economicalTheory = new Statements("ЕКОНОМІЧНОЇ ТЕОРІЇ ТА ПІДПРИЄМНИЦТВА_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 79, 1, "ЕТтаП");
-		Statements electricalMachines = new Statements("Електричних_машин-Форма 44 ВІД ДОРУЧЕНЬ- 2020_кафЕМ_ден2 сем.xlsx", 15, 45, 1, "ЕМ");
-		Statements industrialEnergySupply = new Statements("Електропостачання промислових підприємств_Форма 44 ЕПП - 2020д.xlsx", 15, 76, 1, "ЕПП");
-		Statements computerSystemsAndNetworks_sheet1 = new Statements("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 93, 1, "КСтаМ");
-		Statements computerSystemsAndNetworks_sheet2 = new Statements("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 23, 2, "КСтаМ");		
-		Statements marketingAndLogistics = new Statements("МАРКЕТИНГУ ТА ЛОГІСТИКИ_Відомість_денне_ІІ_нова.xls", 15, 72, 1, "Марк.та Лог.");
-		Statements accountingAndAudit_sheet1 = new Statements("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 62, 1, "ОіО");
-		Statements accountingAndAudit_sheet2 = new Statements("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 64, 2, "ОіО");
-		Statements psychology = new Statements("Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 156, 1, "СоцРтаП");
-		Statements aviationEngineConstructionTechnology = new Statements("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx", 15, 65, 1, "ТАД");		
-		Statements computerSoftware = new Statements("Програмних_засобів_26-12-19_Форма 44_ ВIДОМIСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 225, 1, "ПЗ");
- 		Statements tourism_sheet1 = new Statements("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 1, "ТГтаРБ");
-		Statements tourism_sheet2 = new Statements("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 95, 2, "ТГтаРБ");
-		
+
+		Statements appliedMathematics = new Statements("Прикладна_математика_Форма 44 ПМ денна 2019- 2020.xlsx", 15, 1, "ПМ");
+		Statements internationalEconomicRelations = new Statements("МІЖНАРОДНИХ ЕКОНОМІЧНИХ ВІДНОСИН денне 44 2020.xlsx", 15, 1, "МЕВ");
+		Statements machineParts = new Statements("VIDOMOST_DORUChEN_2 сем_ДВ_ДМ і ПТМ.xlsx", 15, 1, "ДМіПТМ");
+		Statements mbt = new Statements("ВІДОМІСТЬ ДОРУЧЕНЬ ТМБ денне весна - 2020.xlsx", 15, 1, "ТМБ");
+		Statements economyAndCustoms_sheet1 = new Statements("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 1, "ЕтаМС");
+		Statements economyAndCustoms_sheet2 = new Statements("Економіки та митної справи_Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020_ЕМС.xlsx", 15, 2, "ЕтаМС");		
+		Statements economicalTheory = new Statements("ЕКОНОМІЧНОЇ ТЕОРІЇ ТА ПІДПРИЄМНИЦТВА_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 1, "ЕТтаП");
+		Statements electricalMachines = new Statements("Електричних_машин-Форма 44 ВІД ДОРУЧЕНЬ- 2020_кафЕМ_ден2 сем.xlsx", 15, 1, "ЕМ");
+		Statements industrialEnergySupply = new Statements("Електропостачання промислових підприємств_Форма 44 ЕПП - 2020д.xlsx", 15, 1, "ЕПП");
+		Statements computerSystemsAndNetworks_sheet1 = new Statements("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 1, "КСтаМ");
+		Statements computerSystemsAndNetworks_sheet2 = new Statements("КОМП_ЮТЕРНІ СИСТЕМИ ТА МЕРЕЖІ_ВІДОМІСТЬ ДОРУЧЕНЬ_19_20.xlsx", 15, 2, "КСтаМ");		
+		Statements marketingAndLogistics = new Statements("МАРКЕТИНГУ ТА ЛОГІСТИКИ_Відомість_денне_ІІ_нова.xls", 15, 1, "Марк.та Лог.");
+		Statements accountingAndAudit_sheet1 = new Statements("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 1, "ОіО");
+		Statements accountingAndAudit_sheet2 = new Statements("Облік і оподатківання_ВІДОМІСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 2, "ОіО");
+		Statements psychology = new Statements("Форма 44 ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 Денна Соціальна робота та психологія.xlsx", 15, 1, "СоцРтаП");
+		Statements aviationEngineConstructionTechnology = new Statements("Технологій авіаційних двигунів ВІДОМІСТЬ ДОРУЧЕНЬ - 2020 весна денна.xlsx", 15, 1, "ТАД");		
+		Statements computerSoftware = new Statements("Програмних_засобів_26-12-19_Форма 44_ ВIДОМIСТЬ ДОРУЧЕНЬ - 2020.xlsx", 15, 1, "ПЗ");
+ 		Statements tourism_sheet1 = new Statements("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 1, "ТГтаРБ");
+		Statements tourism_sheet2 = new Statements("Туризм_Форма 44 денна заочна 2020.xlsx", 15, 2, "ТГтаРБ");
+						
 		public Window1()
 		{ 
 			InitializeComponent();
@@ -126,50 +126,69 @@ namespace DataCollectionApp
 					{
 						case machinePartsText:
 							machineParts.openForViewing();
+							//MessageBox.Show(machineParts.lastRow.ToString());
 							break;			
 						case mbtText:						
 							mbt.openForViewing();
+							//MessageBox.Show(mbt.lastRow.ToString());
 							break;
 						case economyAndCustomsText:
+							//MessageBox.Show(economyAndCustoms_sheet1.lastRow.ToString());
+							//MessageBox.Show(economyAndCustoms_sheet2.lastRow.ToString());
 							economyAndCustoms_sheet1.openForViewing();
 							economyAndCustoms_sheet2.openForViewing();
 							break;
 						case economicalTheoryText:
+							//MessageBox.Show(economicalTheory.lastRow.ToString());
 							economicalTheory.openForViewing();
 							break;
 						case electricalMachinesText:
+							//MessageBox.Show(electricalMachines.lastRow.ToString());
 							electricalMachines.openForViewing();
 							break;
 						case industrialEnergySupplyText:
+							//MessageBox.Show(industrialEnergySupply.lastRow.ToString());
 							industrialEnergySupply.openForViewing();
 							break;
 						case computerSystemsAndNetworksText:
+							//MessageBox.Show(computerSystemsAndNetworks_sheet1.lastRow.ToString());
+							//MessageBox.Show(computerSystemsAndNetworks_sheet2.lastRow.ToString());
 							computerSystemsAndNetworks_sheet1.openForViewing();
 							computerSystemsAndNetworks_sheet2.openForViewing();
 							break;
 						case marketingAndLogisticsText:
+							//MessageBox.Show(marketingAndLogistics.lastRow.ToString());
 							marketingAndLogistics.openForViewing();
 							break;
 						case internationalEconomicRelationsText:
+							//MessageBox.Show(internationalEconomicRelations.lastRow.ToString());
 							internationalEconomicRelations.openForViewing();
 							break;
 						case accountingAndAuditText:
+							//MessageBox.Show(accountingAndAudit_sheet1.lastRow.ToString());
+							//MessageBox.Show(accountingAndAudit_sheet2.lastRow.ToString());
 							accountingAndAudit_sheet1.openForViewing();
 							accountingAndAudit_sheet2.openForViewing();
 							break;
 						case appliedMathematicsText:
+							//MessageBox.Show(appliedMathematics.lastRow.ToString());
 							appliedMathematics.openForViewing();				
 							break;
 						case computerSoftwareText:
+							//MessageBox.Show(computerSoftware.lastRow.ToString());
 							computerSoftware.openForViewing();
 							break;
 						case psychologyText:
+							//MessageBox.Show(psychology.lastRow.ToString());
 							psychology.openForViewing();
 							break;
 						case aviationEngineConstructionTechnologyText:
+							//MessageBox.Show(aviationEngineConstructionTechnology.lastRow.ToString());							
 							aviationEngineConstructionTechnology.openForViewing();
 							break;
 						case tourismText:
+							//MessageBox.Show(tourism_sheet1.lastRow.ToString());
+							//MessageBox.Show(tourism_sheet2.lastRow.ToString());							
 							tourism_sheet1.openForViewing();
 							tourism_sheet2.openForViewing();
 							break;							

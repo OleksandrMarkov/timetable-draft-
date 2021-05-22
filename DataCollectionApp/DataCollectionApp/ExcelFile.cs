@@ -98,6 +98,24 @@ namespace DataCollectionApp
         	}  	
         }
         
+        public int getLastRow (string fileName, int sheetNumber, int firstRow)
+        {
+        	open(sheetNumber);
+        	
+        	int lastRow = firstRow;
+        	int columnNumber = getColumnNumber('B');
+        	
+        	cellContent = getCellContent(lastRow, columnNumber);
+        	
+        	while(string.IsNullOrEmpty(cellContent) == false)
+        	{
+        		cellContent = getCellContent(lastRow, columnNumber);
+        		++lastRow;
+        	}
+        	close();
+        	return lastRow - 2;
+        }
+        
         
         public void openForViewing()
         {	Process.Start(FullPathToFile); }   

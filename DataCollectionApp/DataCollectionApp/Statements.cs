@@ -12,7 +12,7 @@ namespace DataCollectionApp
 	public class Statements : ExcelFile
 	{
 		int firstRow;
-		int lastRow;
+		public int lastRow;
 		
 		ArrayList disciplines = new ArrayList();
 		ArrayList groups = new ArrayList();
@@ -25,8 +25,7 @@ namespace DataCollectionApp
 		
 		const char disciplinesColumn = 'B';
 		const char groupsColumn = 'C';
-		const char typesColumn = 'D';
-		//const char hoursColumn = 'E';		
+		const char typesColumn = 'D';		
 		const char hoursColumn = 'F';
 		const char controlColumn = 'G';
 		const char teachersColumn = 'H';
@@ -38,13 +37,13 @@ namespace DataCollectionApp
 		
 		bool reading = true;
 				
-		public Statements(string fileName, int firstRow, int lastRow, int sheetNumber, string departmentShortName): base(fileName)
+		public Statements(string fileName, int firstRow, int sheetNumber, string departmentShortName): base(fileName)
 		{
 			this.fileName = fileName;
 			this.firstRow = firstRow;
-			this.lastRow = lastRow;
 			this.sheetNumber = sheetNumber;
 			this.departmentShortName = departmentShortName;
+			this.lastRow = getLastRow(fileName, sheetNumber, firstRow);
 		}
 		
 		DbOperations dbo = new DbOperations();
@@ -164,6 +163,7 @@ namespace DataCollectionApp
 									dbo.insertAuditory(departmentID, separatedAuditories[j]);
 									using (StreamWriter sw = new StreamWriter(path, true, System.Text.Encoding.Default))
 									{
+										sw.WriteLine("{0:g}", DateTime.Now);
 										sw.Write("Аудиторію \"" + separatedAuditories[j] + "\" кафедри \"" + departmentShortName +
 										         "\" завантажено до бази даних з файлу \"" + FileName + "\"");
 										sw.WriteLine();
@@ -208,6 +208,7 @@ namespace DataCollectionApp
 									dbo.insertStudy_group(departmentID, separatedGroups[j], code);
 									using (StreamWriter sw = new StreamWriter(path, true, System.Text.Encoding.Default))
 									{
+										sw.WriteLine("{0:g}", DateTime.Now);
 										sw.Write("Учбову групу \"" + separatedGroups[j] + "\" кафедри \"" + departmentShortName +
 										         "\" завантажено до бази даних з файлу \"" + FileName + "\"");
 										sw.WriteLine();
